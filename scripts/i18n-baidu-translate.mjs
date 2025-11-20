@@ -3,10 +3,11 @@ import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
 import axios from 'axios'
+import 'dotenv/config'
 
 // ===== 配置 =====
-const APP_ID = '20251120002502144'
-const APP_KEY = 'G1xtq4rnw4uqvnZxMrij'
+const APP_ID = process.env.BAIDU_APP_ID
+const APP_KEY = process.env.BAIDU_APP_KEY
 
 const SOURCE_LANG = 'en'
 const LOCALES_DIR = './i18n/locales'
