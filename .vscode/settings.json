@@ -1,0 +1,11 @@
+{
+  "prettier.enable": false,
+  "eslint.useFlatConfig": true,
+  "editor.formatOnSave": false,
+  "eslint.format.enable": true,
+  "editor.codeActionsOnSave": {
+    "source.fixAll.eslint": "explicit",
+    "source.organizeImports": "never"
+  }
+
+}
