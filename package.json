@@ -8,10 +8,14 @@
     "generate": "nuxt generate",
     "preview": "nuxt preview",
     "postinstall": "nuxt prepare",
-    "i18n": "node scripts/i18n-baidu-translate.mjs"
+    "lint": "eslint --ext .js,.ts,.vue .",
+    "i18n": "node scripts/i18n-baidu-translate.mjs",
+    "db:push": "prisma db push --config ./db/prisma.config.ts",
+    "db:studio": "prisma studio"
   },
   "dependencies": {
     "@nuxtjs/i18n": "^10.2.1",
+    "@prisma/client": "^7.0.0",
     "@vueuse/core": "^14.0.0",
     "axios": "^1.13.2",
     "crypto": "^1.0.1",
@@ -30,8 +34,17 @@
     "@vueuse/nuxt": "^14.0.0",
     "dotenv": "^17.2.3",
     "eslint": "^9.39.1",
+    "prisma": "^7.0.0",
     "rollup-plugin-visualizer": "^6.0.5",
+    "tsx": "^4.20.6",
     "unplugin-icons": "^22.5.0",
     "unplugin-vue-components": "^30.0.0"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@prisma/client",
+      "@prisma/engines",
+      "prisma"
+    ]
   }
 }
