@@ -1,3 +1,13 @@
 export default defineAppConfig({
-  foo: 'bar',
+	ui: {
+		colors: {
+			primary: 'slatePrimary',
+			secondary: 'slateSecondary',
+			success: 'slateSuccess',
+			info: 'slateInfo',
+			warning: 'slateWarning',
+			error: 'slateError',
+			neutral: 'slateNeutral'
+		},
+	}
 })

@@ -1,27 +1,62 @@
 {
-  "Close": {
-    "zh": "关闭",
-    "zh-hk": "關閉",
-    "jp": "閉じる"
+  "auth_Login": {
+    "zh": "登录",
+    "zh-hk": "登入",
+    "jp": "ログイン"
   },
-  "Copy": {
-    "zh": "复制",
-    "zh-hk": "複製",
-    "jp": "コピー"
+  "auth_Profile": {
+    "zh": "个人资料",
+    "zh-hk": "個人資料",
+    "jp": "プロフィール"
   },
-  "Cancel": {
-    "zh": "取消",
-    "zh-hk": "取消",
-    "jp": "キャンセル"
+  "auth_Logout": {
+    "zh": "退出登录",
+    "zh-hk": "登出",
+    "jp": "ログアウト"
   },
-  "Confirm": {
+  "auth_Login With Github": {
+    "zh": "使用Github登录",
+    "zh-hk": "使用Github登入",
+    "jp": "Githubでログイン"
+  },
+  "common_Confirm": {
     "zh": "确认",
     "zh-hk": "確認",
     "jp": "確認"
   },
-  "AI Presentation Maker": {
-    "zh": "AI演示制作工具",
-    "zh-hk": "AI演示製作工具",
+  "common_Cancel": {
+    "zh": "取消",
+    "zh-hk": "取消",
+    "jp": "キャンセル"
+  },
+  "common_Close": {
+    "zh": "关闭",
+    "zh-hk": "關閉",
+    "jp": "閉じる"
+  },
+  "common_Presentation AI": {
+    "zh": "演示AI",
+    "zh-hk": "演示AI",
+    "jp": "プレゼンテーション AI"
+  },
+  "common_Copy": {
+    "zh": "复制",
+    "zh-hk": "複製",
+    "jp": "コピー"
+  },
+  "common_Change Theme": {
+    "zh": "更改主题",
+    "zh-hk": "更改主題",
+    "jp": "テーマ変更"
+  },
+  "home_AI Presentation Maker": {
+    "zh": "AI演示文稿制作工具",
+    "zh-hk": "AI演示文稿製作工具",
     "jp": "AIプレゼンテーションメーカー"
+  },
+  "common_Change Languare": {
+    "zh": "更改语言",
+    "zh-hk": "更改語言",
+    "jp": "言語を変更する"
   }
 }

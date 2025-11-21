@@ -1,8 +1,9 @@
 {
-  "common": {
-    "ok": "確認",
-    "cancel": "取消",
-    "close": "關閉",
-    "copy": "複製"
-  }
+  "logo": "演示AI",
+  "ok": "確認",
+  "cancel": "取消",
+  "close": "關閉",
+  "copy": "複製",
+  "changeTheme": "更改主題",
+  "changeLanguage": "更改語言"
 }

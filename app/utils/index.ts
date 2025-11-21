@@ -1,4 +1,8 @@
-export const { format: formatNumber } = Intl.NumberFormat('en-GB', {
-  notation: 'compact',
-  maximumFractionDigits: 1,
-})
+import type { ClassValue } from 'clsx'
+
+import {  clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}

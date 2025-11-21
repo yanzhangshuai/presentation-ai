@@ -1,0 +1,272 @@
+@import "tailwindcss";
+@import "@nuxt/ui";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+/* 插件引入 */
+@plugin "tailwindcss-animate";
+@plugin "tailwind-scrollbar";
+@plugin "@tailwindcss/typography";
+@plugin "tailwind-scrollbar-hide";
+
+
+
+/* 主题设计网站 */
+/* https://hotpot.frogpond.dev/ */
+
+@theme static {
+	--color-slatePrimary-50: #fffefe;
+	--color-slatePrimary-100: #fffdfd;
+	--color-slatePrimary-200: #fffcfc;
+	--color-slatePrimary-300: #fffbfb;
+	--color-slatePrimary-400: #fffafa;
+	--color-slatePrimary-500: #fffafa;
+	--color-slatePrimary-600: #b2afaf;
+	--color-slatePrimary-700: #7f7d7d;
+	--color-slatePrimary-800: #4c4b4b;
+	--color-slatePrimary-900: #262525;
+	--color-slatePrimary-950: #141313;
+
+	--color-slateSecondary-50: #f1ecff;
+	--color-slateSecondary-100: #e4daff;
+	--color-slateSecondary-200: #d6c7ff;
+	--color-slateSecondary-300: #c5afff;
+	--color-slateSecondary-400: #b396ff;
+	--color-slateSecondary-500: #a684ff;
+	--color-slateSecondary-600: #745cb2;
+	--color-slateSecondary-700: #53427f;
+	--color-slateSecondary-800: #31274c;
+	--color-slateSecondary-900: #181326;
+	--color-slateSecondary-950: #0d0a14;
+
+	--color-slateSuccess-50: #def4ed;
+	--color-slateSuccess-100: #bdeadb;
+	--color-slateSuccess-200: #9ce0c9;
+	--color-slateSuccess-300: #71d2b1;
+	--color-slateSuccess-400: #45c599;
+	--color-slateSuccess-500: #25bb87;
+	--color-slateSuccess-600: #19825e;
+	--color-slateSuccess-700: #125d43;
+	--color-slateSuccess-800: #0b3828;
+	--color-slateSuccess-900: #051c14;
+	--color-slateSuccess-950: #020e0a;
+
+	--color-slateInfo-50: #dfebff;
+	--color-slateInfo-100: #bfd8ff;
+	--color-slateInfo-200: #9fc5ff;
+	--color-slateInfo-300: #75abff;
+	--color-slateInfo-400: #4a92ff;
+	--color-slateInfo-500: #2b7fff;
+	--color-slateInfo-600: #1e58b2;
+	--color-slateInfo-700: #153f7f;
+	--color-slateInfo-800: #0c264c;
+	--color-slateInfo-900: #061326;
+	--color-slateInfo-950: #030a14;
+
+	--color-slateWarning-50: #fcf3d8;
+	--color-slateWarning-100: #fae7b2;
+	--color-slateWarning-200: #f8db8c;
+	--color-slateWarning-300: #f5cc59;
+	--color-slateWarning-400: #f2bc26;
+	--color-slateWarning-500: #f0b100;
+	--color-slateWarning-600: #a87b00;
+	--color-slateWarning-700: #785800;
+	--color-slateWarning-800: #483500;
+	--color-slateWarning-900: #241a00;
+	--color-slateWarning-950: #130e00;
+
+	--color-slateError-50: #fbe3e2;
+	--color-slateError-100: #f8c7c5;
+	--color-slateError-200: #f5aba8;
+	--color-slateError-300: #f08681;
+	--color-slateError-400: #ec605a;
+	--color-slateError-500: #e9453e;
+	--color-slateError-600: #a3302b;
+	--color-slateError-700: #74221f;
+	--color-slateError-800: #451412;
+	--color-slateError-900: #220a09;
+	--color-slateError-950: #120504;
+
+	--color-slateNeutral-50: #eef0f4;
+	--color-slateNeutral-100: #dde2ea;
+	--color-slateNeutral-200: #cdd4df;
+	--color-slateNeutral-300: #b6c1d1;
+	--color-slateNeutral-400: #a0afc3;
+	--color-slateNeutral-500: #90a1b9;
+	--color-slateNeutral-600: #647081;
+	--color-slateNeutral-700: #48505c;
+	--color-slateNeutral-800: #2b3037;
+	--color-slateNeutral-900: #15181b;
+	--color-slateNeutral-950: #0b0c0e;}
+
+:root {
+	--ui-primary: var(--ui-color-primary-950);
+	--ui-secondary: var(--ui-color-secondary-700);
+	--ui-success: var(--ui-color-success-100);
+	--ui-info: var(--ui-color-info-700);
+	--ui-warning: var(--ui-color-warning-100);
+	--ui-error: var(--ui-color-error-700);
+	--ui-neutral: var(--ui-color-neutral-400);
+
+	--ui-text: var(--ui-color-primary-900);
+	--ui-text-dimmed: var(--ui-color-neutral-400);
+	--ui-text-muted: var(--ui-color-neutral-600);
+	--ui-text-toned: var(--ui-color-neutral-700);
+	--ui-text-highlighted: var(--ui-color-neutral-900);
+	--ui-text-inverted: white;
+
+	--ui-bg: white;
+	--ui-bg-muted: var(--ui-color-neutral-50);
+	--ui-bg-elevated: var(--ui-color-neutral-100);
+	--ui-bg-accented: var(--ui-color-neutral-200);
+	--ui-bg-inverted: var(--ui-color-neutral-800);
+
+	--ui-border: var(--ui-color-neutral-400);
+	--ui-border-muted: var(--ui-color-neutral-300);
+	--ui-border-accented: var(--ui-color-neutral-600);
+	--ui-border-inverted: var(--ui-color-neutral-300);
+}
+
+.dark {
+	--ui-primary: var(--ui-color-primary-50);
+	--ui-secondary: var(--ui-color-secondary-700);
+	--ui-success: var(--ui-color-success-600);
+	--ui-info: var(--ui-color-info-600);
+	--ui-warning: var(--ui-color-warning-600);
+	--ui-error: var(--ui-color-error-600);
+	--ui-neutral: var(--ui-color-neutral-50);
+
+	--ui-text: var(--ui-color-primary-50);
+	--ui-text-dimmed: var(--ui-color-neutral-500);
+	--ui-text-muted: var(--ui-color-neutral-400);
+	--ui-text-toned: var(--ui-color-neutral-300);
+	--ui-text-highlighted: var(--ui-color-neutral-50);
+	--ui-text-inverted: var(--ui-color-neutral-800);
+
+	--ui-bg: var(--ui-color-neutral-900);
+	--ui-bg-muted: var(--ui-color-neutral-600);
+	--ui-bg-elevated: var(--ui-color-neutral-700);
+	--ui-bg-accented: var(--ui-color-neutral-800);
+	--ui-bg-inverted: white;
+
+	--ui-border: var(--ui-color-neutral-700);
+	--ui-border-muted: var(--ui-color-neutral-800);
+	--ui-border-accented: var(--ui-color-neutral-600);
+	--ui-border-inverted: white;
+}
+
+
+/* 主题变量 */
+@theme {
+  /* 字体 */
+  --font-sans: "Inter", "SourceHanSansCN", "SourceHanSansTW", "SourceHanSansHK", "SourceHanSansJP", system-ui, sans-serif;
+  --font-mono: "FiraCode", "SourceCodePro", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+
+
+/* 扩展 keyframes */
+@keyframes accordion-down {
+  from { height: 0; }
+  to { height: var(--radix-accordion-content-height); }
+}
+
+@keyframes accordion-up {
+  from { height: var(--radix-accordion-content-height); }
+  to { height: 0; }
+}
+
+@keyframes shake {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(2deg); }
+  50% { transform: rotate(0deg); }
+  75% { transform: rotate(-2deg); }
+}
+
+@keyframes breathing {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.8; }
+}
+
+/* 字体 */
+@layer theme {
+  .font-scans {
+    font-family: "SourceHanSansCN", sans-serif; /* 简体中文 */
+  }
+
+  .font-tw {
+    font-family: "SourceHanSansTW", sans-serif; /* 繁体中文-台湾 */
+  }
+  .font-hk {
+    font-family: "SourceHanSansHK", sans-serif; /* 繁体中文-香港 */
+  }
+  .font-jp {
+    font-family: "SourceHanSansJP", sans-serif; /* 日文 */
+  }
+  .font-en {
+    font-family: "Inter", sans-serif; /* 英文 */
+  }
+}
+
+/* 扩展动画类 */
+@layer utilities {
+  .animate-accordion-down { animation: accordion-down 0.2s ease-out; }
+  .animate-accordion-up { animation: accordion-up 0.2s ease-out; }
+  .animate-shake { animation: shake 0.3s ease-out; }
+  .animate-breathing { animation: breathing 4s ease-in-out infinite; }
+}
+
+/* 容器扩展 */
+@layer utilities {
+  .container {
+    margin-left: auto;
+    margin-right: auto;
+    padding-left: 2rem;
+    padding-right: 2rem;
+    max-width: 1400px;
+  }
+}
+
+/* 自定义背景图 */
+@layer utilities {
+  .bg-grid-pattern {
+    background-image: linear-gradient(to right, rgba(55,65,81,0.1) 1px, transparent 1px),
+                      linear-gradient(to bottom, rgba(55,65,81,0.1) 1px, transparent 1px);
+    background-size: 20px 20px;
+  }
+}
+
+/* flex布局辅助类 */
+@layer utilities {
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+
+  .flex-y-center {
+    @apply flex items-center;
+  }
+
+  .flex-x-center {
+    @apply flex justify-center;
+  }
+
+  .flex-col-center {
+    @apply flex flex-col items-center justify-center;
+  }
+
+  .i-flex-center {
+    @apply inline-flex items-center justify-center;
+  }
+
+  .i-flex-y-center {
+    @apply inline-flex items-center;
+  }
+
+  .i-flex-x-center {
+    @apply inline-flex justify-center;
+  }
+
+  .i-flex-col-center {
+    @apply inline-flex flex-col items-center justify-center;
+  }
+}
