@@ -1,8 +1,9 @@
 {
-  "common": {
-    "ok": "確認",
-    "cancel": "キャンセル",
-    "close": "閉じる",
-    "copy": "コピー"
-  }
+  "logo": "プレゼンテーション AI",
+  "ok": "確認",
+  "cancel": "キャンセル",
+  "close": "閉じる",
+  "copy": "コピー",
+  "changeTheme": "テーマ変更",
+  "changeLanguage": "言語を変更する"
 }

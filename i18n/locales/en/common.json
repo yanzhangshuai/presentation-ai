@@ -1,9 +1,9 @@
 {
-  "common": {
-    "ok": "Confirm",
-    "cancel": "Cancel",
-    "close": "Close",
-    "copy": "Copy"
-
-  }
+  "logo": "Presentation AI",
+  "ok": "Confirm",
+  "cancel": "Cancel",
+  "close": "Close",
+  "copy": "Copy",
+  "changeTheme": "Change Theme",
+  "changeLanguage": "Change Languare"
 }

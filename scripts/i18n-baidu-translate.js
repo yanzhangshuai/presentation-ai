@@ -55,9 +55,11 @@ const TARGET_LANGS = getTargetLangs()
 console.log('目标语言:', TARGET_LANGS.join(', '))
 
 // ===== 百度翻译 API =====
-async function baiduTranslate(q, to) {
-  if (cache[q]?.[to])
-    return cache[q][to]
+async function baiduTranslate(q, to, file) {
+  const cacheKey = `${file?.split('.')?.[0] || ''}_${q}`
+
+  if (cache[cacheKey]?.[to])
+    return cache[cacheKey][to]
 
   const salt = Date.now()
   const sign = crypto.createHash('md5').update(APP_ID + q + salt + APP_KEY).digest('hex')
@@ -72,9 +74,9 @@ async function baiduTranslate(q, to) {
     }
     const translated = res.data.trans_result?.[0]?.dst || q
 
-    if (!cache[q])
-      cache[q] = {}
-    cache[q][to] = translated
+    if (!cache[cacheKey])
+      cache[cacheKey] = {}
+    cache[cacheKey][to] = translated
     saveCache()
     return translated
   }
@@ -85,11 +87,11 @@ async function baiduTranslate(q, to) {
 }
 
 // ===== 批量翻译 =====
-async function translateBatch(strings, to) {
+async function translateBatch(strings, to, file) {
   const results = []
   for (let i = 0; i < strings.length; i += BATCH_SIZE) {
     const batch = strings.slice(i, i + BATCH_SIZE)
-    const translatedBatch = await Promise.all(batch.map(s => baiduTranslate(s, to)))
+    const translatedBatch = await Promise.all(batch.map(s => baiduTranslate(s, to, file)))
     results.push(...translatedBatch)
     await new Promise(r => setTimeout(r, THROTTLE_MS))
   }
@@ -131,7 +133,7 @@ function rebuildObject(entries) {
 }
 
 // ===== 主函数 =====
-async function syncLocales() {
+export async function syncLocales() {
   const sourceDir = path.join(LOCALES_DIR, SOURCE_LANG)
   if (!fs.existsSync(sourceDir)) {
     console.error(`源语言目录不存在: ${sourceDir}`)
@@ -154,6 +156,9 @@ async function syncLocales() {
       let targetJson = {}
       if (fs.existsSync(targetFile))
         targetJson = JSON.parse(fs.readFileSync(targetFile, 'utf8'))
+
+      console.log('file', file)
+
       const flatTarget = flattenStrings(targetJson)
 
       // 筛选新增或修改的 key
@@ -167,7 +172,7 @@ async function syncLocales() {
 
       console.log(`翻译 ${lang}/${file} 共 ${toTranslateEntries.length} 条`)
       const texts = toTranslateEntries.map(f => f.value)
-      const translatedTexts = await translateBatch(texts, lang)
+      const translatedTexts = await translateBatch(texts, lang, file)
 
       // 合并翻译结果
       const mergedEntries = flatTarget.map(f => ({ ...f })) // 保留原有
@@ -184,4 +189,4 @@ async function syncLocales() {
   console.log('\n🎉 中文 → 其他语言 JSON 增量翻译完成！')
 }
 
-syncLocales()
+// syncLocales()
