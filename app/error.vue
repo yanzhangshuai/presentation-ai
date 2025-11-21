@@ -4,6 +4,7 @@ import type { NuxtError } from '#app'
 const props = defineProps({
   error: Object as () => NuxtError,
 })
+// const a:LoadFontFunction = ''
 </script>
 
 <template>

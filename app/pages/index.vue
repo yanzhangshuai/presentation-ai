@@ -1,15 +1,8 @@
 <script lang="ts" setup>
-const { locale, locales } = useI18n()
-const switchLocalePath = useSwitchLocalePath()
-
-const availableLocales = computed(() => {
-  return locales.value.filter(i => i.code !== locale.value)
-})
 </script>
 
 <template>
-  <p>{{ $t('home.title') }}</p>
-  <NuxtLink v-for="locale in availableLocales" :key="locale.code" :to="switchLocalePath(locale.code)">
-    {{ locale.name }}
-  </NuxtLink>
+  <h1 class="text-3xl text-primary-600">
+    {{ $t('home.title') }}
+  </h1>
 </template>
