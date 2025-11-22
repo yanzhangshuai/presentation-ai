@@ -11,7 +11,9 @@
     "lint": "eslint --ext .js,.ts,.vue .",
     "i18n": "node scripts/i18n.js",
     "db:push": "prisma db push --config ./db/prisma.config.ts",
-    "db:studio": "prisma studio"
+    "pm2:start": "dotenv -e .env.production -- pm2 start ecosystem.config.cjs --env production",
+    "pm2:stop": "pm2 stop presentation-ai",
+    "pm2:del": "pm2 delete presentation-ai"
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.11.1",
@@ -46,6 +48,7 @@
     "@vitalets/google-translate-api": "^9.2.1",
     "@vueuse/nuxt": "^14.0.0",
     "dotenv": "^17.2.3",
+    "dotenv-cli": "^11.0.0",
     "eslint": "^9.39.1",
     "magicast": "0.3.5",
     "prisma": "^7.0.0",
