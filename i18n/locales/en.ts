@@ -1,9 +1,11 @@
 import auth from './en/auth.json'
 import common from './en/common.json'
-import home from './en/home.json'
+import dashboard from './en/dashboard.json'
+import presentation from './en/presentation.json'
 
 export default {
   auth: auth,
   common: common,
-  home: home
+  dashboard: dashboard,
+  presentation: presentation
 }

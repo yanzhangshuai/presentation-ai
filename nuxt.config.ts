@@ -19,7 +19,7 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
-    // 私有配置，只在服务器端可用
+    // auth 相关配置
     authSecret: process.env.AUTH_SECRET,
 
     googleClientId    : process.env.GOOGLE_CLIENT_ID,
@@ -27,9 +27,12 @@ export default defineNuxtConfig({
 
     githubClientId    : process.env.GITHUB_CLIENT_ID,
     githubClientSecret: process.env.GITHUB_CLIENT_SECRET,
-    // 公共配置，客户端和服务器端都可用
-    public            : {
-      // 可以在这里添加需要在客户端访问的配置
+
+    // model 相关 API Key
+    openaiApiKey  : process.env.OPENAI_API_KEY,
+    deepseekApiKey: process.env.DEEPSEEK_API_KEY,
+
+    public: {
     },
   },
 

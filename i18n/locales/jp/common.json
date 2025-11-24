@@ -5,5 +5,7 @@
   "close": "閉じる",
   "copy": "コピー",
   "changeTheme": "テーマ変更",
-  "changeLanguage": "言語を変更する"
+  "changeLanguage": "言語を変更する",
+  "language": "言語",
+  "title": "AIで素晴らしいプレゼンテーションを作成する"
 }

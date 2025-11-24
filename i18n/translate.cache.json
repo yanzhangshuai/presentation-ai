@@ -58,5 +58,215 @@
     "zh": "更改语言",
     "zh-hk": "更改語言",
     "jp": "言語を変更する"
+  },
+  "common_Language": {
+    "zh": "语言",
+    "zh-hk": "語言",
+    "jp": "言語"
+  },
+  "home_Create stunning presentationsin seconds with AI": {
+    "zh": "使用AI在几秒钟内创建令人惊叹的演示文稿",
+    "zh-hk": "使用AI在幾秒鐘內創建令人驚歎的演示文稿",
+    "jp": "AIで数秒で素晴らしいプレゼンテーションを作成する"
+  },
+  "home_Describe your topic or paste your content here. Our AI will structure it into a compelling presentation.": {
+    "zh": "请在此处描述您的主题或粘贴您的内容。我们的人工智能将把它组织成一个引人注目的演示文稿。",
+    "zh-hk": "請在此處描述您的主題或粘貼您的內容。 我們的人工智慧將把它組織成一個引人注目的演示文稿。",
+    "jp": "あなたのトピックを記述するか、ここにコンテンツをペーストします。私たちのAIはそれを魅力的なプレゼンテーションに構築します。"
+  },
+  "home_What would you like to present about?": {
+    "zh": "你想介绍什么？",
+    "zh-hk": "你想介紹什麼？",
+    "jp": "何を紹介したいのでしょうか。"
+  },
+  "home_web Search": {
+    "zh": "网络搜索",
+    "zh-hk": "網絡蒐索",
+    "jp": "Web 検索"
+  },
+  "home_Transform your ideas into professional presentations instantly. Just describe your topic and let AI do the rest.": {
+    "zh": "立即将您的想法转化为专业演示文稿。只需描述你的主题，让AI来完成剩下的工作。",
+    "zh-hk": "立即將您的想法轉化為專業演示文稿。 只需描述你的主題，讓AI來完成剩下的工作。",
+    "jp": "あなたのアイデアを即座にプロフェッショナルなプレゼンテーションに変える。テーマを説明し、残りをAIにしてください。"
+  },
+  "home_Page Style": {
+    "zh": "页面样式",
+    "zh-hk": "頁面樣式",
+    "jp": "ページスタイル"
+  },
+  "home_Language": {
+    "zh": "语言",
+    "zh-hk": "語言",
+    "jp": "言語"
+  },
+  "home_Text Model": {
+    "zh": "文本模型",
+    "zh-hk": "文字模型",
+    "jp": "テキストモデル"
+  },
+  "home_Number of Slides": {
+    "zh": "幻灯片数量",
+    "zh-hk": "幻燈片數量",
+    "jp": "スライド数"
+  },
+  "home_Select Model": {
+    "zh": "选择模型",
+    "zh-hk": "選擇模型",
+    "jp": "モデルを選択"
+  },
+  "home_ Tall": {
+    "zh": "高",
+    "zh-hk": "高",
+    "jp": "高さ"
+  },
+  "home_ Traditional": {
+    "zh": "传统",
+    "zh-hk": "傳統",
+    "jp": "伝統的な"
+  },
+  "home_ Default ": {
+    "zh": "默认",
+    "zh-hk": "默認",
+    "jp": "デフォルト"
+  },
+  "home_{number} slides": {
+    "zh": "{number} 张幻灯片",
+    "zh-hk": "{number} 張幻燈片",
+    "jp": "{number} スライド"
+  },
+  "dashboard_What would you like to present about?": {
+    "zh": "你想介绍什么？",
+    "zh-hk": "你想介紹什麼？",
+    "jp": "何を紹介したいのでしょうか。"
+  },
+  "dashboard_Describe your topic or paste your content here. Our AI will structure it into a compelling presentation.": {
+    "zh": "请在此处描述您的主题或粘贴您的内容。我们的人工智能将把它组织成一个引人注目的演示文稿。",
+    "zh-hk": "請在此處描述您的主題或粘貼您的內容。 我們的人工智慧將把它組織成一個引人注目的演示文稿。",
+    "jp": "あなたのトピックを記述するか、ここにコンテンツをペーストします。私たちのAIはそれを魅力的なプレゼンテーションに構築します。"
+  },
+  "dashboard_Transform your ideas into professional presentations instantly. Just describe your topic and let AI do the rest.": {
+    "zh": "立即将您的想法转化为专业演示文稿。只需描述你的主题，让AI来完成剩下的工作。",
+    "zh-hk": "立即將您的想法轉化為專業演示文稿。 只需描述你的主題，讓AI來完成剩下的工作。",
+    "jp": "あなたのアイデアを即座にプロフェッショナルなプレゼンテーションに変える。テーマを説明し、残りをAIにしてください。"
+  },
+  "dashboard_web Search": {
+    "zh": "网络搜索",
+    "zh-hk": "網絡蒐索",
+    "jp": "Web 検索"
+  },
+  "dashboard_Create stunning presentationsin seconds with AI": {
+    "zh": "使用AI在几秒钟内创建令人惊叹的演示文稿",
+    "zh-hk": "使用AI在幾秒鐘內創建令人驚歎的演示文稿",
+    "jp": "AIで数秒で素晴らしいプレゼンテーションを作成する"
+  },
+  "dashboard_Text Model": {
+    "zh": "文本模型",
+    "zh-hk": "文字模型",
+    "jp": "テキストモデル"
+  },
+  "dashboard_Select Model": {
+    "zh": "选择模型",
+    "zh-hk": "選擇模型",
+    "jp": "モデルを選択"
+  },
+  "dashboard_Number of Slides": {
+    "zh": "幻灯片数量",
+    "zh-hk": "幻燈片數量",
+    "jp": "スライド数"
+  },
+  "dashboard_Page Style": {
+    "zh": "页面样式",
+    "zh-hk": "頁面樣式",
+    "jp": "ページスタイル"
+  },
+  "dashboard_Language": {
+    "zh": "语言",
+    "zh-hk": "語言",
+    "jp": "言語"
+  },
+  "dashboard_ Default ": {
+    "zh": "默认",
+    "zh-hk": "默認",
+    "jp": "デフォルト"
+  },
+  "dashboard_ Tall": {
+    "zh": "高",
+    "zh-hk": "高",
+    "jp": "高さ"
+  },
+  "dashboard_ Traditional": {
+    "zh": "传统",
+    "zh-hk": "傳統",
+    "jp": "伝統的な"
+  },
+  "dashboard_{number} slides": {
+    "zh": "｛数量｝张幻灯片",
+    "zh-hk": "｛數量｝張幻燈片",
+    "jp": " {数} スライド"
+  },
+  "dashboard_Generate Presentation": {
+    "zh": "生成演示文稿",
+    "zh-hk": "生成演示文稿",
+    "jp": "プレゼンテーションを生成"
+  },
+  "common_Create Stunning Presentations with AI": {
+    "zh": "使用AI创建令人惊叹的演示文稿",
+    "zh-hk": "使用AI創建令人驚歎的演示文稿",
+    "jp": "AIで素晴らしいプレゼンテーションを作成する"
+  },
+  "dashboard_Press {key1} + {key2} to generate": {
+    "zh": "按｛key1｝+｛key2｝生成",
+    "zh-hk": "按｛key1｝+｛key2｝生成",
+    "jp": " {key1} + {key2} を押して生成します"
+  },
+  "dashboard_Shuffle": {
+    "zh": "洗牌",
+    "zh-hk": "洗牌",
+    "jp": "シャフル"
+  },
+  "dashboard_Try these examples": {
+    "zh": "试试这些例子",
+    "zh-hk": "試試這些例子",
+    "jp": "これらの例を試してみてください"
+  },
+  "dashboard___PH_0__ slides": {
+    "zh": "__PH_0__幻灯片",
+    "zh-hk": "__PH_0__幻燈片",
+    "jp": " __PH_0__スライド"
+  },
+  "dashboard_Press __PH_0__ + __PH_1__ to generate": {
+    "zh": "按__PH_0__+__PH_1__生成",
+    "zh-hk": "按__PH_0__+__PH_1__生成",
+    "jp": "生成するには __PH_0__ + __PH_1__ を押します"
+  },
+  "dashboard___SP_START__PH_0__SP_END__ slides": {
+    "zh": "__SP_START__PH_0__SP_END__幻灯片",
+    "zh-hk": "__SP_START__PH_0__SP_END__幻燈片",
+    "jp": " __SP_START__PH_0__SP_END__スライド"
+  },
+  "dashboard_Press __SP_START__PH_0__SP_END__ + __SP_START__PH_1__SP_END__ to generate": {
+    "zh": "按__SP_START__PH_0__SP_END__+__SP_START__PH_1__SP_END_生成",
+    "zh-hk": "按__SP_START__PH_0__SP_END__+__SP_START__PH_1__SP_END_生成",
+    "jp": "生成するには __SP_START__PH_0__SP_END__ + __SP_START__PH_1__SP_END__ を押します"
+  },
+  "dashboard_​__PH_0__​ slides": {
+    "zh": "​__ph0__​ 幻灯片",
+    "zh-hk": "​__ ph0__ ​  幻燈片",
+    "jp": "​__PH_0__​ スライド"
+  },
+  "dashboard_Press ​__PH_0__​ + ​__PH_1__​ to generate": {
+    "zh": "按​__ph0__​ + ​__PH_1__​ 生成",
+    "zh-hk": "按 ​__ ph0__ ​ + ​__ PH_1__ ​  生成",
+    "jp": "プレス​__PH_0__​ + ​__PH_1__​ 生成する"
+  },
+  "dashboard_⟦0⟧ slides": {
+    "zh": "⟦0⟧幻灯片",
+    "zh-hk": "⟦0⟧幻燈片",
+    "jp": "⟦0⟧スライド"
+  },
+  "dashboard_Press ⟦0⟧ + ⟦1⟧ to generate": {
+    "zh": "按0+1生成",
+    "zh-hk": "按0+1生成",
+    "jp": " ⟦0⟧ + ⟦1⟧を押して生成します"
   }
 }

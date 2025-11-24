@@ -1,0 +1,20 @@
+{
+  "title": "Create stunning presentationsin seconds with AI",
+  "subtitle": "Transform your ideas into professional presentations instantly. Just describe your topic and let AI do the rest.",
+  "presendAbout": "What would you like to present about?",
+  "inputPlaceholder": "Describe your topic or paste your content here. Our AI will structure it into a compelling presentation.",
+  "webSearch": "web Search",
+  "textModel": "Text Model",
+  "numberOfCards": "Number of Slides",
+  "Language": "Language",
+  "pageStyle": "Page Style",
+  "selectModel": "Select Model",
+  "slides": "{number} slides",
+  "pageStyleDef": " Default ",
+  "pageStyleTraditional": " Traditional",
+  "pageStyleTall": " Tall",
+  "generate": "Generate Presentation",
+  "keyGenerateTip": "Press {key1} + {key2} to generate",
+  "examples": "Try these examples",
+  "shuffle": "Shuffle"
+}

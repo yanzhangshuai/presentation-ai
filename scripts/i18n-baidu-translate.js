@@ -19,7 +19,7 @@ const THROTTLE_MS = 200    // 节流：每次批量翻译后等待毫秒数
 const LANG_MAP = {
   'en'   : 'en',
   'zh'   : 'zh',
-  'zh-hk': 'cht', // 香港/繁体
+  'zh-hk': 'cht',
   'jp'   : 'jp',
   'ko'   : 'kor',
   'fr'   : 'fra',
@@ -31,15 +31,16 @@ const LANG_MAP = {
   'ar'   : 'ara',
 }
 
-// ===== 缓存操作 =====
+// ===== 缓存处理 =====
 let cache = {}
 if (fs.existsSync(CACHE_FILE))
   cache = JSON.parse(fs.readFileSync(CACHE_FILE, 'utf8'))
+
 function saveCache() {
   fs.writeFileSync(CACHE_FILE, JSON.stringify(cache, null, 2), 'utf8')
 }
 
-// ===== 读取 Nuxt i18n 配置 locales =====
+// ===== 读取 Nuxt i18n 本地化配置 =====
 function getTargetLangs() {
   const nuxtConfig = fs.readFileSync('./nuxt.config.ts', 'utf8')
   const match = nuxtConfig.match(/locales\s*:\s*\[([\s\S]*?)\]/)
@@ -50,9 +51,31 @@ function getTargetLangs() {
   const codes = [...localesStr.matchAll(/code\s*:\s*['"]([\w-]+)['"]/g)].map(m => m[1])
   return codes.filter(c => c !== SOURCE_LANG)
 }
-const TARGET_LANGS = getTargetLangs()
 
+const TARGET_LANGS = getTargetLangs()
 console.log('目标语言:', TARGET_LANGS.join(', '))
+
+// ======= 占位符保护器（超级版） =======
+const PLACEHOLDER_REGEX
+  = /\{[^}]+\}|\$\{[^}]+\}|%(\d+\$)?[sd]|<[^>]+>/g
+
+function protectPlaceholders(text) {
+  const placeholders = []
+  const protectedText = text.replace(PLACEHOLDER_REGEX, (match) => {
+    const token = `__PH_${placeholders.length}__`
+    placeholders.push(match)
+    return token
+  })
+  return { protectedText, placeholders }
+}
+
+function restorePlaceholders(text, placeholders) {
+  let result = text
+  placeholders.forEach((ph, i) => {
+    result = result.replace(`__PH_${i}__`, ph)
+  })
+  return result
+}
 
 // ===== 百度翻译 API =====
 async function baiduTranslate(q, to, file) {
@@ -72,6 +95,7 @@ async function baiduTranslate(q, to, file) {
     if (res.data.error_code) {
       throw new Error(`API错误 ${res.data.error_code}: ${res.data.error_msg}`)
     }
+
     const translated = res.data.trans_result?.[0]?.dst || q
 
     if (!cache[cacheKey])
@@ -86,19 +110,36 @@ async function baiduTranslate(q, to, file) {
   }
 }
 
-// ===== 批量翻译 =====
+// ===== 批量翻译（含占位符保护） =====
 async function translateBatch(strings, to, file) {
   const results = []
+
   for (let i = 0; i < strings.length; i += BATCH_SIZE) {
     const batch = strings.slice(i, i + BATCH_SIZE)
-    const translatedBatch = await Promise.all(batch.map(s => baiduTranslate(s, to, file)))
-    results.push(...translatedBatch)
+
+    // 翻译前：保护占位符
+    const protectedBatch = batch.map(s => protectPlaceholders(s))
+
+    // 翻译
+    const translatedBatch = await Promise.all(
+      protectedBatch.map(({ protectedText }) =>
+        baiduTranslate(protectedText, to, file),
+      ),
+    )
+
+    // 翻译后：恢复占位符
+    const restoredBatch = translatedBatch.map((t, idx) =>
+      restorePlaceholders(t, protectedBatch[idx].placeholders),
+    )
+
+    results.push(...restoredBatch)
     await new Promise(r => setTimeout(r, THROTTLE_MS))
   }
+
   return results
 }
 
-// ===== 递归获取所有字符串 key =====
+// ===== 展平 JSON =====
 function flattenStrings(obj, prefix = '') {
   let entries = []
   for (const key in obj) {
@@ -112,7 +153,7 @@ function flattenStrings(obj, prefix = '') {
   return entries
 }
 
-// ===== 根据 key 重建对象 =====
+// ===== 重建 JSON =====
 function rebuildObject(entries) {
   const obj = {}
   for (const { key, value } of entries) {
@@ -132,7 +173,7 @@ function rebuildObject(entries) {
   return obj
 }
 
-// ===== 主函数 =====
+// ===== 主流程 =====
 export async function syncLocales() {
   const sourceDir = path.join(LOCALES_DIR, SOURCE_LANG)
   if (!fs.existsSync(sourceDir)) {
@@ -142,6 +183,7 @@ export async function syncLocales() {
 
   const files = fs.readdirSync(sourceDir)
   console.log(`找到 ${files.length} 个源语言文件，开始翻译...`)
+
   for (const file of files) {
     const srcFile = path.join(sourceDir, file)
     const srcJson = JSON.parse(fs.readFileSync(srcFile, 'utf8'))
@@ -158,10 +200,9 @@ export async function syncLocales() {
         targetJson = JSON.parse(fs.readFileSync(targetFile, 'utf8'))
 
       console.log('file', file)
-
       const flatTarget = flattenStrings(targetJson)
 
-      // 筛选新增或修改的 key
+      // 找出新增或被修改的 key
       const toTranslateEntries = flatSrc.filter((f) => {
         const existing = flatTarget.find(t => t.key === f.key)
         return !existing || existing.value !== f.value
@@ -171,11 +212,12 @@ export async function syncLocales() {
         continue
 
       console.log(`翻译 ${lang}/${file} 共 ${toTranslateEntries.length} 条`)
+
       const texts = toTranslateEntries.map(f => f.value)
       const translatedTexts = await translateBatch(texts, lang, file)
 
-      // 合并翻译结果
-      const mergedEntries = flatTarget.map(f => ({ ...f })) // 保留原有
+      // 合并
+      const mergedEntries = flatTarget.map(f => ({ ...f }))
       toTranslateEntries.forEach((f, idx) => {
         mergedEntries.push({ key: f.key, value: translatedTexts[idx] })
       })
@@ -186,7 +228,7 @@ export async function syncLocales() {
     }
   }
 
-  console.log('\n🎉 中文 → 其他语言 JSON 增量翻译完成！')
+  console.log('\n🎉 语言包增量翻译完成！')
 }
 
 // syncLocales()

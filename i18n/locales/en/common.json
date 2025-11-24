@@ -1,9 +1,11 @@
 {
   "logo": "Presentation AI",
+  "title": "Create Stunning Presentations with AI",
   "ok": "Confirm",
   "cancel": "Cancel",
   "close": "Close",
   "copy": "Copy",
+  "language": "Language",
   "changeTheme": "Change Theme",
   "changeLanguage": "Change Languare"
 }

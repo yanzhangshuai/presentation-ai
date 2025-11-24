@@ -1,0 +1,20 @@
+{
+  "title": "使用AI在几秒钟内创建令人惊叹的演示文稿",
+  "subtitle": "立即将您的想法转化为专业演示文稿。只需描述你的主题，让AI来完成剩下的工作。",
+  "presendAbout": "你想介绍什么？",
+  "webSearch": "网络搜索",
+  "textModel": "文本模型",
+  "numberOfCards": "幻灯片数量",
+  "Language": "语言",
+  "pageStyle": "页面样式",
+  "selectModel": "选择模型",
+  "slides": "{number}幻灯片",
+  "pageStyleDef": "默认",
+  "pageStyleTraditional": "传统",
+  "pageStyleTall": "高",
+  "inputPlaceholder": "请在此处描述您的主题或粘贴您的内容。我们的人工智能将把它组织成一个引人注目的演示文稿。",
+  "generate": "生成演示文稿",
+  "keyGenerateTip": "按{key1}+{key2}生成",
+  "examples": "试试这些例子",
+  "shuffle": "洗牌"
+}

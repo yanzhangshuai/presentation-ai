@@ -1,7 +1,7 @@
 import { NuxtAuthHandler } from '#auth'
 import { db } from '~~/server/db/index'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-import GoogleProvider from '@auth/core/providers/google'
+// import GoogleProvider from '@auth/core/providers/google'
 import GitHubProvider from '@auth/core/providers/github'
 
 // 扩展 NextAuth 的类型

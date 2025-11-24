@@ -1,0 +1,20 @@
+{
+  "title": "AIで数秒で素晴らしいプレゼンテーションを作成する",
+  "subtitle": "あなたのアイデアを即座にプロフェッショナルなプレゼンテーションに変える。テーマを説明し、残りをAIにしてください。",
+  "presendAbout": "何を紹介したいのでしょうか。",
+  "webSearch": "Web 検索",
+  "textModel": "テキストモデル",
+  "numberOfCards": "スライド数",
+  "Language": "言語",
+  "pageStyle": "ページスタイル",
+  "selectModel": "モデルを選択",
+  "slides": " {number}スライド",
+  "pageStyleDef": "デフォルト",
+  "pageStyleTraditional": "伝統的な",
+  "pageStyleTall": "高さ",
+  "inputPlaceholder": "あなたのトピックを記述するか、ここにコンテンツをペーストします。私たちのAIはそれを魅力的なプレゼンテーションに構築します。",
+  "generate": "プレゼンテーションを生成",
+  "keyGenerateTip": "生成するには {key1} + {key2} を押します",
+  "examples": "これらの例を試してみてください",
+  "shuffle": "シャフル"
+}

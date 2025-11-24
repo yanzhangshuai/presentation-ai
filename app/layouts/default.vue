@@ -57,7 +57,7 @@ const items = ref([
 
     <template #right>
       <!-- 未登录 -->
-      <USpace v-if="status === 'unauthenticated'" class="i-flex-center">
+      <div v-if="status === 'unauthenticated'" class="i-flex-center space-x-2">
         <!-- 主题切换 -->
         <UButton variant="ghost" color="neutral" class="cursor-pointer relative" @click="toggleTheme">
           <UIcon name="i-lucide-sun" class="text-2xl scale-100  dark:scale-0" />
@@ -72,7 +72,7 @@ const items = ref([
           <UIcon name="i-lucide-github" class="text-base" />
           {{ $t('auth.loginGithub') }}
         </UButton>
-      </USpace>
+      </div>
 
       <!-- 已登录 -->
       <UserAvatar v-else />

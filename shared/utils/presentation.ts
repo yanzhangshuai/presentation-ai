@@ -1,0 +1,15 @@
+export const createLanguageMap = {
+  'en'   : 'English (US)',
+  'pt'   : 'Portuguese',
+  'es'   : 'Spanish',
+  'fr'   : 'French',
+  'de'   : 'German',
+  'it'   : 'Italian',
+  'ja'   : 'Japanese',
+  'ko'   : 'Korean',
+  'zh'   : '简体中文',
+  'zh-TW': '繁體中文',
+  'ru'   : 'Russian',
+  'hi'   : 'Hindi',
+  'ar'   : 'Arabic',
+}

@@ -250,9 +250,25 @@
     @apply flex justify-center;
   }
 
+	.flex-between {
+		@apply flex justify-between;
+	}
+
+	.flex-between-center {
+		@apply flex justify-between items-center;
+	}
+
   .flex-col-center {
     @apply flex flex-col items-center justify-center;
   }
+
+	.flex-col-between {
+		@apply flex flex-col justify-between;
+	}
+
+	.flex-col-between-center {
+		@apply flex flex-col justify-between items-center;
+	}
 
   .i-flex-center {
     @apply inline-flex items-center justify-center;

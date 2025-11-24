@@ -16,6 +16,9 @@
     "pm2:del": "pm2 delete presentation-ai"
   },
   "dependencies": {
+    "@ai-sdk/deepseek": "^1.0.29",
+    "@ai-sdk/openai": "^2.0.71",
+    "@ai-sdk/vue": "^2.0.100",
     "@auth/prisma-adapter": "^2.11.1",
     "@casl/ability": "^6.7.3",
     "@nuxt/ui": "^4.2.1",
@@ -25,19 +28,23 @@
     "@sidebase/nuxt-auth": "^1.1.0",
     "@tailwindcss/typography": "^0.5.19",
     "@vueuse/core": "^14.0.0",
+    "ai": "^5.0.100",
     "axios": "^1.13.2",
     "clsx": "^2.1.1",
     "crypto": "^1.0.1",
     "less": "^4.4.2",
+    "lodash-es": "^4.17.21",
     "next-auth": "4.21.1",
     "nuxt": "^4.2.1",
+    "ollama-ai-provider": "^1.2.0",
     "pg": "^8.16.3",
     "tailwind-merge": "^3.4.0",
     "tailwind-scrollbar": "^4.0.2",
     "tailwind-scrollbar-hide": "^4.0.0",
     "tailwindcss": "^4.1.17",
     "tailwindcss-animate": "^1.0.7",
-    "vue": "^3.5.24"
+    "vue": "^3.5.24",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@antfu/eslint-config": "^6.2.0",
@@ -45,6 +52,7 @@
     "@nuxt/devtools": "^3.1.0",
     "@pinia/nuxt": "^0.11.3",
     "@tailwindcss/vite": "^4.1.17",
+    "@types/lodash-es": "^4.17.12",
     "@types/node": "^24.10.1",
     "@vitalets/google-translate-api": "^9.2.1",
     "@vueuse/nuxt": "^14.0.0",

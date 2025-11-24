@@ -1,9 +1,11 @@
 import auth from './zh/auth.json'
 import common from './zh/common.json'
-import home from './zh/home.json'
+import dashboard from './zh/dashboard.json'
+import presentation from './zh/presentation.json'
 
 export default {
   auth: auth,
   common: common,
-  home: home
+  dashboard: dashboard,
+  presentation: presentation
 }
