@@ -3,7 +3,7 @@ const emit = defineEmits<{
   (e: 'generate'): void
 }>()
 
-const createStore = usePresentationCreate()
+const presStore = usePresStore()
 
 const inputKeyTips = $t('dashboard.keyGenerateTip', {
   key1: '<kbd class="px-1.5 py-0.5 rounded bg-muted text-muted-foreground font-mono text-[10px]">Ctrl</kbd>',
@@ -14,7 +14,7 @@ const inputKeyTips = $t('dashboard.keyGenerateTip', {
 <template>
   <div class="relative">
     <UTextarea
-      v-model="createStore.prompt"
+      v-model="presStore.prompt"
       :rows="8"
       autoresize
       class="w-full"
@@ -22,13 +22,13 @@ const inputKeyTips = $t('dashboard.keyGenerateTip', {
       @keydown.ctrl.enter="$emit('generate')"
     />
 
-    <div class="absolute flex-between-center bottom-3 inset-x-3 z-10">
-      <p class="text-xs text-muted-foreground" v-html="inputKeyTips" />
+    <div class="absolute flex-between items-end bottom-3 inset-x-3 z-10">
+      <p class="text-xs text-muted-foreground text-center" v-html="inputKeyTips" />
 
       <!-- 网络搜索提示 -->
       <div class="inline-flex items-center gap-2.5 rounded-full bg-background/95 backdrop-blur-sm px-3.5 py-2 shadow-sm border border-border transition-all hover:shadow-md">
         <div class="flex items-center gap-2">
-          <UIcon name="i-lucide-globe" class="text-base transition-colors" :class="createStore.outline ? 'text-primary' : 'text-gray-300 dark:text-gray-600'" />
+          <UIcon name="i-lucide-globe" class="text-base transition-colors" :class="presStore.outline ? 'text-primary' : 'text-gray-300 dark:text-gray-600'" />
           <label
             html-for="web-search-toggle"
             class="text-xs font-medium leading-none cursor-pointer select-none text-foreground"
@@ -36,7 +36,7 @@ const inputKeyTips = $t('dashboard.keyGenerateTip', {
             {{ $t('dashboard.webSearch') }}
           </label>
 
-          <USwitch id="web-search-toggle" v-model="createStore.outline" class="cursor-pointer" />
+          <USwitch id="web-search-toggle" v-model="presStore.outline" class="cursor-pointer" />
         </div>
       </div>
     </div>

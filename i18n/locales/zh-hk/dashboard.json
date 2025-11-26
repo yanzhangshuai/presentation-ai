@@ -8,13 +8,19 @@
   "Language": "語言",
   "pageStyle": "頁面樣式",
   "selectModel": "選擇模型",
-  "slides": "{number} 幻燈片",
+  "slides": "{number}幻燈片",
   "pageStyleDef": "默認",
   "pageStyleTraditional": "傳統",
   "pageStyleTall": "高",
   "inputPlaceholder": "請在此處描述您的主題或粘貼您的內容。 我們的人工智慧將把它組織成一個引人注目的演示文稿。",
   "generate": "生成演示文稿",
-  "keyGenerateTip": "按{key1} + {key2}生成",
+  "keyGenerateTip": "按{key1}+{key2}生成",
   "examples": "試試這些例子",
-  "shuffle": "洗牌"
+  "shuffle": "洗牌",
+  "recent": {
+    "title": "最近的演示文稿",
+    "viewAll": "查看全部",
+    "deleteConfirmTitle": "你確定嗎？",
+    "deleteConfirmContent": "此操作無法撤銷。 這將永久删除您的演示文稿。"
+  }
 }

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-const { toggleTheme } = useTheme()
+const { toggleTheme } = useAppTheme()
 
 const { signIn, status } = useAuth()
 

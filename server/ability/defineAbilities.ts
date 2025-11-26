@@ -1,12 +1,13 @@
 import type { User } from '@prisma/client'
+import type { PureAbility } from '@casl/ability'
 
-import { AbilityBuilder, PureAbility } from '@casl/ability'
+import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 
 export type Actions = 'manage' | 'read' | 'update' | 'delete'
 export type Subjects = 'all' | 'User' | 'BaseDocument' | 'CustomTheme' | 'GeneratedImage'
 
 export default function defineAbilitiesFor(user: User | null) {
-  const { can, build } = new AbilityBuilder<PureAbility<[Actions, Subjects]>>(PureAbility)
+  const { can, build } = new AbilityBuilder(createMongoAbility)
 
   if (!user) {
     can('read', 'BaseDocument')

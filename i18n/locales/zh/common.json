@@ -7,5 +7,9 @@
   "changeTheme": "更改主题",
   "changeLanguage": "更改语言",
   "language": "语言",
-  "title": "使用AI创建令人惊叹的演示文稿"
+  "title": "使用AI创建令人惊叹的演示文稿",
+  "rename": "重命名",
+  "delete": "删除",
+  "deleteSuccess": "删除成功",
+  "updateSuccess": "更新成功"
 }

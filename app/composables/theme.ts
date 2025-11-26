@@ -1,4 +1,4 @@
-export const useTheme = createGlobalState(() => {
+export const useAppTheme = createGlobalState(() => {
   const theme = useLocalStorage<'light' | 'dark'>('presentation-ai_theme', 'light')
 
   const isDark = computed(() => theme.value === 'dark')

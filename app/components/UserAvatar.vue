@@ -3,7 +3,7 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 const { t } = useI18n()
 const { signOut, data } = useAuth()
-const { isDark, toggleTheme } = useTheme()
+const { isDark, toggleTheme } = useAppTheme()
 const { locale, locales, setLocale } = useI18n()
 
 const user = computed(() => toValue(data)?.user)

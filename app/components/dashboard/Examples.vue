@@ -148,7 +148,7 @@ const EXAMPLE_PROMPTS = [
   },
 ]
 
-const createStore = usePresentationCreate()
+const presStore = usePresStore()
 
 const examples = ref(EXAMPLE_PROMPTS.slice(0, 6))
 
@@ -157,10 +157,10 @@ const onShuffle = () => {
 }
 
 const onSetting = (e: typeof EXAMPLE_PROMPTS[number]) => {
-  createStore.prompt = e.title
-  createStore.numSlides = e.slides
-  createStore.language = e.lang as keyof typeof createLanguageMap
-  createStore.pageStyle = e.style
+  presStore.prompt = e.title
+  presStore.numSlides = e.slides
+  presStore.language = e.lang as keyof typeof createLanguageMap
+  presStore.pageStyle = e.style
 }
 </script>
 

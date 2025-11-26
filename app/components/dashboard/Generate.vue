@@ -1,65 +1,58 @@
 <script setup lang="ts">
-const props = defineProps({
+const isGenerating = ref(false)
 
-})
-
-const isGeneratingOutline = ref(false)
-
-const createStore = usePresentationCreate()
+const presStore = usePresStore()
+const localeRoute = useLocaleRoute()
+const router = useRouter()
 
 const onGenerate = async () => {
-  isGeneratingOutline.value = true
+  isGenerating.value = true
 
   try {
-    await $fetch('/api/presentation/create', {
+    const res = await $fetch('/api/pres/create', {
       method: 'POST',
       body  : {
-        title   : createStore.prompt.substring(0, 50) || 'Untitled Presentation',
-        language: createStore.language,
+        title   : presStore.prompt.substring(0, 50) || 'Untitled Presentation',
+        language: presStore.language,
       },
     })
-      .then((res) => {
-        console.log('Presentation created:', res)
-      })
-      .catch((error) => {
-        console.error('Error creating presentation:', error)
-      })
+
+    router.push(localeRoute(`/pres/generate/${res.id}`))
   }
   catch (error) {
     console.error('Error generating outline:', error)
   }
   finally {
-    isGeneratingOutline.value = false
+    isGenerating.value = false
   }
 }
 </script>
 
 <template>
-  <div class="space-y-8">
-    <!-- input -->
-    <div class="space-y-2">
-      <div class="flex-between-center">
-        <h3>{{ $t('dashboard.presendAbout') }}</h3>
-      </div>
-
-      <!-- input -->
-      <DashboardInput @generate="onGenerate" />
+  <div class="space-y-2">
+    <div class="flex-between-center">
+      <h3>{{ $t('dashboard.presendAbout') }}</h3>
     </div>
 
-    <DashboardControls />
+    <!--  -->
+    <div class="space-y-8">
+      <DashboardInput @generate="onGenerate" />
 
-    <UButton
-      size="xl"
-      class="flex ml-auto cursor-pointer"
-      :loading="isGeneratingOutline"
-      :disabled="!createStore.prompt || isGeneratingOutline"
-      @click="onGenerate"
-    >
-      <UIcon name="i-lucide-rocket" />
-      {{ $t('dashboard.generate') }}
-    </UButton>
+      <DashboardControls />
 
-    <DashboardExamples />
+      <UButton
+        size="xl"
+        class="flex ml-auto cursor-pointer"
+        :loading="isGenerating"
+        :disabled="!presStore.prompt || isGenerating"
+        @click="onGenerate"
+      >
+        <UIcon name="i-lucide-rocket" />
+        {{ $t('dashboard.generate') }}
+      </UButton>
+
+      <DashboardExamples />
+    </div>
   </div>
 </template>
 

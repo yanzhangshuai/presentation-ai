@@ -1,3 +1,5 @@
+import type { User, UserRole } from '@prisma/client'
+
 import { NuxtAuthHandler } from '#auth'
 import { db } from '~~/server/db/index'
 import { PrismaAdapter } from '@auth/prisma-adapter'
@@ -7,23 +9,11 @@ import GitHubProvider from '@auth/core/providers/github'
 // 扩展 NextAuth 的类型
 declare module 'next-auth' {
   interface Session {
-    user: {
-      id       : string
-      hasAccess: boolean
-      location?: string | null
-      role     : string
-      isAdmin  : boolean
-      name?    : string | null
-      email?   : string | null
-      image?   : string | null
+    user: User & {
+      isAdmin: boolean
     }
   }
 
-  interface User {
-    hasAccess: boolean
-    location?: string | null
-    role     : string
-  }
 }
 
 declare module 'next-auth/jwt' {
@@ -127,9 +117,12 @@ export default NuxtAuthHandler({
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id
+        session.user.email = token.email as string | null
+        session.user.name = token.name as string | null
+        session.user.image = token.picture as string | null
         session.user.hasAccess = token.hasAccess
-        session.user.location = token.location
-        session.user.role = token.role
+        session.user.location = token.location as string | null
+        session.user.role = token.role as UserRole
         session.user.isAdmin = token.isAdmin
       }
       return session

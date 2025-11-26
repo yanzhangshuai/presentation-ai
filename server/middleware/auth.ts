@@ -17,7 +17,7 @@ export default eventHandler(async (event) => {
   console.log('Authenticating request to:', event.path)
 
   const session = await getServerSession(event)
-  if (!session) {
+  if (!session || !session.user || !session.user.id) {
     throw createError({
       statusMessage: 'Unauthenticated',
       statusCode   : 401,

@@ -7,5 +7,9 @@
   "changeTheme": "テーマ変更",
   "changeLanguage": "言語を変更する",
   "language": "言語",
-  "title": "AIで素晴らしいプレゼンテーションを作成する"
+  "title": "AIで素晴らしいプレゼンテーションを作成する",
+  "rename": "名前変更",
+  "delete": "削除する",
+  "deleteSuccess": "削除成功しました",
+  "updateSuccess": "更新成功"
 }

@@ -16,5 +16,11 @@
   "generate": "生成演示文稿",
   "keyGenerateTip": "按{key1}+{key2}生成",
   "examples": "试试这些例子",
-  "shuffle": "洗牌"
+  "shuffle": "洗牌",
+  "recent": {
+    "title": "最近的演示文稿",
+    "viewAll": "查看全部",
+    "deleteConfirmTitle": "你确定吗？",
+    "deleteConfirmContent": "此操作无法撤消。这将永久删除您的演示文稿。"
+  }
 }

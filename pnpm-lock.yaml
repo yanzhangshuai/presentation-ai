@@ -23,6 +23,9 @@ importers:
       '@casl/ability':
         specifier: ^6.7.3
         version: 6.7.3
+      '@casl/prisma':
+        specifier: ^1.5.2
+        version: 1.5.2(@casl/ability@6.7.3)(@prisma/client@7.0.0(prisma@7.0.0(@types/react@19.2.6)(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(typescript@5.9.3))
       '@nuxt/ui':
         specifier: ^4.2.1
         version: 4.2.1(@babel/parser@7.28.5)(axios@1.13.2)(change-case@5.4.4)(db0@0.3.4(@electric-sql/pglite@0.3.2)(mysql2@3.15.3))(embla-carousel@8.6.0)(ioredis@5.8.2)(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3)(valibot@1.1.0(typescript@5.9.3))(vite@7.2.4(@types/node@24.10.1)(jiti@2.6.1)(less@4.4.2)(lightningcss@1.30.2)(terser@5.44.1)(tsx@4.20.6)(yaml@2.8.1))(vue-router@4.6.3(vue@3.5.24(typescript@5.9.3)))(vue@3.5.24(typescript@5.9.3))(zod@4.1.12)
@@ -56,6 +59,9 @@ importers:
       crypto:
         specifier: ^1.0.1
         version: 1.0.1
+      dayjs:
+        specifier: ^1.11.19
+        version: 1.11.19
       less:
         specifier: ^4.4.2
         version: 4.4.2
@@ -414,6 +420,12 @@ packages:
 
   '@casl/ability@6.7.3':
     resolution: {integrity: sha512-A4L28Ko+phJAsTDhRjzCOZWECQWN2jzZnJPnROWWHjJpyMq1h7h9ZqjwS2WbIUa3Z474X1ZPSgW0f1PboZGC0A==}
+
+  '@casl/prisma@1.5.2':
+    resolution: {integrity: sha512-AY9IM3hRG0HBsJXczuk2gkYvLmf+UvZO6107WHjIYvPRqIxU9Wz3f+OsbzqAVGUOWYU2y0aE8xfzcX3nkFwIoQ==}
+    peerDependencies:
+      '@casl/ability': ^5.3.0 || ^6.0.0
+      '@prisma/client': ^2.14.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0
 
   '@chevrotain/cst-dts-gen@10.5.0':
     resolution: {integrity: sha512-lhmC/FyqQ2o7pGK4Om+hzuDrm9rhFYIJ/AXoQBeongmn870Xeb0L6oGEiuR8nohFNL5sMaQEJWCxr1oIVIVXrw==}
@@ -2865,6 +2877,9 @@ packages:
 
   csstype@3.2.3:
     resolution: {integrity: sha512-z1HGKcYy2xA8AGQfwrn0PAy+PB7X/GSj3UVJW9qKyn43xWa+gl5nXmU4qqLMRzWVLFC8KusUX8T/0kCiOYpAIQ==}
+
+  dayjs@1.11.19:
+    resolution: {integrity: sha512-t5EcLVS6QPBNqM2z8fakk/NKel+Xzshgt8FFKAn+qwlD1pzZWxh0nVCrvFK7ZDb6XucZeF9z8C7CBWTRIVApAw==}
 
   db0@0.3.4:
     resolution: {integrity: sha512-RiXXi4WaNzPTHEOu8UPQKMooIbqOEyqA1t7Z6MsdxSCeb8iUC9ko3LcmsLmeUt2SM5bctfArZKkRQggKZz7JNw==}
@@ -6308,6 +6323,13 @@ snapshots:
     dependencies:
       '@ucast/mongo2js': 1.4.0
 
+  '@casl/prisma@1.5.2(@casl/ability@6.7.3)(@prisma/client@7.0.0(prisma@7.0.0(@types/react@19.2.6)(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(typescript@5.9.3))':
+    dependencies:
+      '@casl/ability': 6.7.3
+      '@prisma/client': 7.0.0(prisma@7.0.0(@types/react@19.2.6)(magicast@0.3.5)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.9.3))(typescript@5.9.3)
+      '@ucast/core': 1.10.2
+      '@ucast/js': 3.0.4
+
   '@chevrotain/cst-dts-gen@10.5.0':
     dependencies:
       '@chevrotain/gast': 10.5.0
@@ -9021,6 +9043,8 @@ snapshots:
       css-tree: 2.2.1
 
   csstype@3.2.3: {}
+
+  dayjs@1.11.19: {}
 
   db0@0.3.4(@electric-sql/pglite@0.3.2)(mysql2@3.15.3):
     optionalDependencies:

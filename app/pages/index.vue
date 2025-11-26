@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 const onClick = () => {
   console.log('Get Started button clicked')
-  $fetch('/api/presentation/outline', {
+  $fetch('/api/pres/outline', {
     method: 'POST',
     body  : {
       prompt       : 'Sample Topic',
@@ -31,8 +31,8 @@ onMounted(() => {
         <p class="text-2xl text-gray-400 dark:text-gray-100">{{ $t('dashboard.subtitle') }}</p>
       </section>
 
-      <!-- 输入 -->
       <DashboardGenerate />
+      <DashboardRecent />
     </div>
   </div>
 </template>

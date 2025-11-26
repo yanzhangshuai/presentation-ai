@@ -7,5 +7,9 @@
   "copy": "Copy",
   "language": "Language",
   "changeTheme": "Change Theme",
-  "changeLanguage": "Change Languare"
+  "changeLanguage": "Change Languare",
+  "rename": "Rename",
+  "delete": "Delete",
+  "deleteSuccess": "Deleted successfully",
+  "updateSuccess": "Updated successfully"
 }

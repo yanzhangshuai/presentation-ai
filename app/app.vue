@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { useTheme } from '~/composables/theme'
+import { useAppTheme } from '~/composables/theme'
 
-const theme = useTheme()
+const theme = useAppTheme()
 
 onMounted(() => {
   theme.initTheme()

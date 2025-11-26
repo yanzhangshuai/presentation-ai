@@ -16,5 +16,11 @@
   "generate": "Generate Presentation",
   "keyGenerateTip": "Press {key1} + {key2} to generate",
   "examples": "Try these examples",
-  "shuffle": "Shuffle"
+  "shuffle": "Shuffle",
+  "recent": {
+    "title": "Recent Presentations",
+    "viewAll": "View All",
+    "deleteConfirmTitle": "Are you sure?",
+    "deleteConfirmContent": "This action cannot be undone. This will permanently delete your presentation."
+  }
 }

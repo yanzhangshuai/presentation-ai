@@ -1,14 +1,17 @@
 interface CounterState {
   prompt       : string
-  modelProvider: string
+  modelProvider: ModelProvider
   modelId      : string
   numSlides    : number
   language     : keyof typeof createLanguageMap
   pageStyle    : string
+  outline      : boolean
+  pptId        : string
+  pptTitle     : string
 
 }
 
-export const usePresentation = defineStore('presentation', {
+export const usePresStore = defineStore('presentation', {
   state: (): CounterState => ({
     prompt       : '',
     modelProvider: 'deepseek',
@@ -16,5 +19,8 @@ export const usePresentation = defineStore('presentation', {
     numSlides    : 5,
     language     : 'en',
     pageStyle    : 'Professional',
+    outline      : false,
+    pptId        : '',
+    pptTitle     : '',
   }),
 })

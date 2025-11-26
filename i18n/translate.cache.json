@@ -268,5 +268,45 @@
     "zh": "按0+1生成",
     "zh-hk": "按0+1生成",
     "jp": " ⟦0⟧ + ⟦1⟧を押して生成します"
+  },
+  "common_Rename": {
+    "zh": "重命名",
+    "zh-hk": "重命名",
+    "jp": "名前変更"
+  },
+  "common_Delete": {
+    "zh": "删除",
+    "zh-hk": "删除",
+    "jp": "削除する"
+  },
+  "dashboard_Recent Presentations": {
+    "zh": "最近的演示文稿",
+    "zh-hk": "最近的演示文稿",
+    "jp": "最近のプレゼンテーション"
+  },
+  "dashboard_View All": {
+    "zh": "查看全部",
+    "zh-hk": "查看全部",
+    "jp": "すべてを見る"
+  },
+  "dashboard_Are you sure?": {
+    "zh": "你确定吗？",
+    "zh-hk": "你確定嗎？",
+    "jp": "確かなの？"
+  },
+  "dashboard_This action cannot be undone. This will permanently delete your presentation.": {
+    "zh": "此操作无法撤消。这将永久删除您的演示文稿。",
+    "zh-hk": "此操作無法撤銷。 這將永久删除您的演示文稿。",
+    "jp": "この行動は取り消すことはできません。これにより、プレゼンテーションは永久的に削除されます。"
+  },
+  "common_Deleted successfully": {
+    "zh": "删除成功",
+    "zh-hk": "删除成功",
+    "jp": "削除成功しました"
+  },
+  "common_Updated successfully": {
+    "zh": "更新成功",
+    "zh-hk": "更新成功",
+    "jp": "更新成功"
   }
 }

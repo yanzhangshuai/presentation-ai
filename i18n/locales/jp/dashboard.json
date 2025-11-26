@@ -16,5 +16,11 @@
   "generate": "プレゼンテーションを生成",
   "keyGenerateTip": "生成するには {key1} + {key2} を押します",
   "examples": "これらの例を試してみてください",
-  "shuffle": "シャフル"
+  "shuffle": "シャフル",
+  "recent": {
+    "title": "最近のプレゼンテーション",
+    "viewAll": "すべてを見る",
+    "deleteConfirmTitle": "確かなの？",
+    "deleteConfirmContent": "この行動は取り消すことはできません。これにより、プレゼンテーションは永久的に削除されます。"
+  }
 }
