@@ -5,14 +5,14 @@ import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 import { DocumentType } from '@prisma/client'
 
+const querySchema = z.object({
+  page    : z.coerce.number().int().positive().optional().default(1),
+  pageSize: z.coerce.number().int().positive().optional().default(10),
+})
+
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
-
-  const querySchema = z.object({
-    page    : z.coerce.number().int().positive().optional().default(1),
-    pageSize: z.coerce.number().int().positive().optional().default(10),
-  })
 
   const { success, error, data: query } = querySchema.safeParse(getQuery<PaginationReq>(event))
   if (!success) {

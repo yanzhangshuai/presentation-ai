@@ -6,6 +6,7 @@ export default eventHandler(async (event) => {
   // 需要授权的组
   const authGroups = [
     '/api/document',
+    '/api/docs',
     '/api/presentation',
     '/api/user',
   ]

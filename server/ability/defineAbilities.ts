@@ -1,5 +1,4 @@
 import type { User } from '@prisma/client'
-import type { PureAbility } from '@casl/ability'
 
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 

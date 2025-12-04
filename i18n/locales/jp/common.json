@@ -11,5 +11,6 @@
   "rename": "名前変更",
   "delete": "削除する",
   "deleteSuccess": "削除成功しました",
-  "updateSuccess": "更新成功"
+  "updateSuccess": "更新成功",
+  "back": "バック"
 }

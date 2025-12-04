@@ -2,7 +2,6 @@ import type { InputJsonValue } from '@prisma/client/runtime/client'
 
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { DocumentType  } from '@prisma/client'
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
@@ -18,7 +17,7 @@ export default defineEventHandler(async (event) => {
 
   const presentation = await db.baseDocument.create({
     data: {
-      type        : DocumentType.PRESENTATION,
+      type        : DocType.PRESENTATION,
       documentType: 'presentation',
       title       : title ?? 'Untitled Presentation',
       userId      : user.id,

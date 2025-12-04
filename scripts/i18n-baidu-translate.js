@@ -141,7 +141,7 @@ async function translateBatch(strings, to, file) {
 
 // ===== 展平 JSON =====
 function flattenStrings(obj, prefix = '') {
-  let entries = []
+  const entries = []
   for (const key in obj) {
     const value = obj[key]
     const newKey = prefix ? `${prefix}.${key}` : key

@@ -25,12 +25,13 @@ export interface CreatePresentationReq {
 /**
  * 大纲创建参数类型
  */
-export  interface CreateOutlineRes {
+export interface GenerateOutlineReq {
   prompt        : string
   numberOfCards : number
   language      : keyof typeof createLanguageMap
   modelProvider?: ModelProvider
   modelId?      : string
+  web?          : boolean
 }
 
 // ---------------- 用户相关 ----------------
@@ -81,7 +82,7 @@ export interface User {
 }
 
 // ---------------- 文档相关 ----------------
-export enum DocumentType {
+export enum DocType {
   NOTE = 'NOTE',
   DOCUMENT = 'DOCUMENT',
   DRAWING = 'DRAWING',
@@ -97,7 +98,7 @@ export enum DocumentType {
 export interface BaseDocument {
   id           : string
   title        : string
-  type         : DocumentType
+  type         : DocType
   isPublic     : boolean
   thumbnailUrl?: string
   documentType : string

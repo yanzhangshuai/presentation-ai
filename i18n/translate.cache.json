@@ -308,5 +308,75 @@
     "zh": "更新成功",
     "zh-hk": "更新成功",
     "jp": "更新成功"
+  },
+  "common_Back": {
+    "zh": "返回",
+    "zh-hk": "返回",
+    "jp": "バック"
+  },
+  "auth_Login With Google": {
+    "zh": "使用谷歌登录",
+    "zh-hk": "使用穀歌登入",
+    "jp": "Googleでログイン"
+  },
+  "auth_Email": {
+    "zh": "电子邮件",
+    "zh-hk": "電子郵件",
+    "jp": "メール"
+  },
+  "auth_Invalid email": {
+    "zh": "无效邮箱",
+    "zh-hk": "無效郵箱",
+    "jp": "無効なメール"
+  },
+  "auth_Password": {
+    "zh": "密码",
+    "zh-hk": "密碼",
+    "jp": "パスワード"
+  },
+  "auth_Must be at least __PH_0__ characters": {
+    "zh": "必须至少包含__PH_0__个字符",
+    "zh-hk": "必須至少包含__PH_0__個字元",
+    "jp": "少なくとも __PH_0__ 文字でなければなりません"
+  },
+  "auth_Enter your email below to login to your account": {
+    "zh": "在下面输入您的电子邮件以登录您的帐户",
+    "zh-hk": "在下麵輸入您的電子郵件以登入您的帳戶",
+    "jp": "アカウントにログインするために下記のメールを入力してください"
+  },
+  "presentation_Prompt": {
+    "zh": "提示",
+    "zh-hk": "提示",
+    "jp": "プロンプト"
+  },
+  "presentation_Enter your presentation topic...": {
+    "zh": "输入您的演示主题。..",
+    "zh-hk": "輸入您的演示主題。 ..",
+    "jp": "プレゼンテーションのトピックを入力します。.."
+  },
+  "auth_Failed to login: __PH_0__": {
+    "zh": "登录失败：__PH_0__",
+    "zh-hk": "登入失敗：__PH_0__",
+    "jp": "ログイン失敗: __PH_0__"
+  },
+  "auth_Successfully logged out": {
+    "zh": "成功退出",
+    "zh-hk": "成功退出",
+    "jp": "ログアウト成功"
+  },
+  "auth_Successfully logged in": {
+    "zh": "已成功登录",
+    "zh-hk": "已成功登入",
+    "jp": "ログイン成功"
+  },
+  "presentation_Please wait a moment...": {
+    "zh": "请稍等。..",
+    "zh-hk": "請稍等。 ..",
+    "jp": "ちょっと待ってください。.."
+  },
+  "presentation_Loading Presentation Outline": {
+    "zh": "加载演示大纲",
+    "zh-hk": "加載演示大綱",
+    "jp": "プレゼンテーション概要を読み込んでいます"
   }
 }

@@ -3,17 +3,15 @@ import type { DropdownMenuItem } from '@nuxt/ui'
 
 const { locale, locales, setLocale } = useI18n()
 
-const items = computed<DropdownMenuItem[]>(() => {
-  return toValue(locales)
-    .map((l) => {
-      return {
-        disabled: l.code === toValue(locale),
-        label   : l.name,
-        class   : 'cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800',
-        onSelect: () => setLocale(l.code),
-      }
-    })
-})
+/** 下拉菜单项 */
+const items = computed<DropdownMenuItem[]>(() =>
+  toValue(locales).map(l => ({
+    label   : l.name,
+    disabled: l.code === toValue(locale),
+    class   : 'cursor-pointer hover:bg-neutral-100 dark:hover:bg-neutral-800',
+    onSelect: () => setLocale(l.code),
+  })),
+)
 </script>
 
 <template>
@@ -23,7 +21,3 @@ const items = computed<DropdownMenuItem[]>(() => {
     </UButton>
   </UDropdownMenu>
 </template>
-
-<style scoped lang="less">
-
-</style>

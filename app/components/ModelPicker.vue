@@ -1,36 +1,37 @@
 <script setup lang="ts">
+/* ------------------ Model 定义 ------------------ */
+// Model 提供商
 const provider = defineModel<ModelProvider>('provider', { default: 'deepseek' })
+const modelId  = defineModel<string>('modelId', { default: 'deepseek-chat' })
 
-const modelId = defineModel<string>('modelId', { default: 'deepseek-chat' })
-
-const value = computed({
-  get: () => {
-    return `${provider.value}|${modelId.value}`
-  },
+/** 组合值，USelect 双向绑定 */
+const value = computed<string>({
+  get: () => `${provider.value}|${modelId.value}`,
   set: (val: string) => {
     const [p, m] = val.split('|')
-    provider.value = p as ModelProvider
-    modelId.value = m!
+    if (p)
+      provider.value = p as ModelProvider
+    if (m)
+      modelId.value = m
   },
 })
 
-const items = modelSupportList.map((m) => {
-  return {
-    label: m.name,
-    value: `${m.provider}|${m.modelId}`,
-    icon : 'i-lucide-bot',
-  }
-})
+/** 构建下拉选项 */
+const items = modelSupportList.map(m => ({
+  label: m.name,
+  value: `${m.provider}|${m.modelId}`,
+  icon : 'i-lucide-bot',
+}))
 
-const selected = computed(() =>
-  toValue(items).find(item => item.value === value.value)!,
-)
+/** 选中的下拉项 */
+const selected = computed(() => items.find(item => item.value === value.value)!)
 </script>
 
 <template>
-  <USelect v-model="value" :items="items" :icon="selected.icon" />
+  <USelect
+    v-model="value"
+    :items="items"
+    :icon="selected.icon"
+    class="w-full"
+  />
 </template>
-
-<style scoped lang="less">
-
-</style>

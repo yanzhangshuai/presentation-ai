@@ -59,4 +59,18 @@ export default antfu(
       'antfu/top-level-function': 'off',
     },
   },
+  {
+    ignores: [
+      'scripts/',
+      'dist/',
+      'node_modules/',
+      '.env',
+      '.DS_Store',
+      '.idea/',
+      '.vscode/',
+      'i18n',
+      'coverage/',
+
+    ],
+  },
 )

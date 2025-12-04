@@ -1,9 +1,0 @@
-scripts/
-dist/
-node_modules/
-.env
-.DS_Store
-coverage/
-.idea/
-.vscode/
-i18n/

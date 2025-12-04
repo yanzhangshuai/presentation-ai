@@ -3,8 +3,8 @@ import type { User, UserRole } from '@prisma/client'
 import { NuxtAuthHandler } from '#auth'
 import { db } from '~~/server/db/index'
 import { PrismaAdapter } from '@auth/prisma-adapter'
-// import GoogleProvider from '@auth/core/providers/google'
-import GitHubProvider from '@auth/core/providers/github'
+import GoogleProvider from '@auth/core/providers/google'
+import GithubProvider from '@auth/core/providers/github'
 
 // 扩展 NextAuth 的类型
 declare module 'next-auth' {
@@ -29,19 +29,44 @@ declare module 'next-auth/jwt' {
 export default NuxtAuthHandler({
   secret : useRuntimeConfig().authSecret,
   adapter: PrismaAdapter(db) as any,
+  pages  : {
+    signIn: '/auth/signin',
+  },
   session: {
     strategy: 'jwt',
     maxAge  : 30 * 24 * 60 * 60, // 30天
   },
   providers: [
-    GitHubProvider({
+    GithubProvider({
       clientId    : useRuntimeConfig().githubClientId,
       clientSecret: useRuntimeConfig().githubClientSecret,
     }) as any,
-    // GoogleProvider({
-    //   clientId    : useRuntimeConfig().googleClientId,
-    //   clientSecret: useRuntimeConfig().googleClientSecret,
-    // }) as any,
+    GoogleProvider({
+      id           : 'google',
+      name         : 'Google',
+      // @ts-expect-error 类型错误
+      type         : 'oauth',
+      wellKnown    : 'https://accounts.google.com/.well-known/openid-configuration',
+      authorization: { params: { scope: 'openid email profile' } },
+      idToken      : true,
+      checks       : ['pkce', 'state'],
+      profile(profile) {
+        return {
+          id   : profile.sub,
+          name : profile.name,
+          email: profile.email,
+          image: profile.picture,
+        }
+      },
+      style: {
+        logo: '/google.svg',
+        bg  : '#fff',
+        text: '#000',
+      },
+      clientId    : useRuntimeConfig().googleClientId,
+      clientSecret: useRuntimeConfig().googleClientSecret,
+
+    }) as any,
   ],
 
   callbacks: {

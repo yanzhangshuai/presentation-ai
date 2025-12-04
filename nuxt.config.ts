@@ -8,14 +8,13 @@ export default defineNuxtConfig({
   modules          : [
     '@pinia/nuxt',
     '@sidebase/nuxt-auth',
-    // 'unplugin-icons/nuxt',
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxt/ui',
   ],
 
   devServer: {
-    port: 3010,
+    port: 3080,
   },
 
   runtimeConfig: {
@@ -56,7 +55,10 @@ export default defineNuxtConfig({
       },
     },
   },
-
+  css: [
+    '~/assets/css/tailwind.css',
+    '~/assets/less/main.less',
+  ],
   i18n: {
     defaultLocale: 'en',
     strategy     : 'prefix_except_default',
@@ -73,6 +75,7 @@ export default defineNuxtConfig({
   },
 
   ui: {
+    fonts: false,   // 禁用 Google Fonts 加载
     theme: {
       colors: [
         'primary',
@@ -85,9 +88,13 @@ export default defineNuxtConfig({
       ],
     },
   },
-  css: [
-    '~/assets/css/tailwind.css',
-    '~/assets/less/main.less',
-  ],
+  icon: {
+    customCollections: [
+      {
+        prefix: 'custom',
+        dir   : './app/assets/icons',
+      },
+    ],
+  },
 
 })

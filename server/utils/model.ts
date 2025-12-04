@@ -29,5 +29,5 @@ export function modelPicker(modelProvider?: string, modelId?: string): LanguageM
   // 默认 deepseek-chat
   return  createDeepSeek({
     apiKey: useRuntimeConfig().deepseekApiKey,
-  })('deepseek-chat')
+  })(modelId || 'deepseek-chat')
 }

@@ -9,7 +9,7 @@ export type ThemeName
     | 'sunset'
     | 'forest'
 
-interface ThemeColors {
+export interface ThemeColors {
   primary   : string
   secondary : string
   accent    : string
@@ -19,16 +19,16 @@ interface ThemeColors {
   muted     : string
 }
 
-interface ThemeFonts {
+export interface ThemeFonts {
   heading: string
   body   : string
 }
 
-interface ThemeTransitions {
+export interface ThemeTransitions {
   default: string
 }
 
-interface ThemeShadows {
+export interface ThemeShadows {
   card  : string
   button: string
 }

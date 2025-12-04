@@ -5,7 +5,7 @@
   "webSearch": "网络搜索",
   "textModel": "文本模型",
   "numberOfCards": "幻灯片数量",
-  "Language": "语言",
+  "language": "语言",
   "pageStyle": "页面样式",
   "selectModel": "选择模型",
   "slides": "{number}幻灯片",

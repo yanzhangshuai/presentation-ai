@@ -1,13 +1,40 @@
 <script setup lang="ts">
-import { useAppTheme } from '~/composables/theme'
+const { theme } = useAppTheme()
 
-const theme = useAppTheme()
+// 1) 客户端：根据 theme 状态更新 DOM
+if (import.meta.client) {
+  watch(
+    theme,
+    (value) => {
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(value)
+    },
+    { immediate: true },
+  )
+}
 
-onMounted(() => {
-  theme.initTheme()
+// 2) SSR 输出时插入首屏脚本（避免闪烁）
+useHead({
+  script: [
+    {
+      innerHTML: `
+        (function() {
+          try {
+            const key = 'presentation-ai_app-theme';
+            const saved = localStorage.getItem(key);
+            const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+            const theme = saved || (prefersDark ? 'dark' : 'light');
+            document.documentElement.classList.add(theme);
+          } catch (_) {}
+        })()
+      `,
+      type: 'application/javascript',
+    },
+  ],
 })
 </script>
 
+<!-- 在 SSR 输出 HTML 时插入预处理脚本 -->
 <template>
   <div>
     <UApp>

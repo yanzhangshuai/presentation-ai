@@ -1,27 +1,12 @@
 <script setup lang="ts">
 const { toggleTheme } = useAppTheme()
+const { status } = useAuth()
+const route = useRoute()
 
-const { signIn, status } = useAuth()
-
-const items = ref([
-  {
-    label: 'Guide',
-    icon : 'i-lucide-book-open',
-    to   : '#',
-
-  },
-  {
-    label: 'Composables',
-    icon : 'i-lucide-database',
-    to   : '#',
-
-  },
-  {
-    label: 'Components',
-    icon : 'i-lucide-box',
-    to   : '#',
-
-  },
+const items = [
+  { label: 'Guide', icon: 'i-lucide-book-open', to: '#' },
+  { label: 'Composables', icon: 'i-lucide-database', to: '#' },
+  { label: 'Components', icon: 'i-lucide-box', to: '#' },
   {
     label : 'GitHub',
     icon  : 'i-simple-icons-github',
@@ -29,49 +14,52 @@ const items = ref([
     to    : 'https://github.com/yanzhangshuai/presentation-ai',
     target: '_blank',
   },
-  {
-    label   : 'Help',
-    icon    : 'i-lucide-circle-help',
-    disabled: true,
-  },
-])
+  { label: 'Help', icon: 'i-lucide-circle-help', disabled: true },
+]
+
+const callbackUrl = computed(() =>
+  `/auth/signin?callbackUrl=${encodeURIComponent(route.fullPath)}`,
+)
 </script>
 
 <template>
   <UHeader mode="slideover">
+    <!-- 左侧Logo -->
     <template #left>
-      <!-- logo -->
       <NuxtLinkLocale to="/" class="text-xl i-flex-center">
-        <UIcon name="i-lucide-hop" class="mr-2" />
-        <span class="fill-dbi tracking-wide font-[AmericanTypewriter] ">
+        <UIcon name="i-custom-headache" class="mr-2" />
+        <span class="fill-dbi tracking-wide font-[AmericanTypewriter]">
           {{ $t('common.logo') }}
         </span>
       </NuxtLinkLocale>
     </template>
 
+    <!-- 导航 -->
     <UNavigationMenu :items="items" />
-
     <template #body>
       <UNavigationMenu :items="items" orientation="vertical" class="-mx-2.5" />
     </template>
 
+    <!-- 右侧 -->
     <template #right>
       <!-- 未登录 -->
       <div v-if="status === 'unauthenticated'" class="i-flex-center space-x-2">
         <!-- 主题切换 -->
-        <UButton variant="ghost" color="neutral" class="cursor-pointer relative" @click="toggleTheme">
-          <UIcon name="i-lucide-sun" class="text-2xl scale-100  dark:scale-0" />
-          <UIcon name="i-lucide-moon" class="absolute text-2xl scale-0 dark:scale-100" />
+        <UButton variant="ghost" color="neutral" class="cursor-pointer" @click="toggleTheme">
+          <UIcon name="i-lucide-sun" class="text-2xl dark:hidden" />
+          <UIcon name="i-lucide-moon" class="text-2xl hidden dark:block" />
         </UButton>
 
-        <!-- 语言选择器 -->
+        <!-- 语言切换 -->
         <LanguageSwitch />
 
         <!-- 登录 -->
-        <UButton variant="solid" color="neutral" class="cursor-pointer" @click.stop="signIn('google')">
-          <UIcon name="i-lucide-github" class="text-base" />
-          {{ $t('auth.loginGithub') }}
-        </UButton>
+        <NuxtLinkLocale :to="callbackUrl">
+          <UButton variant="solid" color="neutral" class="cursor-pointer">
+            <UIcon name="i-lucide-log-in" class="text-base" />
+            {{ $t('auth.login') }}
+          </UButton>
+        </NuxtLinkLocale>
       </div>
 
       <!-- 已登录 -->
@@ -81,12 +69,3 @@ const items = ref([
 
   <slot />
 </template>
-
-<style lang="less" scoped>
-@font-face {
-  font-family: "AmericanTypewriter";
-  src: url("~/assets/fonts/American_Typewriter.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-</style>
