@@ -1,5 +1,5 @@
-export const presThemes: Record<ThemeName, ThemeProperties> = {
-  daktilo: {
+export const presentationThemes: Record<ThemeName, ThemeProperties> = {
+  'Daktilo': {
     name       : 'Daktilo',
     description: 'Modern and clean',
     colors     : {
@@ -42,7 +42,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  cornflower: {
+  'Cornflower': {
     name       : 'Cornflower',
     description: 'Professional and bold',
     colors     : {
@@ -85,7 +85,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  orbit: {
+  'Orbit': {
     name       : 'Orbit',
     description: 'Futuristic and dynamic',
     colors     : {
@@ -128,7 +128,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  piano: {
+  'Piano': {
     name       : 'Piano',
     description: 'Classic and elegant',
     colors     : {
@@ -171,7 +171,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  mystique: {
+  'Mystique': {
     name       : 'Mystique',
     description: 'Dark and sophisticated',
     colors     : {
@@ -214,7 +214,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  gammaDark: {
+  'Gamma Dark': {
     name       : 'Gamma Dark',
     description: 'High contrast',
     colors     : {
@@ -257,7 +257,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  crimson: {
+  'Crimson': {
     name       : 'Crimson',
     description: 'Bold and passionate',
     colors     : {
@@ -300,7 +300,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  sunset: {
+  'Sunset': {
     name       : 'Sunset',
     description: 'Warm and inviting',
     colors     : {
@@ -343,7 +343,7 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
     },
   },
 
-  forest: {
+  'Forest': {
     name       : 'Forest',
     description: 'Natural and serene',
     colors     : {
@@ -387,10 +387,10 @@ export const presThemes: Record<ThemeName, ThemeProperties> = {
   },
 }
 
-export type PresThemes = keyof typeof presThemes
+export type PresentationThemes = keyof typeof presentationThemes
 
 // Function to set CSS variables for a theme
-export function setPresThemeVariables(theme: ThemeProperties, isDark: boolean) {
+export function setPresentationThemeVariables(theme: ThemeProperties, isDark: boolean) {
   const colors = isDark ? theme.colors.dark : theme.colors.light
   const shadows = isDark ? theme.shadows.dark : theme.shadows.light
 

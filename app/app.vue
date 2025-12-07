@@ -1,17 +1,5 @@
 <script setup lang="ts">
-const { theme } = useAppTheme()
-
-// 1) 客户端：根据 theme 状态更新 DOM
-if (import.meta.client) {
-  watch(
-    theme,
-    (value) => {
-      document.documentElement.classList.remove('light', 'dark')
-      document.documentElement.classList.add(value)
-    },
-    { immediate: true },
-  )
-}
+useAppTheme()
 
 // 2) SSR 输出时插入首屏脚本（避免闪烁）
 useHead({

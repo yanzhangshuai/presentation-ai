@@ -1,19 +1,8 @@
 <script setup lang="ts">
-// ------------------------------
-// Imports & Composables
-// ------------------------------
-const router = useRouter()
-const localRoute = useLocaleRoute()
-
 // 用户认证状态
 const { status } = useAuth()
-
-// 主题相关
-const { isDark } = useAppTheme()
-
-// 演示文稿状态
-const { presentation } = usePresStore()
-const { colors, theme } = storeToRefs(usePresThemeStore())
+const router = useRouter()
+const localRoute = useLocaleRoute()
 
 // ------------------------------
 // 未认证用户重定向
@@ -23,6 +12,18 @@ const { colors, theme } = storeToRefs(usePresThemeStore())
 if (toValue(status) === 'unauthenticated') {
   router.push(localRoute('/'))
 }
+
+// 主题相关
+const { isDark } = useAppTheme()
+
+const { presentation } = storeToRefs(usePresentationStore())
+
+const { colors, theme } = usePresentationTheme()
+
+const title = computed(() =>
+  presentation?.value?.base.title
+  || 'Untitled Presentation',
+)
 
 // ------------------------------
 // 背景生成函数
@@ -66,7 +67,7 @@ const bg = computed(() => getBackground(toValue(isDark), toValue(colors)))
 
       <!-- 演示文稿标题 -->
       <span class="fill-dbi tracking-wide font-[AmericanTypewriter]">
-        {{ presentation?.base.title }}
+        {{ title }}
       </span>
     </template>
 
@@ -81,7 +82,7 @@ const bg = computed(() => getBackground(toValue(isDark), toValue(colors)))
     :style="{
       background: bg, // 响应式背景
       transition: theme.transitions.default, // 平滑过渡
-      color: colors.text, // 文字颜色
+      color: 'var(--presentation-text)', // 文字颜色
     }"
   >
     <slot />

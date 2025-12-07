@@ -1,5 +1,4 @@
-import type { ModelProvider } from './model'
-import type { createLanguageMap } from '../utils/presentation'
+import type { LanguageSupport, ModelProvider } from './presentation'
 
 export interface PaginationReq {
   page    : number
@@ -16,10 +15,36 @@ export interface PaginationRes<T> {
 /**
  * 演示创建参数类型
  */
-export interface CreatePresentationReq {
-  title    : string
-  theme?   : string
-  language?: string
+export interface EditPresentationReq {
+  title             : string
+  prompt?           : string
+  theme?            : string
+  language?         : string
+  imageSource       : string
+  modelProvider?    : string
+  modelId?          : string
+  pageStyle?        : string
+  numSlides?        : number
+  presentationStyle?: string
+
+}
+
+/**
+ * 演示创建参数类型
+ */
+export interface EditPresentationReq {
+  title             : string
+  prompt?           : string
+  theme?            : string
+  language?         : string
+  imageSource       : string
+  modelProvider?    : string
+  modelId?          : string
+  pageStyle?        : string
+  numSlides?        : number
+  presentationStyle?: string
+  outline           : string[]
+
 }
 
 /**
@@ -28,7 +53,7 @@ export interface CreatePresentationReq {
 export interface GenerateOutlineReq {
   prompt        : string
   numberOfCards : number
-  language      : keyof typeof createLanguageMap
+  language      : LanguageSupport
   modelProvider?: ModelProvider
   modelId?      : string
   web?          : boolean
@@ -110,21 +135,45 @@ export interface BaseDocument {
   favorites    : FavoriteDocument[]
 }
 
+export enum PresentationStatus {
+  /**
+   * 步骤 1：配置完成，但未生成大纲
+   */
+  DRAFT = 'DRAFT',
+  /**
+   * 步骤 2：大纲已生成，主题/图片可选
+   */
+  OUTLINE_GENERATED = 'OUTLINE_GENERATED',
+  /**
+   * 步骤 3：全部内容生成完成
+   */
+  CONTENT_GENERATED = 'CONTENT_GENERATED',
+  /**
+   * AI 生成失败
+   */
+  FAILED = 'FAILED',
+}
+
 // pptx
 export interface Presentation {
-  id                : string
-  content           : { slides: any[] }
-  theme             : string
-  imageSource       : string
-  prompt?           : string
-  presentationStyle?: string
-  language?         : string
-  outline           : string[]
-  searchResults?    : any
-  base              : BaseDocument
-  templateId?       : string
-  customThemeId?    : string
-  customTheme?      : CustomTheme
+  id               : string
+  content          : { slides: any[] }
+  theme            : string
+  imageSource      : string
+  prompt           : string
+  modelProvider    : ModelProvider
+  modelId          : string
+  pageStyle        : string
+  numSlides        : number
+  presentationStyle: string
+  language         : LanguageSupport
+  outline          : string[]
+  searchResults?   : any
+  base             : BaseDocument
+  templateId?      : string
+  customThemeId?   : string
+  customTheme?     : CustomTheme
+  status           : PresentationStatus
 }
 
 // ---------------- 主题相关 ----------------

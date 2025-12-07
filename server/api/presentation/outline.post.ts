@@ -4,7 +4,7 @@ import { outlineTemplate } from '~~/server/utils/constants'
 
 const bodySchema = z.object({
   prompt       : z.string(),
-  numberOfCards: z.number(),
+  numSlides    : z.number(),
   language     : z.string().optional().default('en'),
   modelProvider: z.string().optional().default('deepseek'),
   modelId      : z.string().optional().default('deepseek-chat'),
@@ -23,7 +23,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { prompt, numberOfCards, language, modelProvider, modelId, web } = data
+  const { prompt, numSlides, language, modelProvider, modelId, web } = data
 
   const actualLanguage = createLanguageMap[language as keyof typeof createLanguageMap] || language
 
@@ -37,7 +37,7 @@ export default defineEventHandler(async (event) => {
   const model = modelPicker(modelProvider, modelId)
 
   const systemPrompt = outlineTemplate
-    .replace(/\{numberOfCards\}/g, numberOfCards.toString())
+    .replace(/\{numberOfCards\}/g, numSlides.toString())
     .replace(/\{language\}/g, actualLanguage)
     .replace(/\{currentDate\}/g, currentDate)
     .replace(/\{prompt\}/g, prompt)

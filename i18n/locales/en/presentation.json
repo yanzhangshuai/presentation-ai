@@ -3,5 +3,33 @@
   "loading": "Loading Presentation Outline",
   "loadingWait": "Please wait a moment...",
   "prompt": "Prompt",
-  "promptPlaceholder": "Enter your presentation topic..."
+  "promptPlaceholder": "Enter your presentation topic...",
+  "generating": "Generating...",
+  "generatePresentation": "Generate Presentation",
+  "outline": {
+    "title": "Outline",
+    "generateTitle": "Generate Outline",
+    "generatingLoading": "Generating outline...",
+    "Generated": "Generate Outline",
+    "addCard": "Add card",
+    "totalCards": "{count} cards total"
+    
+  },
+  "theme": {
+    "title": "Theme",
+    "customizeTitle": "Customize Theme",
+    "selectTheme": "Select a theme for your presentation",
+    "moreThemes": "More theme"
+  },
+  "presentationStyle": {
+    "title": "Presentation Style",
+    "selectStyle": "Select a style for your presentation"
+  },
+
+  "imageSource": {
+    "title": "Image Source",
+    "ai" : "AI Generation",
+    "stock": "Stock Images"
+
+  }
 }

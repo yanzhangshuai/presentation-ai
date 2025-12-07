@@ -13,6 +13,10 @@ export default defineNuxtConfig({
     '@nuxt/ui',
   ],
 
+  routeRules: {
+    // '/presentation/**': { ssr: false },
+  },
+
   devServer: {
     port: 3080,
   },

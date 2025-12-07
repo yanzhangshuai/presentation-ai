@@ -23,6 +23,7 @@ const isDisabled = computed(() => disabled || !value.value.trim())
       size="xl"
       :placeholder="$t('presentation.promptPlaceholder')"
       :disabled="disabled"
+      @keydown.enter="emit('click', value)"
     />
 
     <UButton

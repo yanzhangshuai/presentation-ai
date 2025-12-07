@@ -46,7 +46,7 @@ export function useOutlineGeneration() {
   // 封装 submit
   const submit = (options: {
     prompt        : string
-    numberOfCards : number
+    numSlides     : number
     modelProvider?: ModelProvider
     modelId?      : string
     language?     : LanguageSupport

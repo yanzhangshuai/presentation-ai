@@ -1,13 +1,13 @@
 export type ThemeName
-  = | 'daktilo'
-    | 'cornflower'
-    | 'orbit'
-    | 'piano'
-    | 'mystique'
-    | 'gammaDark'
-    | 'crimson'
-    | 'sunset'
-    | 'forest'
+  = | 'Daktilo'
+    | 'Cornflower'
+    | 'Orbit'
+    | 'Piano'
+    | 'Mystique'
+    | 'Gamma Dark'
+    | 'Crimson'
+    | 'Sunset'
+    | 'Forest'
 
 export interface ThemeColors {
   primary   : string

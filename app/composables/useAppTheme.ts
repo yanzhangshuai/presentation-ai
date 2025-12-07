@@ -16,5 +16,12 @@ export const useAppTheme = createGlobalState(() => {
 
   const toggleTheme = () => setTheme(isDark.value ? 'light' : 'dark')
 
+  if (import.meta.client) {
+    watchEffect(() => {
+      document.documentElement.classList.remove('light', 'dark')
+      document.documentElement.classList.add(toValue(theme)!)
+    })
+  }
+
   return { theme, isDark, setTheme, toggleTheme }
 })

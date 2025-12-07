@@ -4,11 +4,10 @@ import { subject } from '@casl/ability'
 import { getServerSession } from '#auth'
 import defineAbilitiesFor from '~~/server/ability/defineAbilities'
 
+const paramSchema = z.string()
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
-
-  const paramSchema = z.string()
 
   const { success, error, data: id } = paramSchema.safeParse(getRouterParam(event, 'id'))
   if (!success) {

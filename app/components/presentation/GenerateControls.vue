@@ -5,7 +5,7 @@ const { showLabel = true } = defineProps<{
 }>()
 
 /* ------------------ Model 定义 ------------------ */
-const numPage = defineModel<number>('numPage')
+const numSlides = defineModel<number>('numSlides')
 const language = defineModel<LanguageSupport>('language')
 const modelProvider = defineModel<ModelProvider>('modelProvider')
 const modelId = defineModel<string>('modelId')
@@ -44,7 +44,7 @@ const pageStyles = [
         {{
           $t('dashboard.textModel') }}
       </p>
-      <ModelPicker v-model:provider="modelProvider" v-model:model-id="modelId" class="w-full" />
+      <PresentationModelPicker v-model:provider="modelProvider" v-model:model-id="modelId" class="w-full" />
     </div>
 
     <div class="space-y-1.5 flex-1 overflow-hidden">
@@ -52,7 +52,7 @@ const pageStyles = [
         {{
           $t('dashboard.numberOfCards') }}
       </p>
-      <USelect v-model="numPage" :items="slides" class="w-full" />
+      <USelect v-model="numSlides" :items="slides" class="w-full" />
     </div>
 
     <div class="space-y-1.5 flex-1 overflow-hidden">
