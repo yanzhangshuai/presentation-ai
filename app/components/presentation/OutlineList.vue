@@ -3,6 +3,7 @@ import { uniqueId } from 'lodash'
 import { nextTick, ref, watch } from 'vue'
 import { VueDraggableNext as Draggable } from 'vue-draggable-next'
 
+import OutlineItem from './outline-item/index.vue'
 /* ---------------- props ---------------- */
 
 const { isGenerating = false, totalSlides = 5 } =  defineProps<{
@@ -123,37 +124,16 @@ const onDragEnd = () => {
     @start="onDragStart"
     @end="onDragEnd"
   >
-    <li
-      v-for="(item, idx) in items" :key="item.id" class="
-          group flex items-center gap-4 rounded-md p-4 space-y-2 mb-2 relative
-        bg-gray-100 hover:bg-gray-200 hover:shadow-md
-          dark:bg-neutral-800 dark:hover:bg-neutral-700 dark:hover:shadow-xl
-        "
-    >
-      <!-- drag handle -->
-      <UIcon
-        name="i-lucide-grip-vertical"
-        class="drag-handle text-xl text-muted-foreground hover:text-foreground"
-        :class="{
-          'cursor-move': !isGenerating,
-          'cursor-no-drop': isGenerating,
-        }"
-      />
-
-      <!-- index -->
-      <span class="text-indigo-400">{{ idx + 1 }}</span>
-
-      <!-- editor -->
-      <PresentationOutlineContent v-model="item.title" class="flex-1" :editable="editable" />
-
-      <!-- delete -->
-      <UIcon
-        v-if="editable"
-        name="i-lucide-x"
-        class="cursor-pointer text-2xl text-muted-foreground opacity-0 transition-opacity hover:text-red-400 group-hover:opacity-100"
-        @click="items = items.filter(i => i.id !== item.id)"
-      />
-    </li>
+    <OutlineItem
+      v-for="(item, idx) in items"
+      :id="item.id"
+      :key="item.id"
+      v-model:value="item.title"
+      :index="idx"
+      :editable="editable"
+      :is-generating="isGenerating"
+      @delete="id => items = items.filter(i => i.id !== id)"
+    />
   </Draggable>
 
   <!-- skeleton -->

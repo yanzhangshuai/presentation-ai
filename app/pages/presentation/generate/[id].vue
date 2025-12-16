@@ -182,9 +182,8 @@ const { run: onGeneratePresentation, loading: isGeneratingPresentation } = safeA
         </div>
       </main>
 
-      <!-- TODO:完毕之后显示 -->
-      <!-- v-if="outlineStatus === 'success'" -->
       <footer
+        v-if="['success', 'idle'].includes(outlineStatus) && presentation.outline.length > 0"
         class="fixed bottom-0 left-0 right-0 flex justify-center border-t bg-background/80 p-4 backdrop-blur-sm"
       >
         <UButton
