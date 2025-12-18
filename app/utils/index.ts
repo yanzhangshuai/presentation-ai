@@ -18,12 +18,3 @@ export function shuffle<T>(arr: T[]): T[] {
   }
   return copy
 }
-
-/**
- *  延时
- * @param ms
- * @returns
- */
-export function sleep(ms: number) {
-  return new Promise(resolve => setTimeout(resolve, ms))
-}

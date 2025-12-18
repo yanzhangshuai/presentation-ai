@@ -1,6 +1,5 @@
 import z from 'zod'
-import { streamObject } from 'ai'
-import { outlineTemplate } from '~~/server/utils/constants'
+import { streamText } from 'ai'
 
 const bodySchema = z.object({
   prompt       : z.string(),
@@ -36,14 +35,13 @@ export default defineEventHandler(async (event) => {
 
   const model = modelPicker(modelProvider, modelId)
 
-  const systemPrompt = outlineTemplate
+  const systemPrompt = outlinePromptTemplate
     .replace(/\{numberOfCards\}/g, numSlides.toString())
     .replace(/\{language\}/g, actualLanguage)
     .replace(/\{currentDate\}/g, currentDate)
     .replace(/\{prompt\}/g, prompt)
 
-  const result = streamObject({ model, prompt: systemPrompt, schema: z.object({ title: z.string(), outline: z.string() }) })
+  const result = streamText({ model, prompt: systemPrompt })
 
-  const res = result.toTextStreamResponse()
-  return res
+  return result.toTextStreamResponse()
 })

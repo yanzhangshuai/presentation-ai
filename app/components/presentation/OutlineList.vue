@@ -3,7 +3,7 @@ import { uniqueId } from 'lodash'
 import { nextTick, ref, watch } from 'vue'
 import { VueDraggableNext as Draggable } from 'vue-draggable-next'
 
-import OutlineItem from './outline-item/index.vue'
+import OutlineItem from './outline-item/Index.vue'
 /* ---------------- props ---------------- */
 
 const { isGenerating = false, totalSlides = 5 } =  defineProps<{
@@ -20,7 +20,7 @@ const outline = defineModel<string[]>('outline', {
 
 /* ---------------- state ---------------- */
 
-const items = ref<{ id: string, title: string }[]>([])
+const items = ref<{ id: string, content: string }[]>([])
 const isDragging = ref(false)
 
 /**
@@ -39,10 +39,12 @@ watch(
     if (syncingFromItems.value)
       return
 
-    items.value = val.map((title, index) => ({
+    items.value = val.map((content, index) => ({
       // 尽量复用已有 id，避免拖拽 / 编辑器重建
       id: items.value[index]?.id ?? uniqueId('outline_'),
-      title,
+
+      // content 如果包含 # \n - 则使用原内容，否则使用默认内容， 解决生成时 outline 跳动问题
+      content: /[#\n-]/.test(content) ? content : '# \n -',
     }))
   },
   { immediate: true },
@@ -52,7 +54,7 @@ watch(
 
 const syncOutline = () => {
   syncingFromItems.value = true
-  outline.value = items.value.map(i => i.title)
+  outline.value = items.value.map(i => i.content)
 
   nextTick(() => {
     syncingFromItems.value = false
@@ -79,8 +81,8 @@ const editable = computed(() => {
 
 const onAddCard = () => {
   items.value.push({
-    id   : uniqueId('outline_'),
-    title: '# \n - ',
+    id     : uniqueId('outline_'),
+    content: '# \n - ',
   })
 }
 
@@ -128,7 +130,7 @@ const onDragEnd = () => {
       v-for="(item, idx) in items"
       :id="item.id"
       :key="item.id"
-      v-model:value="item.title"
+      v-model:value="item.content"
       :index="idx"
       :editable="editable"
       :is-generating="isGenerating"
@@ -158,7 +160,7 @@ const onDragEnd = () => {
   <div class="flex-between-center text-sm text-muted-foreground">
     <span>{{ $t('presentation.outline.totalCards', { count: items.length }) }}</span>
     <span>
-      {{ items.reduce((acc, item) => acc + item.title.length, 0) }}/20000
+      {{ items.reduce((acc, item) => acc + item.content.length, 0) }}/20000
     </span>
   </div>
 </template>

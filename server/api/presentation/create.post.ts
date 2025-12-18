@@ -5,16 +5,16 @@ import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 
 const bodySchema = z.object({
-  title            : z.string(),
-  prompt           : z.string().optional().default(''),
-  theme            : z.string().optional().default('Mystique'),
-  language         : z.string().optional().default('en'),
-  imageSource      : z.string().optional().default('stock'),
-  modelProvider    : z.string().optional().default('deepseek'),
-  modelId          : z.string().optional().default('deepseek-chat'),
-  pageStyle        : z.string().optional().default('default'),
-  numSlides        : z.number().optional().default(5),
-  presentationStyle: z.string().optional().default('professional'),
+  title        : z.string(),
+  prompt       : z.string().optional().default(''),
+  theme        : z.string().optional().default('Mystique'),
+  language     : z.string().optional().default('en'),
+  imageSource  : z.string().optional().default('stock'),
+  modelProvider: z.string().optional().default('deepseek'),
+  modelId      : z.string().optional().default('deepseek-chat'),
+  pageStyle    : z.string().optional().default('default'),
+  numSlides    : z.number().optional().default(5),
+  tone         : z.string().optional().default('professional'),
 })
 
 export default defineEventHandler(async (event) => {
@@ -32,7 +32,7 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { title, theme, language, imageSource, modelProvider, modelId, pageStyle, numSlides, presentationStyle, prompt } = data
+  const { title, theme, language, imageSource, modelProvider, modelId, pageStyle, numSlides, tone, prompt } = data
 
   if (!title) {
     throw createError({ statusCode: 400, statusMessage: 'Missing required parameters' })
@@ -49,7 +49,7 @@ export default defineEventHandler(async (event) => {
           content: { slides: [] } as unknown as InputJsonValue,
           theme,
           language,
-          presentationStyle,
+          tone,
           imageSource,
           modelProvider,
           modelId,

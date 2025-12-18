@@ -30,10 +30,6 @@ export default defineEventHandler(async (event) => {
   if (!presentation)
     throw createError({ statusCode: 404, statusMessage: 'Presentation not found' })
 
-  if (!defineAbilitiesFor(user).can('delete', subject('BaseDocument', presentation.base))) {
-    throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
-  }
-
   return {
     ...presentation,
     content: presentation.content as  { slides: unknown[] },

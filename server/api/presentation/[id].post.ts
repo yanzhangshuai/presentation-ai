@@ -1,25 +1,22 @@
-import type { InputJsonValue } from '@prisma/client/runtime/client'
-
 import z from 'zod'
 import { db } from '~~/server/db'
-import { subject } from '@casl/ability'
 import { getServerSession } from '#auth'
-import defineAbilitiesFor from '~~/server/ability/defineAbilities'
 
 const paramSchema = z.string()
 
 const bodySchema = z.object({
-  title            : z.string().optional(),
-  theme            : z.string().optional(),
-  language         : z.string().optional(),
-  imageSource      : z.string().optional(),
-  modelProvider    : z.string().optional(),
-  modelId          : z.string().optional(),
-  pageStyle        : z.string().optional(),
-  numSlides        : z.number().optional(),
-  presentationStyle: z.string().optional(),
-  prompt           : z.string().optional(),
-  outline          : z.array(z.string()).optional(),
+  title        : z.string().optional(),
+  theme        : z.string().optional(),
+  language     : z.string().optional(),
+  imageSource  : z.string().optional(),
+  modelProvider: z.string().optional(),
+  modelId      : z.string().optional(),
+  pageStyle    : z.string().optional(),
+  numSlides    : z.number().optional(),
+  tone         : z.string().optional(),
+  prompt       : z.string().optional(),
+  outline      : z.array(z.string()).optional(),
+  content      : z.string().optional(),
 }).transform(obj =>
   Object.fromEntries(
     Object.entries(obj).filter(([_, v]) => v !== undefined && v !== null),
@@ -55,6 +52,17 @@ export default defineEventHandler(async (event) => {
     // @ts-expect-error 特殊处理
     updateData.base = { update: { title: updateData.title } }
     delete updateData.title
+  }
+
+  // @ts-expect-error ts-ignore
+  if (updateData.outline?.length) {
+    // 如果更新了大纲，自动更新状态
+    updateData.status = EPresentationStatus.OUTLINE_GENERATED
+  }
+
+  if (updateData.content) {
+    // 如果更新了内容，自动更新状态
+    updateData.status = EPresentationStatus.CONTENT_GENERATED
   }
 
   // TODO: 权限检查

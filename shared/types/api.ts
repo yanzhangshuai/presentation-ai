@@ -15,17 +15,17 @@ export interface PaginationRes<T> {
 /**
  * 演示创建参数类型
  */
-export interface EditPresentationReq {
-  title             : string
-  prompt?           : string
-  theme?            : string
-  language?         : string
-  imageSource       : string
-  modelProvider?    : string
-  modelId?          : string
-  pageStyle?        : string
-  numSlides?        : number
-  presentationStyle?: string
+export interface CreatePresentationReq {
+  title         : string
+  prompt?       : string
+  theme?        : string
+  language?     : string
+  imageSource   : string
+  modelProvider?: string
+  modelId?      : string
+  pageStyle?    : string
+  numSlides?    : number
+  tone?         : string
 
 }
 
@@ -33,18 +33,18 @@ export interface EditPresentationReq {
  * 演示创建参数类型
  */
 export interface EditPresentationReq {
-  title             : string
-  prompt?           : string
-  theme?            : string
-  language?         : string
-  imageSource       : string
-  modelProvider?    : string
-  modelId?          : string
-  pageStyle?        : string
-  numSlides?        : number
-  presentationStyle?: string
-  outline           : string[]
-
+  title?        : string
+  prompt?       : string
+  theme?        : string
+  language?     : string
+  imageSource?  : string
+  modelProvider?: string
+  modelId?      : string
+  pageStyle?    : string
+  numSlides?    : number
+  tone?         : string
+  outline?      : string[]
+  content?      : string
 }
 
 /**
@@ -135,7 +135,7 @@ export interface BaseDocument {
   favorites    : FavoriteDocument[]
 }
 
-export enum PresentationStatus {
+export enum EPresentationStatus {
   /**
    * 步骤 1：配置完成，但未生成大纲
    */
@@ -156,24 +156,24 @@ export enum PresentationStatus {
 
 // pptx
 export interface Presentation {
-  id               : string
-  content          : { slides: any[] }
-  theme            : string
-  imageSource      : string
-  prompt           : string
-  modelProvider    : ModelProvider
-  modelId          : string
-  pageStyle        : string
-  numSlides        : number
-  presentationStyle: string
-  language         : LanguageSupport
-  outline          : string[]
-  searchResults?   : any
-  base             : BaseDocument
-  templateId?      : string
-  customThemeId?   : string
-  customTheme?     : CustomTheme
-  status           : PresentationStatus
+  id            : string
+  content       : string
+  theme         : string
+  imageSource   : string
+  prompt        : string
+  modelProvider : ModelProvider
+  modelId       : string
+  pageStyle     : string
+  numSlides     : number
+  tone          : string
+  language      : LanguageSupport
+  outline       : string[]
+  searchResults?: any
+  base          : BaseDocument
+  templateId?   : string
+  customThemeId?: string
+  customTheme?  : CustomTheme
+  status        : EPresentationStatus
 }
 
 // ---------------- 主题相关 ----------------

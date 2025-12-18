@@ -46,6 +46,10 @@ const view = shallowRef<EditorView>()
 // ---------------- bubble menu state ----------------
 const bubbleMenuState = shallowRef<BubbleMenuState | null>(null)
 
+watchEffect(() => {
+  setContent(toValue(content))
+})
+
 /** 安全地将 Vue v-model 同步到 ProseMirror，不破坏光标 */
 // function syncValueToEditor(value: string) {
 //   if (!view.value)
@@ -66,6 +70,36 @@ const bubbleMenuState = shallowRef<BubbleMenuState | null>(null)
 //   if (val != null)
 //     syncValueToEditor(val)
 // })
+/**
+ * 设置编辑器内容
+ * @param content 新内容
+ * @param emitUpdate 是否触发 onChange 回调
+ */
+function setContent(content: string, emitUpdate = false) {
+  if (!view.value)
+    return
+
+  const { parse, serializer, schema } = props
+
+  // 将 Markdown 内容解析为 ProseMirror 节点树
+  const doc = parse.parse(content)
+
+  // 创建新的 EditorState
+  const newState = EditorState.create({
+    doc,
+    schema,
+    plugins: view.value.state.plugins, // 保留已有插件
+  })
+
+  // 更新 EditorView 的 state，不触发 dispatchTransaction
+  view.value.updateState(newState)
+
+  // 可选触发 onChange 回调
+  if (emitUpdate) {
+    const md = serializer.serialize(newState.doc)
+    emit('change', md)
+  }
+}
 
 // ---------------- mount editor ----------------
 

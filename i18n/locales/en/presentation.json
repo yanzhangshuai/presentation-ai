@@ -21,7 +21,7 @@
     "selectTheme": "Select a theme for your presentation",
     "moreThemes": "More theme"
   },
-  "presentationStyle": {
+  "tone": {
     "title": "Presentation Style",
     "selectStyle": "Select a style for your presentation"
   },

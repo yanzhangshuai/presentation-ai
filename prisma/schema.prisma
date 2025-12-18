@@ -114,7 +114,7 @@ enum PresentationStatus {
 // pptx
 model Presentation {
     id                String       @id @default(cuid())
-    content           Json // Presentation content including slides, theme, etc.
+    content           String        // Presentation content including slides, theme, etc.
     theme             String       @default("default")
     imageSource       String       @default("ai") // The image model used for generating images
     prompt            String? // The prompt used for generating the presentation
@@ -122,7 +122,7 @@ model Presentation {
     modelId           String?   // 可选
     pageStyle         String? // The style of each slide/page
     numSlides         Int? // Number of slides to generate
-    presentationStyle String? // The style of the presentation
+    tone              String? // The style of the presentation
     language          String?      @default("zh") // The language of the presentation
     outline           String[] // Store the presentation outline
     searchResults     Json? // Store the search results

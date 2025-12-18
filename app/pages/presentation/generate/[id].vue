@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { editPresentation } from '~/services/presentation'
+
 // ------------------------------
 // 页面元信息配置
 // ------------------------------
@@ -36,24 +38,26 @@ const { data: presentationData, error, status } = useFetch<Presentation, string>
 // ------------------------------
 // 大纲生成逻辑
 // ------------------------------
-const { submit, data: generatingData, isLoading, status: outlineStatus } = useOutlineGeneration()
+const { generate, data: generatingData, isLoading, status: outlineStatus } = useOutlineGeneration()
 
 // 当生成数据更新时，同步更新 store
 watch(generatingData, (newVal) => {
   if (!presentation.value || !newVal)
     return
 
-  // 更新大纲
-  presentation.value.base.title = newVal.title
-  presentation.value.outline = newVal.outline
-})
+  requestAnimationFrame(() => {
+    // 更新大纲
+    presentation!.value!.base.title = newVal.title
+    presentation!.value!.outline = newVal.sections
+  })
+}, { deep: true })
 
 // ------------------------------
 // 触发生成函数
 // ------------------------------
 const onGenerateOutline = () => {
   const { prompt, numSlides, language, modelId, modelProvider } = toValue(presentation)!
-  submit({
+  generate({
     prompt,
     numSlides,
     language,
@@ -85,21 +89,17 @@ const { run: onGeneratePresentation, loading: isGeneratingPresentation } = safeA
   if (!presentation.value)
     return
 
-  await $fetch(`/api/presentation/${id.value}`, {
-    method: 'POST',
-    body  : {
-      title            : presentation.value.base.title,
-      theme            : presentation.value.theme,
-      language         : presentation.value.language,
-      imageSource      : presentation.value.imageSource,
-      modelProvider    : presentation.value.modelProvider,
-      modelId          : presentation.value.modelId,
-      pageStyle        : presentation.value.pageStyle,
-      numSlides        : presentation.value.numSlides,
-      presentationStyle: presentation.value.presentationStyle,
-      prompt           : presentation.value.prompt,
-      outline          : presentation.value.outline,
-    },
+  await editPresentation(id.value, {
+    title        : presentation.value.base.title,
+    theme        : presentation.value.theme,
+    language     : presentation.value.language,
+    imageSource  : presentation.value.imageSource,
+    modelProvider: presentation.value.modelProvider,
+    modelId      : presentation.value.modelId,
+    numSlides    : presentation.value.numSlides,
+    tone         : presentation.value.tone,
+    prompt       : presentation.value.prompt,
+    outline      : presentation.value.outline,
   })
 
   router.push(localePath(`/presentation/${id.value}`))
@@ -169,15 +169,15 @@ const { run: onGeneratePresentation, loading: isGeneratingPresentation } = safeA
           <PresentationImageSourceSelect v-model="presentation.imageSource" />
         </div>
 
-        <!-- presentation style -->
+        <!-- presentation tone -->
         <div class="flex flex-col space-y-2">
-          <label>{{ $t("presentation.presentationStyle.title") }}</label>
+          <label>{{ $t("presentation.tone.title") }}</label>
           <USelect
-            v-model="presentation.presentationStyle"
+            v-model="presentation.tone"
             size="xl"
             class="w-full"
             value-key="key"
-            :items="Object.entries(presentationStyles).map(([key, label]) => ({ label, key }))"
+            :items="Object.entries(presentationTones).map(([key, label]) => ({ label, key }))"
           />
         </div>
       </main>

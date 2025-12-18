@@ -1,4 +1,4 @@
-import type { LanguageSupport, ModelProvider, PresentationStyle } from '../types/presentation'
+import type { LanguageSupport, ModelProvider, PresentationTone } from '../types/presentation'
 
 export const createLanguageMap: Record<LanguageSupport, string> = {
   'en'   : 'English (US)',
@@ -86,7 +86,7 @@ export const modelSupportList: {
   },
 ]
 
-export const presentationStyles: Record<PresentationStyle, string> = {
+export const presentationTones: Record<PresentationTone, string> = {
   professional: 'Professional',
   creative    : 'Creative',
   minimalist  : 'Minimalist',

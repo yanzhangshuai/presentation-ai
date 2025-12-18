@@ -27,7 +27,7 @@ export type ImageStockSource = 'unsplash' | 'pexels' | 'pixabay'
  * 演示风格
  * 专业 (professional)、创意 (creative)、极简 (minimalist)、大胆 (bold)、优雅 (elegant)
  */
-export type PresentationStyle = 'professional' | 'creative' | 'minimalist' | 'bold' | 'elegant'
+export type PresentationTone = 'professional' | 'creative' | 'minimalist' | 'bold' | 'elegant'
 
 export interface PlateSlide {
   id         : string

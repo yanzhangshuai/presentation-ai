@@ -1,50 +1,51 @@
-import z from 'zod'
-import { experimental_useObject as useObject } from '@ai-sdk/vue'
-
+const TITLE_REGEX = /<TITLE>(.*?)<\/TITLE>/i
 export function useOutlineGeneration() {
   // 状态管理
   const status = ref<'idle' | 'pending' | 'success' | 'error'>('idle')
   const error = ref<Error | null>(null)
 
   // 数据对象
-  const data = reactive({
-    title  : '',
-    outline: [] as string[],
+  const data = reactive<{
+    title   : string
+    sections: string[]
+  }>({
+    title   : '',
+    sections: [],
   })
 
-  // useObject 调用
-  const { object, submit: _submit, isLoading, stop } = useObject({
-    api   : '/api/presentation/outline',
-    schema: z.object({
-      title  : z.string(),
-      outline: z.string(),
-    }),
-    onFinish: () => { status.value = 'success' },
-    onError : (err: Error) => {
+  const { text, start, isLoading, stop } = useTextStream({
+    api: '/api/presentation/outline',
+
+    onFinish: () => {
+      status.value = 'success'
+    },
+    onError: (err: Error) => {
       status.value = 'error'
       error.value = err
     },
   })
 
   // 处理 object 更新
-  watch(object, (val) => {
-    if (!val?.outline)
+  watch(text, (val) => {
+    if (!TITLE_REGEX.test(val)) {
       return
+    }
 
-    data.title ||= val.title || ''
+    const titleMatch = val.match(TITLE_REGEX)
+    data.title = titleMatch?.[1]?.trim() ?? ''
 
-    const items = val.outline
+    const items = val
       .replace(/<TITLE>.*?<\/TITLE>/i, '')
       .trim()
       .split(/^# /gm)
       .filter(Boolean)
       .map(section => `# ${section}`.trim())
 
-    data.outline = items
+    data.sections = items
   })
 
   // 封装 submit
-  const submit = (options: {
+  const generate = (options: {
     prompt        : string
     numSlides     : number
     modelProvider?: ModelProvider
@@ -54,14 +55,14 @@ export function useOutlineGeneration() {
   }) => {
     status.value = 'pending'
     error.value = null
-    _submit(options)
+    start(options)
   }
 
   return {
     status,
     isLoading,
     data,
-    submit,
+    generate,
     stop,
     error,
   }
