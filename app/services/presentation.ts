@@ -1,4 +1,4 @@
-import type { PresentationSlide } from '~/types/presentation'
+import type { Presentation, PresentationSlide } from '~/types/presentation'
 
 /**
  *  生成幻灯片的流式接口
@@ -128,4 +128,13 @@ export function editPresentation(id: string, data: EditPresentationReq) {
     method: 'POST',
     body  : data,
   })
+}
+
+/**
+ * 获取Presentation
+ * @param id
+ * @returns
+ */
+export function getPresentation(id: string) {
+  return useFetch<Presentation, string>(`/api/presentation/${id}`,    { method: 'GET' })
 }

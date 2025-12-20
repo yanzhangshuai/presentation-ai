@@ -1,5 +1,11 @@
 import type { H3Event } from 'h3'
 
+/**
+ *  快速 SSE 流式传输助手
+ * @param event
+ * @param handler
+ * @returns
+ */
 export function streamFastSSE(
   event: H3Event,
   handler: (send: (payload: any) => void) => Promise<void> | void,

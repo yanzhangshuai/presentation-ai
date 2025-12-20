@@ -61,6 +61,7 @@ export default defineNuxtConfig({
   },
   css: [
     '~/assets/css/tailwind.css',
+    '~/assets/css/presentation.css',
     '~/assets/less/main.less',
   ],
   i18n: {

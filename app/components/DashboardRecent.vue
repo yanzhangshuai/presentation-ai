@@ -1,6 +1,10 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
 
+import type { Presentation } from '~/types/presentation'
+
+import { DocumentType } from '~/types/base-document'
+
 /* ------------------ 全局引用 ------------------ */
 const toast = useToast()
 const router = useRouter()
@@ -35,7 +39,7 @@ const { run: openDocs } = safeAction(async (id: string) => {
   navigatingId.value = id
 
   // 仅处理演示文档
-  if (doc.type !== DocType.PRESENTATION)
+  if (doc.type !== DocumentType.PRESENTATION)
     return
 
   const presentation = await $fetch<Presentation>(`/api/presentation/${id}`)

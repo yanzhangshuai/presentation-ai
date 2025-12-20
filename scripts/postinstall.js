@@ -3,7 +3,7 @@ import process from 'node:process'
 
 try {
   console.log('Generating Prisma Client...')
-  execSync('prisma generate --config ./prisma/prisma.config.ts', { stdio: 'inherit' })
+  execSync('prisma generate', { stdio: 'inherit' })
 
   console.log('Preparing Nuxt...')
   execSync('nuxt prepare', { stdio: 'inherit' })

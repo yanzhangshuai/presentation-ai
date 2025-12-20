@@ -1,8 +1,6 @@
 import z from 'zod'
 import { db } from '~~/server/db'
-import { subject } from '@casl/ability'
 import { getServerSession } from '#auth'
-import defineAbilitiesFor from '~~/server/ability/defineAbilities'
 
 const paramSchema = z.string()
 export default defineEventHandler(async (event) => {
@@ -21,17 +19,17 @@ export default defineEventHandler(async (event) => {
   const presentation = await db.presentation.findUnique({
     where: {
       id,
+      base: {
+        userId: user.id,
+      },
     },
     include: {
-      base       : true,
-      customTheme: true,
+      base : true,
+      theme: true,
     },
   })
   if (!presentation)
     throw createError({ statusCode: 404, statusMessage: 'Presentation not found' })
 
-  return {
-    ...presentation,
-    content: presentation.content as  { slides: unknown[] },
-  }
+  return presentation
 })

@@ -30,6 +30,11 @@
     "title": "Image Source",
     "ai" : "AI Generation",
     "stock": "Stock Images"
-
+  },
+  "rootImage": {
+    "placeholderTitle": "No image yet",
+    "placeholderDesc": "Upload or generate an image",
+    "uploadBtn": "Upload Image",
+    "generateBtn": "Generate Image"
   }
 }

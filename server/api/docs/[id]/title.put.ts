@@ -4,13 +4,13 @@ import { subject } from '@casl/ability'
 import { getServerSession } from '#auth'
 import defineAbilitiesFor from '~~/server/ability/defineAbilities'
 
+const bodySchema = z.object({
+  title: z.string(),
+})
+
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
-
-  const bodySchema = z.object({
-    title: z.string(),
-  })
 
   const id = getRouterParam(event, 'id')
 

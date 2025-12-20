@@ -2,6 +2,8 @@
 import type { PresentationSlide, SlideNode } from '~/types/presentation'
 
 import { slideSchema } from './meta'
+import Controls from './Controls.vue'
+import RootImage from './RootImage.vue'
 // import Controls from './Controls.vue'
 
 const props = defineProps<{
@@ -19,7 +21,6 @@ function onContentUpdate(content: SlideNode[]) {
     content,
   })
 }
-console.log(props.slide)
 
 const layoutType = computed(() => {
   if (props.slide.layout === 'none')
@@ -35,6 +36,18 @@ const layoutType = computed(() => {
   if (props.slide.layout === 'background')
     return 'flex-col'
   return ''
+})
+
+const MaxW = computed(() => {
+  const w = props.slide.width ?? 'M'
+
+  const sizeMap: Record<string, string> = {
+    S: 'max-w-4xl',
+    M: 'max-w-5xl',
+    L: 'max-w-6xl',
+  }
+
+  return sizeMap[w]
 })
 
 const style = computed(() => {
@@ -55,90 +68,67 @@ const style = computed(() => {
 
 <template>
   <div
-    :class="
-      cn(
-        'flex min-h-[50px]',
-        'scrollbar-thumb-muted-foreground/20 hover:scrollbar-thumb-muted-foreground/30 overflow-hidden p-0 scrollbar-thin scrollbar-track-transparent',
-        'relative text-foreground',
-        'focus-within:ring-2 focus-within:ring-primary focus-within:ring-opacity-50',
-        'presentation-slide',
-        layoutType,
-      )
-    "
-    :style="style"
-    :data-layout="slide.layout"
+    :class="cn(
+      'presentation-slide w-full min-h-96 relative text-foreground overflow-hidden ',
+      'group/card-container grid focus-within:ring-2! focus-within:ring-primary! focus-within:ring-opacity-50',
+      layoutType,
+      MaxW,
+    )" :style="style"
   >
-    <!-- 主视觉（layout image） -->
-    <div v-if="slide.layout !== 'none'" :class="cn('slide-image', `layout-${slide.layout}`)">
-      <div class="image-placeholder">
-        {{ slide.rootImage?.query || 'No Image' }}
-      </div>
-    </div>
+    <Controls :slide="slide">
+      <div class="flex" :data-layout="slide.layout">
+        <!-- 主视觉（layout image） -->
+        <RootImage class="slide-image" :root-image="slide.rootImage" :layout="slide.layout" />
 
-    <!-- 内容区 -->
-    <ProsemirrorEditor
-      class="slide-content flex-1"
-      :content="slide.content"
-      :schema="slideSchema"
-      :editable="true"
-      show-toolbar
-      @update="onContentUpdate"
-    />
+        <!-- 内容区 -->
+        <ProsemirrorEditor
+          class="slide-content flex-1 flex-center" :content="slide.content" :schema="slideSchema" :editable="true"
+          show-toolbar @update="onContentUpdate"
+        />
+      </div>
+    </Controls>
   </div>
 </template>
 
 <style scoped>
 .presentation-slide {
-  border: 1px solid #eee;
-  margin-bottom: 24px;
-  padding: 16px;
-  display: flex;
 
-  &[data-layout='left'] {
+  [data-layout='left'] {
     flex-direction: row;
 
-    & .slide-image {
-      height: 100%;
-    }
-
-  }
-
-  &[data-layout='right'] {
-    flex-direction: row-reverse;
-    & .slide-image {
-      height: 100%;
-    }
-  }
-
-  &[data-layout='top'] {
-    flex-direction: column;
-    & .slide-image {
-      width: 100%;
-    }
-  }
-
-  &[data-layout='bottom'] {
-    flex-direction: column-reverse;
-    & .slide-image {
-      width: 100%;
-    }
-  }
-
-  &[data-layout='none'] {
     .slide-image {
-      display: none;
+      width: 45%;
+      height: 100%;
+    }
+
+  }
+
+  [data-layout='right'] {
+    flex-direction: row-reverse;
+
+    .slide-image {
+      width: 45%;
+      height: 100%;
     }
   }
 
-}
+  [data-layout='top'] {
+    flex-direction: column;
 
-.slide-image {
-  background: #f4f4f5;
-  font-size: 12px;
-  padding: 12px;
-}
+    .slide-image {
+      width: 100%;
+      height: 280px;
+    }
+  }
 
-.slide-content {
-  flex: 1;
+  [data-layout='bottom'] {
+    flex-direction: column-reverse;
+
+    .slide-image {
+      width: 100%;
+      height: 280px;
+    }
+  }
+
 }
 </style>

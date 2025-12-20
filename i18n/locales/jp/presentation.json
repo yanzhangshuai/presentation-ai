@@ -2,5 +2,34 @@
   "prompt": "プロンプト",
   "promptPlaceholder": "プレゼンテーションのトピックを入力します。..",
   "loading": "プレゼンテーション概要を読み込んでいます",
-  "loadingWait": "ちょっと待ってください..."
+  "loadingWait": "ちょっと待ってください。..",
+  "generating": "生成する..",
+  "generatePresentation": "プレゼンテーションを生成",
+  "outline": {
+    "title": "概要",
+    "generateTitle": "アウトラインを生成",
+    "generatingLoading": "概要を生成します。..",
+    "Generated": "アウトラインを生成",
+    "addCard": "カードを追加",
+    "totalCards": "{count}カード合計"
+  },
+  "theme": {
+    "title": "テーマ",
+    "customizeTitle": "テーマをカスタマイズ",
+    "selectTheme": "プレゼンテーションのテーマを選択",
+    "moreThemes": "もっとテーマ"
+  },
+  "tone": {
+    "title": "プレゼンテーションスタイル",
+    "selectStyle": "プレゼンテーションのスタイルを選択"
+  },
+  "imageSource": {
+    "title": "画像ソース",
+    "ai": "AI 世代",
+    "stock": "ストックイメージ"
+  },
+  "rootImage": {
+    "placeholderTitle": "まだ画像はない",
+    "placeholderDesc": "画像のアップロードまたは生成"
+  }
 }

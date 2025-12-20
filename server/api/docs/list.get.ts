@@ -40,10 +40,12 @@ export default defineEventHandler(async (event) => {
       }),
 
       db.baseDocument.count(
-        { where: {
-          userId: user.id,
-          type  : DocumentType.PRESENTATION,
-        } },
+        {
+          where: {
+            userId: user.id,
+            type  : DocumentType.PRESENTATION,
+          },
+        },
       ),
     ],
   )

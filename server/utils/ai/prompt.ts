@@ -523,6 +523,7 @@ Allowed node types ONLY:
 - bullet_list
 - ordered_list
 - columns
+- column
 - image (secondary visuals only)
 
 --------------------------------
@@ -559,11 +560,18 @@ bullet_list / ordered_list:
 columns:
 {
   "type": "columns",
-  "count": 2,
   "content": [
-    [ <nodes for column 1> ],
-    [ <nodes for column 2> ]
+    {
+      "type": "column",
+      "content": [ <block nodes only> ]
+    }
   ]
+}
+
+column:
+{
+  "type": "column",
+  "content": [ <block nodes only> ]
 }
 
 image (secondary only):
@@ -580,6 +588,15 @@ STYLE RULES
 - Do NOT nest lists
 - One slide should be concise and focused
 - Prefer clarity and consistency over verbosity
+
+--------------------------------
+STRUCTURAL SAFETY RULES (STRICT)
+
+- "content" must always be an array of node objects.
+- Every object inside "content" MUST have a valid "type" field.
+- Do NOT nest arrays inside "content".
+- Do NOT use numeric keys (0, 1, 2...) as object properties.
+- column nodes may contain only block-level nodes.
 
 --------------------------------
 FINAL INSTRUCTION

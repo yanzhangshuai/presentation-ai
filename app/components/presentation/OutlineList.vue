@@ -122,6 +122,10 @@ const onDragEnd = () => {
       name: 'fade',
     }"
     ghost-class="opacity-0"
+    :scroll="true"
+    :scroll-sensitivity="80"
+    :scroll-speed="20"
+    :force-fallback="true"
     :animation="200"
     @start="onDragStart"
     @end="onDragEnd"

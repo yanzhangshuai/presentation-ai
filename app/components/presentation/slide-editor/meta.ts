@@ -35,14 +35,21 @@ const nodes = baseNodes.append({
   },
 
   columns: {
-    group: 'block',
-    attrs: {
+    group  : 'block',
+    content: 'column+',
+    attrs  : {
       id   : { default: null },
       count: { default: 2 },
     },
-    content: 'block+',
     toDOM() {
       return ['div', { class: 'columns' }, 0]
+    },
+  },
+
+  column: {
+    content: 'block+',
+    toDOM() {
+      return ['div', { class: 'column' }, 0]
     },
   },
 })

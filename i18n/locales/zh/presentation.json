@@ -2,5 +2,34 @@
   "prompt": "提示",
   "promptPlaceholder": "输入您的演示主题。..",
   "loading": "加载演示大纲",
-  "loadingWait": "请稍等..."
+  "loadingWait": "请稍等。..",
+  "generating": "生成。..",
+  "generatePresentation": "生成演示文稿",
+  "outline": {
+    "title": "大纲",
+    "generateTitle": "生成大纲",
+    "generatingLoading": "正在生成大纲。..",
+    "Generated": "生成大纲",
+    "addCard": "增加卡片",
+    "totalCards": "{count}张卡总数"
+  },
+  "theme": {
+    "title": "主题",
+    "customizeTitle": "自定义主题",
+    "selectTheme": "为演示文稿选择主题",
+    "moreThemes": "更多主题"
+  },
+  "tone": {
+    "title": "演示文稿样式",
+    "selectStyle": "选择演示文稿的样式"
+  },
+  "imageSource": {
+    "title": "图片来源",
+    "ai": "人工智能一代",
+    "stock": "库存图像"
+  },
+  "rootImage": {
+    "placeholderTitle": "还没有图像",
+    "placeholderDesc": "上传或生成图像"
+  }
 }

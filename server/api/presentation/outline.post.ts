@@ -4,7 +4,7 @@ import { streamText } from 'ai'
 const bodySchema = z.object({
   prompt       : z.string(),
   numSlides    : z.number(),
-  language     : z.string().optional().default('en'),
+  language     : z.string().optional().default('简体中文'),
   modelProvider: z.string().optional().default('deepseek'),
   modelId      : z.string().optional().default('deepseek-chat'),
   web          : z.boolean().optional().default(false),
@@ -24,8 +24,6 @@ export default defineEventHandler(async (event) => {
 
   const { prompt, numSlides, language, modelProvider, modelId, web } = data
 
-  const actualLanguage = createLanguageMap[language as keyof typeof createLanguageMap] || language
-
   const currentDate = new Date().toLocaleDateString('en-US', {
     weekday: 'long',
     year   : 'numeric',
@@ -37,7 +35,7 @@ export default defineEventHandler(async (event) => {
 
   const systemPrompt = outlinePromptTemplate
     .replace(/\{numberOfCards\}/g, numSlides.toString())
-    .replace(/\{language\}/g, actualLanguage)
+    .replace(/\{language\}/g, language)
     .replace(/\{currentDate\}/g, currentDate)
     .replace(/\{prompt\}/g, prompt)
 

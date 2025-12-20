@@ -1,12 +1,13 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
+import { PresentationStatus } from '@prisma/client'
 
 const paramSchema = z.string()
 
 const bodySchema = z.object({
   title        : z.string().optional(),
-  theme        : z.string().optional(),
+  themeId      : z.string().optional(),
   language     : z.string().optional(),
   imageSource  : z.string().optional(),
   modelProvider: z.string().optional(),
@@ -38,7 +39,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // 获取body参数
-  const { success: success2, error: error2, data: updateData  } = bodySchema.safeParse(await readBody<EditPresentationReq>(event))
+  const { success: success2, error: error2, data: updateData  } = bodySchema.safeParse(await readBody(event))
 
   if (!success2) {
     throw createError({
@@ -54,15 +55,20 @@ export default defineEventHandler(async (event) => {
     delete updateData.title
   }
 
-  // @ts-expect-error ts-ignore
+  // @ts-expect-error 类型，待处理
   if (updateData.outline?.length) {
-    // 如果更新了大纲，自动更新状态
-    updateData.status = EPresentationStatus.OUTLINE_GENERATED
+    updateData.status = PresentationStatus.OUTLINE
   }
 
   if (updateData.content) {
     // 如果更新了内容，自动更新状态
-    updateData.status = EPresentationStatus.CONTENT_GENERATED
+    updateData.status = PresentationStatus.CONTENT
+  }
+
+  if (updateData.themeId) {
+    // @ts-expect-error 特殊处理
+    updateData.theme = { connect: { id: updateData.themeId } }
+    delete updateData.themeId
   }
 
   // TODO: 权限检查
@@ -72,8 +78,13 @@ export default defineEventHandler(async (event) => {
 
   // 更新传入的字段
   const presentation = await db.presentation.update({
-    where: { id },
-    data : updateData,
+    where: {
+      id,
+      base: {
+        userId: user.id,
+      },
+    },
+    data: updateData,
   })
 
   return presentation

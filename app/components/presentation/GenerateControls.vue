@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { languageSupports } from '#shared/constansts/presentaton'
 /* ------------------ Props ------------------ */
 const { showLabel = true } = defineProps<{
   showLabel?: boolean
@@ -22,9 +23,9 @@ const slides = [1, 5, 10, 15, 20, 25, 30, 40, 50].map((n) => {
 })
 
 /** 语言选项 */
-const languages = Object.keys(createLanguageMap).map((key) => {
+const languages = Object.keys(languageSupports).map((key) => {
   return {
-    label: createLanguageMap[key as LanguageSupport],
+    label: languageSupports[key as LanguageSupport],
     value: key,
   }
 })

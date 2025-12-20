@@ -1,14 +1,13 @@
-import type { InputJsonValue } from '@prisma/client/runtime/client'
-
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
+import  { DocumentType, PresentationStatus, PresentationThemeType } from '@prisma/client'
 
 const bodySchema = z.object({
   title        : z.string(),
   prompt       : z.string().optional().default(''),
-  theme        : z.string().optional().default('Mystique'),
-  language     : z.string().optional().default('en'),
+  themeId      : z.string().optional().default(''),
+  language     : z.string().optional().default('zh'),
   imageSource  : z.string().optional().default('stock'),
   modelProvider: z.string().optional().default('deepseek'),
   modelId      : z.string().optional().default('deepseek-chat'),
@@ -32,22 +31,47 @@ export default defineEventHandler(async (event) => {
     })
   }
 
-  const { title, theme, language, imageSource, modelProvider, modelId, pageStyle, numSlides, tone, prompt } = data
+  let { title, themeId, language, imageSource, modelProvider, modelId, pageStyle, numSlides, tone, prompt } = data
 
   if (!title) {
     throw createError({ statusCode: 400, statusMessage: 'Missing required parameters' })
   }
 
+  // 检查 theme 是否有效
+  let existTheme = false
+  if (themeId) {
+    const count = await db.presentationTheme.count({
+      where: {
+        OR: [
+          { id: themeId, type: PresentationThemeType.CUSTOM, userId: user.id },
+          { id: themeId, type: PresentationThemeType.SYSTEM, userId: null },
+        ],
+      },
+    })
+    existTheme = count > 0
+  }
+
+  if (!existTheme) {
+    const defaultTheme = await db.presentationTheme.findFirst({
+      where: {
+        type: PresentationThemeType.SYSTEM,
+        name: 'Mystique', // 如果不需要空格，删掉尾部空格
+      },
+      select: { id: true },
+    })
+
+    themeId = defaultTheme!.id
+  }
+
   const presentation = await db.baseDocument.create({
     data: {
-      type        : DocType.PRESENTATION,
-      documentType: 'presentation',
+      type        : DocumentType.PRESENTATION,
       title       : title ?? 'Untitled Presentation',
       userId      : user.id,
       presentation: {
         create: {
-          content: { slides: [] } as unknown as InputJsonValue,
-          theme,
+          content: '',
+          themeId,
           language,
           tone,
           imageSource,

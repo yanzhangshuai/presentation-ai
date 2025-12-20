@@ -1,7 +1,8 @@
 <script setup lang="ts">
 import type { PresentationDoc, PresentationSlide } from '~/types/presentation'
 
-import { editPresentation, slidesGenerationStream } from '~/services/presentation'
+import {   PresentationStatus } from '~/types/presentation'
+import { editPresentation, getPresentation, slidesGenerationStream } from '~/services/presentation'
 
 // ------------------------------
 // 页面元信息配置
@@ -17,6 +18,9 @@ definePageMeta({
 
 const route = useRoute()
 const toast = useToast()
+const { setPresentation } = usePresentationStore()
+const { setTheme } = usePresentationThemeStore()
+
 const id = computed(() => route.params.id?.toString())
 
 const presentationDoc = ref<PresentationDoc>({
@@ -31,21 +35,25 @@ const presentationDoc = ref<PresentationDoc>({
 // ------------------------------
 // 数据获取：拉取演示文稿信息
 // ------------------------------
-const { data: presentationData } = useFetch<Presentation, string>(
-  () => `/api/presentation/${id.value}`,
-  { method: 'GET' },
-)
+const { data, status, error } = getPresentation(toValue(id)!)
 
 if (import.meta.client) {
   watchEffect(() => {
-    if (presentationData.value?.status === EPresentationStatus.CONTENT_GENERATED) {
-      presentationDoc.value = JSON.parse(presentationData.value.content)
+    if (!data.value)
+      return
+
+    setTheme(data.value.theme)
+    setPresentation(data.value)
+    if (data.value?.status === PresentationStatus.Content) {
+      presentationDoc.value = JSON.parse(data.value.content)
+
+      console.log('Loaded presentation document:', presentationDoc.value)
     }
     else {
       // 生成
       presentationDoc.value = {
-        id       : presentationData.value!.id,
-        title    : presentationData.value!.base?.title || 'Untitled Presentation',
+        id       : toValue(id)!,
+        title    : data.value!.base?.title || 'Untitled Presentation',
         slides   : [],
         createdAt: Date.now(),
         updatedAt: Date.now(),
@@ -77,9 +85,18 @@ if (import.meta.client) {
 </script>
 
 <template>
-  <ClientOnly>
-    <PresentationSlideEditor v-for="s in presentationDoc.slides" :key="s.id" :slide="s" class="slide-item" />
-  </ClientOnly>
+  <UiPage
+    :status="status"
+    :error="error"
+    :loading-title="$t('presentation.loading')"
+    :loading-text="$t('presentation.loadingWait')"
+  >
+    <div class="presentation-slides flex max-h-full flex-1 pb-20">
+      <div class="mx-auto max-w-[90%] space-y-8 pt-16">
+        <PresentationSlideEditor v-for="s in presentationDoc.slides" :key="s.id" :slide="s" class="slide-item" />
+      </div>
+    </div>
+  </UiPage>
 </template>
 
 <style scoped lang="less">

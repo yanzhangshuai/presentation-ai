@@ -1,34 +1,34 @@
 generator client {
-    provider = "prisma-client-js"
+    provider = "prisma-client"
+    output   = "./generated/prisma"
 }
 
 datasource db {
     provider = "postgresql"
 }
 
-
 // ----------------- 用户相关 -----------------------------
 
 // Necessary for Next auth
 model Account {
-    id                       String  @id @default(cuid())
-    type                     String
-    provider                 String
-    providerAccountId        String
-    refresh_token            String? // @db.Text
-    access_token             String? // @db.Text
-    expires_at               Int?
-    token_type               String?
-    scope                    String?
-    id_token                 String? // @db.Text
-    session_state            String?
+    id                       String  @id @default(cuid()) @map("id")
+    type                     String  @map("type")
+    provider                 String  @map("provider")
+    providerAccountId        String  @map("provider_account_id")
+    refresh_token            String? @map("refresh_token") // @db.Text @
+    access_token             String? @map("access_token") // @db.Text
+    expires_at               Int?    @map("expires_at")
+    token_type               String? @map("token_type")
+    scope                    String? @map("scope")
+    id_token                 String? @map("id_token") // @db.Text
+    session_state            String? @map("session_state")
+    userId                   String  @map("user_id")
+    refresh_token_expires_in Int?    @map("refresh_token_expires_in")
 
-    userId                   String
-    user                     User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    refresh_token_expires_in Int?
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
     @@unique([provider, providerAccountId])
+    @@map("accounts")
 }
 
 enum UserRole {
@@ -38,35 +38,30 @@ enum UserRole {
 
 model User {
     id            String    @id @default(cuid())
-    name          String?
-    email         String?   @unique
-    password      String?
-    emailVerified DateTime?
-    image         String?
-    headline      String?   
-    language      String?   // 页面语言
-    
-    role      UserRole @default(USER)
-    hasAccess Boolean  @default(false)
+    name          String?   @map("name")
+    email         String?   @unique @map("email")
+    password      String?   @map("password")
+    emailVerified DateTime? @map("email_verified")
+    image         String?   @map("image")
+    headline      String?   @map("headline") // 用户头衔
+    language      String?   @default("en") @map("language") // 页面语言
+    role          UserRole  @default(USER) @map("role")
+    hasAccess     Boolean   @default(false) @map("has_access") // 是否有访问权限
+    bio           String?   @map("bio") @db.Text
+    interests     String[]  @map("interests")
+    location      String?   @map("location")
+    website       String?   @map("website")
+    createdAt     DateTime  @default(now()) @map("created_at")
+    updatedAt     DateTime  @default(now()) @updatedAt @map("updated_at")
 
-    bio           String?   @db.Text
-    interests     String[]
-    location      String?
-    website       String?
-    accounts      Account[]
+    accounts          Account[]
+    documents         BaseDocument[]
+    favorites         FavoriteDocument[]
+    presentationTheme PresentationTheme[]
+    imageLibrary      ImageLibrary[]
 
-    createdAt     DateTime  @default(now())
-    updatedAt     DateTime  @default(now()) @updatedAt
-    
-    // Document system
-    documents BaseDocument[]
-    favorites FavoriteDocument[]
-
-    CustomTheme CustomTheme[]
-
-    GeneratedImage GeneratedImage[]
+    @@map("users")
 }
-
 
 //----------------- 文档相关 -----------------------------
 
@@ -84,100 +79,114 @@ enum DocumentType {
 }
 
 model BaseDocument {
-    id           String        @id @default(cuid())
-    title        String
-    type         DocumentType
-    isPublic     Boolean       @default(false)
-    thumbnailUrl String?
-    documentType String
+    id           String       @id @default(cuid()) @map("id")
+    title        String       @map("title")
+    type         DocumentType @map("type")
+    isPublic     Boolean      @default(false) @map("is_public")
+    thumbnailUrl String?      @map("thumbnail_url")
+    userId       String       @map("user_id")
+    createdAt    DateTime     @default(now()) @map("created_at")
+    updatedAt    DateTime     @default(now()) @updatedAt @map("updated_at")
 
-    userId       String
-    user         User          @relation(fields: [userId], references: [id])
-
-    createdAt    DateTime      @default(now())
-    updatedAt    DateTime      @default(now()) @updatedAt
-    
-    // Relations to specific document types
+    user         User               @relation(fields: [userId], references: [id])
+    favorites    FavoriteDocument[]
     presentation Presentation?
 
-    // Favorites
-    favorites FavoriteDocument[]
+    @@index([userId, createdAt]) // BaseDocument
+    @@map("base_documents")
 }
-
 
 enum PresentationStatus {
-    DRAFT               // 步骤 1：配置完成，但未生成大纲
-    OUTLINE_GENERATED    // 步骤 2：大纲已生成，主题/图片可选
-    CONTENT_GENERATED    // 步骤 3：全部内容生成完成
-    FAILED               // AI 生成失败
+    DRAFT // 步骤 1：配置完成，但未生成大纲
+    OUTLINE // 步骤 2：大纲已生成，主题/图片可选
+    CONTENT // 步骤 3：全部内容生成完成
+    FAILED // AI 生成失败
 }
+
 // pptx
 model Presentation {
-    id                String       @id @default(cuid())
-    content           String        // Presentation content including slides, theme, etc.
-    theme             String       @default("default")
-    imageSource       String       @default("ai") // The image model used for generating images
-    prompt            String? // The prompt used for generating the presentation
-    modelProvider     String? // 可选
-    modelId           String?   // 可选
-    pageStyle         String? // The style of each slide/page
-    numSlides         Int? // Number of slides to generate
-    tone              String? // The style of the presentation
-    language          String?      @default("zh") // The language of the presentation
-    outline           String[] // Store the presentation outline
-    searchResults     Json? // Store the search results
+    id            String   @id @default(cuid()) @map("id")
+    content       String   @map("content") // Presentation content including slides, theme, etc.
+    imageSource   String   @default("ai") @map("image_source") // The image model used for generating images
+    prompt        String?  @map("prompt") // The prompt used for generating the presentation
+    modelProvider String?  @map("model_provider") // 可选
+    modelId       String?  @map("model_id") // 可选
+    pageStyle     String?  @map("page_style") // The style of each slide/page
+    numSlides     Int?     @map("num_slides") // Number of slides to generate
+    tone          String?  @map("tone") // The style of the presentation
+    language      String?  @default("zh") @map("language") // The language of the presentation
+    outline       String[] @map("outline") // Store the presentation outline
+    searchResults Json?    @map("search_results") // Store the search results
+    templateId    String?  @map("template_id")
+    themeId       String   @map("theme_id") // Reference to custom theme if used
 
-    base              BaseDocument @relation(fields: [id], references: [id], onDelete: Cascade)
-    templateId        String?
-    
-    customThemeId     String? // Reference to custom theme if used
-    customTheme       CustomTheme? @relation(fields: [customThemeId], references: [id])
-    status            PresentationStatus @default(DRAFT) // 状态 of the presentation
-   
+    base   BaseDocument       @relation(fields: [id], references: [id], onDelete: Cascade)
+    theme  PresentationTheme? @relation(fields: [themeId], references: [id])
+    status PresentationStatus @default(DRAFT) @map("status") // 状态 of the presentation
+
+    @@index([status]) // Presentation
+    @@map("presentations")
 }
-
 
 // ----------------- 主题相关 -----------------------------
-// 自定义主题
-model CustomTheme {
-    id            String         @id @default(cuid())
-    name          String
-    description   String?
-    themeData     Json // Store the complete theme configuration
-
-    logoUrl       String?
-    isPublic      Boolean        @default(false)
-
-    presentations Presentation[]
-    
-    userId        String
-    user          User           @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-    createdAt     DateTime       @default(now())
-    updatedAt     DateTime       @updatedAt
-
-    @@index([userId])
+enum PresentationThemeType {
+    SYSTEM // 系统主题
+    CUSTOM // 自定义主题
 }
 
+model PresentationTheme {
+    id          String                @id @default(cuid()) @map("id")
+    name        String                @map("name")
+    description String?               @map("description")
+    themeData   Json                  @map("theme_data") // Store the complete theme configuration
+    logoUrl     String?               @map("logo_url")
+    isPublic    Boolean               @default(false) @map("is_public")
+    type        PresentationThemeType @map("type")
+    userId      String?               @map("user_id")
+    user        User?                 @relation(fields: [userId], references: [id], onDelete: Cascade)
+    createdAt   DateTime              @default(now()) @map("created_at")
+    updatedAt   DateTime              @default(now()) @updatedAt @map("updated_at")
+
+    presentations Presentation[]
+
+    @@unique([name, userId])
+    @@index([userId])
+    @@index([type, isPublic]) // PresentationTheme
+    @@map("presentation_themes")
+}
 
 // ----------------- 收藏相关 -----------------------------
 // 收藏的文档
 model FavoriteDocument {
-    id         String       @id @default(uuid())
-    documentId String
-    document   BaseDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+    id         String @id @default(uuid()) @map("id")
+    documentId String @map("document_id")
+    userId     String @map("user_id")
 
-    userId     String
-    user       User         @relation(fields: [userId], references: [id])
+    user     User         @relation(fields: [userId], references: [id])
+    document BaseDocument @relation(fields: [documentId], references: [id], onDelete: Cascade)
+
+    @@map("favorite_documents")
 }
 
-// ----------------- AI生成的图片 -----------------------------
-model GeneratedImage {
-    id        String   @id @default(cuid())
-    url       String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
-    userId    String
-    user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-    prompt    String
+// ----------------- 图库 -----------------------------
+enum ImageLibraryType {
+    UPLOADED // 用户上传
+    AI // AI生成图片
+}
+
+model ImageLibrary {
+    id        String           @id @default(cuid()) @map("id")
+    url       String           @map("url")
+    type      ImageLibraryType @map("type")
+    prompt    String           @map("prompt")
+    provider  String           @map("provider")
+    modelId   String           @map("model_id")
+    userId    String           @map("user_id")
+    createdAt DateTime         @default(now()) @map("created_at")
+    updatedAt DateTime         @default(now()) @updatedAt @map("updated_at")
+
+    user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+    @@index([userId, type])
+    @@map("image_libraries")
 }

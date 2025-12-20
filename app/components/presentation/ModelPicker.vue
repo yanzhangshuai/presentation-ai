@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { modelSupports } from '#shared/constansts/ai'
 /* ------------------ Model 定义 ------------------ */
 // Model 提供商
 const provider = defineModel<ModelProvider>('provider', { default: 'deepseek' })
@@ -17,7 +18,7 @@ const value = computed<string>({
 })
 
 /** 构建下拉选项 */
-const items = modelSupportList.map(m => ({
+const items = modelSupports.map(m => ({
   label: m.name,
   value: `${m.provider}|${m.modelId}`,
   icon : 'i-lucide-bot',

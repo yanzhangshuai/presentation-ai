@@ -10,7 +10,9 @@
     "postinstall": "node scripts/postinstall.js",
     "lint": "eslint --fix --ext .js,.ts,.vue . ",
     "i18n": "node scripts/i18n.js",
-    "db:push": "prisma db push --config ./prisma/prisma.config.ts",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "prisma db seed",
+    "db:push": "pnpm db:migrate && pnpm db:seed",
     "pm2:start": "dotenv -e .env.production -- pm2 start ./scripts/ecosystem.config.cjs --env production",
     "pm2:stop": "pm2 stop presentation-ai",
     "pm2:del": "pm2 delete presentation-ai"
@@ -42,7 +44,6 @@
     "nuxt": "^4.2.1",
     "ollama-ai-provider": "^1.2.0",
     "p-limit": "^7.2.0",
-    "pg": "^8.16.3",
     "prosemirror-commands": "^1.7.1",
     "prosemirror-history": "^1.5.0",
     "prosemirror-keymap": "^1.2.3",

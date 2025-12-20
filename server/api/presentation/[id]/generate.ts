@@ -1,13 +1,16 @@
+import type { LanguageSupport } from '~~/shared/types/presentation'
+
 import z from 'zod'
 import pLimit from 'p-limit'
 import { db } from '~~/server/db'
 import { generateText } from 'ai'
 import { getServerSession } from '#auth'
-import { slideNodesPromptTemplate } from '~~/server/utils/prompt'
+import { languageSupports } from '#shared/constansts/presentaton'
+import { slideNodesPromptTemplate } from '~~/server/utils/ai/prompt'
 import {
   PresentationContextSchema,
   renderPresentationContext,
-} from '~~/server/utils/presentation'
+} from '~~/server/utils/presentation-context'
 
 const paramSchema = z.string()
 
@@ -29,7 +32,7 @@ export default defineEventHandler(async (event) => {
 
   const outline = presentation.outline || []
   const tone = presentation.tone || 'Professional'
-  const language = presentation.language || 'English'
+  const language = languageSupports[presentation.language as LanguageSupport] || 'English'
 
   // 解析大纲项
   const topics = outline.map(item => parseMarkdownOutline(item))

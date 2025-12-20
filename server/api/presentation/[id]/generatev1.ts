@@ -2,7 +2,7 @@ import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 import { streamObject, streamText } from 'ai'
-import { streamJsonlFromAIAsSSE } from '~~/server/utils/streamJsonlFromAIAsSSE'
+import { streamJsonlFromAIAsSSE } from '~~/server/utils/stream-jsonl-sse'
 
 const paramSchema = z.string()
 export default defineEventHandler(async (event) => {
@@ -43,7 +43,7 @@ export default defineEventHandler(async (event) => {
 
   const tone = 'Professional'
   const numSlides = presentation.numSlides || outline.length
-  const language = presentation.language || createLanguageMap.en
+  const language = presentation.language || 'zh'
   const modelProvider = presentation.modelProvider || 'deepseek'
   const modelId = presentation.modelId || 'deepseek-chat'
 

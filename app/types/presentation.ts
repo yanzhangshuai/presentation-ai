@@ -1,3 +1,33 @@
+import type { BaseDocument } from './base-document'
+import type { PresentationTheme } from './presentation-theme'
+
+export interface Presentation {
+  id           : string
+  content      : string
+  imageSource  : string
+  prompt       : string | null
+  modelProvider: string | null
+  modelId      : string | null
+  pageStyle    : string | null
+  numSlides    : number | null
+  tone         : string | null
+  language     : string | null
+  outline      : string[]
+  searchResults: any
+  status       : PresentationStatus
+  templateId   : string | null
+  themeId      : string
+  theme        : PresentationTheme
+  base         : BaseDocument
+}
+
+export enum PresentationStatus  {
+  Draft  = 'DRAFT',
+  Outline = 'OUTLINE',
+  Content = 'CONTENT',
+  Failed = 'FAILED',
+}
+
 export type LayoutType = 'left' | 'right' | 'top' | 'bottom' | 'background' | 'none'
 
 export interface SlideDoc {
@@ -28,7 +58,7 @@ export interface PresentationSlide {
 /**
  * 根图片信息
  */
-export interface RootImage  extends Record<string, any> {
+export interface RootImage extends Record<string, any> {
   query        : string
   url?         : string
   cropSettings?: ImageCropSettings

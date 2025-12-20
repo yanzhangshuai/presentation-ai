@@ -5,15 +5,7 @@ const { status } = useAuth()
 const { signIn } = useSign() // 登录方法
 const { safeAction } = useSafeActions()
 
-const params = reactive({
-  prompt       : '',
-  modelProvider: 'deepseek' as ModelProvider,
-  modelId      : 'deepseek-chat' as string,
-  numSlides    : 5,
-  language     : 'zh' as LanguageSupport,
-  pageStyle    : 'default' as string,
-  web          : false,
-})
+const { state } = storeToRefs(usePresentationCreateStore())
 
 // ------------------------------
 // 生成演示文稿函数
@@ -29,13 +21,13 @@ const { run: onGenerate, loading: isGenerating } = safeAction(async () => {
   const res = await $fetch('/api/presentation/create', {
     method: 'POST',
     body  : {
-      title        : toValue(params).prompt.substring(0, 50) || 'Untitled Presentation',
-      language     : toValue(params).language,
-      modelProvider: toValue(params).modelProvider,
-      modelId      : toValue(params).modelId,
-      pageStyle    : toValue(params).pageStyle,
-      numSlides    : toValue(params).numSlides,
-      prompt       : toValue(params).prompt,
+      title        : toValue(state).prompt.substring(0, 50) || 'Untitled Presentation',
+      language     : toValue(state).language,
+      modelProvider: toValue(state).modelProvider,
+      modelId      : toValue(state).modelId,
+      pageStyle    : toValue(state).pageStyle,
+      numSlides    : toValue(state).numSlides,
+      prompt       : toValue(state).prompt,
     },
   })
 
@@ -58,18 +50,18 @@ const { run: onGenerate, loading: isGenerating } = safeAction(async () => {
         <div class="space-y-2">
           <h3>{{ $t('dashboard.presendAbout') }}</h3>
           <DashboardInput
-            v-model="params.prompt"
-            v-model:web="params.web"
+            v-model="state.prompt"
+            v-model:web="state.web"
             @generate="onGenerate"
           />
         </div>
 
         <PresentationGenerateControls
-          v-model:language="params.language"
-          v-model:num-slides="params.numSlides"
-          :model-id="params.modelId"
-          :model-provider="params.modelProvider"
-          :page-style="params.pageStyle"
+          v-model:language="state.language"
+          v-model:num-slides="state.numSlides"
+          :model-id="state.modelId"
+          :model-provider="state.modelProvider"
+          :page-style="state.pageStyle"
           show-label
         />
 
@@ -77,7 +69,7 @@ const { run: onGenerate, loading: isGenerating } = safeAction(async () => {
           size="xl"
           class="flex ml-auto cursor-pointer"
           :loading="isGenerating"
-          :disabled="!params.prompt || isGenerating"
+          :disabled="!state.prompt || isGenerating"
           @click="onGenerate"
         >
           <UIcon name="i-lucide-rocket" />
@@ -88,10 +80,10 @@ const { run: onGenerate, loading: isGenerating } = safeAction(async () => {
       <!-- 示例快速填充 -->
       <DashboardExamples
         @click="(e) => {
-          params.prompt = e.title
-          params.numSlides = e.slides
-          params.language = e.language
-          params.pageStyle = e.style
+          state.prompt = e.title
+          state.numSlides = e.slides
+          state.language = e.language
+          state.pageStyle = e.style
         }"
       />
 

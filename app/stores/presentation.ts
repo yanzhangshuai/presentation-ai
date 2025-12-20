@@ -1,3 +1,5 @@
+import type { Presentation } from '~/types/presentation'
+
 export const usePresentationStore = defineStore('presentation', () => {
   const presentation = ref<Presentation>()
 

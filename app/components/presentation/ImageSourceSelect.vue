@@ -37,26 +37,6 @@ const items = ref<SelectItem[]>([
     value: `stock_${source.value}`,
   })),
 ])
-
-// const current = computed({
-//   get() {
-//     console.log('Current value:', value.value)
-//     if (value.value.startsWith('stock_')) {
-//       return value.value.replace('stock_', '') as ImageStockSource
-//     }
-//     else {
-//       return value.value.replace('ai_', '') as ImageModelSupport
-//     }
-//   },
-//   set(val: string) {
-//     if (IMAGE_STOCK_SOURCES.find(source => source.value === val)) {
-//       value.value = `stock_${val}`
-//     }
-//     else {
-//       value.value = `ai_${val}`
-//     }
-//   },
-// })
 </script>
 
 <template>

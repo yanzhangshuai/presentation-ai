@@ -1,21 +1,3 @@
-import type { LanguageSupport, ModelProvider, PresentationTone } from '../types/presentation'
-
-export const createLanguageMap: Record<LanguageSupport, string> = {
-  'en'   : 'English (US)',
-  'pt'   : 'Portuguese',
-  'es'   : 'Spanish',
-  'fr'   : 'French',
-  'de'   : 'German',
-  'it'   : 'Italian',
-  'ja'   : 'Japanese',
-  'ko'   : 'Korean',
-  'zh'   : '简体中文',
-  'zh-TW': '繁體中文',
-  'ru'   : 'Russian',
-  'hi'   : 'Hindi',
-  'ar'   : 'Arabic',
-}
-
 // const models1 = [
 //   {
 //     id      : 'ollama-llama3.1:8b',
@@ -69,7 +51,9 @@ export const createLanguageMap: Record<LanguageSupport, string> = {
 //   },
 // ]
 
-export const modelSupportList: {
+import type { ImageModelSupport, ModelProvider } from '../types/ai'
+
+export const modelSupports: {
   modelId : string
   name    : string
   provider: ModelProvider
@@ -86,10 +70,8 @@ export const modelSupportList: {
   },
 ]
 
-export const presentationTones: Record<PresentationTone, string> = {
-  professional: 'Professional',
-  creative    : 'Creative',
-  minimalist  : 'Minimalist',
-  bold        : 'Bold',
-  elegant     : 'Elegant',
-}
+export const IMAGE_MODELS: { value: ImageModelSupport, label: string }[] = [
+  { value: 'black-forest-labs/FLUX.1-schnell-Free', label: 'FLUX Fast' },
+  { value: 'black-forest-labs/FLUX.1-dev', label: 'FLUX Developer' },
+  { value: 'black-forest-labs/FLUX1.1-pro', label: 'FLUX Premium' },
+]

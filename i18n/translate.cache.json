@@ -378,5 +378,95 @@
     "zh": "加载演示大纲",
     "zh-hk": "加載演示大綱",
     "jp": "プレゼンテーション概要を読み込んでいます"
+  },
+  "presentation_Generating...": {
+    "zh": "生成。..",
+    "zh-hk": "生成。 ..",
+    "jp": "生成する.."
+  },
+  "presentation_Outline": {
+    "zh": "大纲",
+    "zh-hk": "大綱",
+    "jp": "概要"
+  },
+  "presentation_Generating outline...": {
+    "zh": "正在生成大纲。..",
+    "zh-hk": "正在生成大綱。 ..",
+    "jp": "概要を生成します。.."
+  },
+  "presentation_Generate Presentation": {
+    "zh": "生成演示文稿",
+    "zh-hk": "生成演示文稿",
+    "jp": "プレゼンテーションを生成"
+  },
+  "presentation_Generate Outline": {
+    "zh": "生成大纲",
+    "zh-hk": "生成大綱",
+    "jp": "アウトラインを生成"
+  },
+  "presentation_Customize Theme": {
+    "zh": "自定义主题",
+    "zh-hk": "自定義主題",
+    "jp": "テーマをカスタマイズ"
+  },
+  "presentation_Add card": {
+    "zh": "增加卡片",
+    "zh-hk": "新增卡片",
+    "jp": "カードを追加"
+  },
+  "presentation_Theme": {
+    "zh": "主题",
+    "zh-hk": "主題",
+    "jp": "テーマ"
+  },
+  "presentation_Select a theme for your presentation": {
+    "zh": "为演示文稿选择主题",
+    "zh-hk": "為演示文稿選擇主題",
+    "jp": "プレゼンテーションのテーマを選択"
+  },
+  "presentation___PH_0__ cards total": {
+    "zh": "__PH_0__张卡总数",
+    "zh-hk": "__PH_0__張卡總數",
+    "jp": "__PH_0__カード合計"
+  },
+  "presentation_Image Source": {
+    "zh": "图片来源",
+    "zh-hk": "圖片來源",
+    "jp": "画像ソース"
+  },
+  "presentation_More theme": {
+    "zh": "更多主题",
+    "zh-hk": "更多主題",
+    "jp": "もっとテーマ"
+  },
+  "presentation_AI Generation": {
+    "zh": "人工智能一代",
+    "zh-hk": "人工智慧一代",
+    "jp": "AI 世代"
+  },
+  "presentation_Presentation Style": {
+    "zh": "演示文稿样式",
+    "zh-hk": "演示文稿樣式",
+    "jp": "プレゼンテーションスタイル"
+  },
+  "presentation_Select a style for your presentation": {
+    "zh": "选择演示文稿的样式",
+    "zh-hk": "選擇演示文稿的樣式",
+    "jp": "プレゼンテーションのスタイルを選択"
+  },
+  "presentation_Stock Images": {
+    "zh": "库存图像",
+    "zh-hk": "庫存影像",
+    "jp": "ストックイメージ"
+  },
+  "presentation_Upload or generate an image": {
+    "zh": "上传或生成图像",
+    "zh-hk": "上傳或生成影像",
+    "jp": "画像のアップロードまたは生成"
+  },
+  "presentation_No image yet": {
+    "zh": "还没有图像",
+    "zh-hk": "還沒有影像",
+    "jp": "まだ画像はない"
   }
 }

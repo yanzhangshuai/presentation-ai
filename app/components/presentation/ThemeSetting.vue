@@ -1,32 +1,48 @@
 <script setup lang="tsx">
 import { UButton } from '#components'
 
+import type { PresentationTheme, ThemeColors, ThemeShadows } from '~/types/presentation-theme'
+
+import {  PresentationThemeType } from '~/types/presentation-theme'
+import { listPresentationTheme } from '~/services/presentation-theme'
+
 const emit = defineEmits<{
-  (e: 'change', val: string): void
+  change: [string]
 }>()
 
-const theme = defineModel<string>({
-  default: 'Forest',
+const { isDark } = useAppTheme()
+
+const themeStore = usePresentationThemeStore()
+const { theme } = storeToRefs(themeStore)
+
+const { data }  = await listPresentationTheme({
+  type: PresentationThemeType.System,
 })
 
-console.log('theme value:', theme.value)
+const themes = data?.value?.items || []
 
-const { isDark } = useAppTheme()
-const { sharedThemes } = useAvailableThemes()
+if (!toValue(theme)) {
+  // 默认值
+  const def = themes.find(item => item.name === 'Mystique')!
+  themeStore.setTheme(def)
+  emit('change', def.id)
+}
 
 const onMoreTheme = () => {
 
 }
 
-const onChange = (newTheme: string) => {
-  emit('change', newTheme)
-  theme.value = newTheme
+const onChange = (newTheme: PresentationTheme) => {
+  themeStore.setTheme(newTheme)
+  emit('change', newTheme.id)
 }
 
 // 主题属性类型
-const themeItem = (item: ThemeProperties) => {
-  const modeColors: ThemeColors = isDark.value ? item.colors.dark : item.colors.light
-  const modeShadows: ThemeShadows = isDark.value ? item.shadows.dark : item.shadows.light
+const themeItem = (item: PresentationTheme) => {
+  const { themeData, name, id, description } = item
+
+  const modeColors: ThemeColors = isDark.value ? themeData.colors.dark : themeData.colors.light
+  const modeShadows: ThemeShadows = isDark.value ? themeData.shadows.dark : themeData.shadows.light
 
   const colors = [modeColors.primary, modeColors.accent, modeColors.secondary]
   return (
@@ -34,16 +50,16 @@ const themeItem = (item: ThemeProperties) => {
       variant="ghost"
       class={cn(
         'group block relative space-y-2 rounded-lg border p-4 text-left transition-all',
-        theme.value === item.name ? 'border-primary bg-primary/5' : 'border-muted hover:border-primary/50 hover:bg-muted/50',
+        toValue(theme)?.id === id ? 'border-primary bg-primary/5' : 'border-muted hover:border-primary/50 hover:bg-muted/50',
       )}
-      onClick={() => onChange(item.name)}
+      onClick={() => onChange(item)}
 
       style={{
-        borderRadius: item.borderRadius,
+        borderRadius: themeData.borderRadius,
         boxShadow   : modeShadows.card,
-        transition  : item.transitions.default,
+        transition  : themeData.transitions.default,
         backgroundColor:
-          theme.value === item.name
+          toValue(theme)?.id === id
             ? `${modeColors.primary}${isDark ? '15' : '08'}`
             : isDark
               ? 'rgba(0,0,0,0.3)'
@@ -54,20 +70,20 @@ const themeItem = (item: ThemeProperties) => {
         class="font-medium"
         style={{
           color     : modeColors.heading,
-          fontFamily: item.fonts.heading,
+          fontFamily: themeData.fonts.heading,
         }}
       >
-        {item.name}
+        {name}
       </h5>
 
       <p
         class="text-sm"
         style={{
           color     : modeColors.text,
-          fontFamily: item.fonts.body,
+          fontFamily: themeData.fonts.body,
         }}
       >
-        {item.description}
+        {description}
       </p>
 
       {/* 颜色 */}
@@ -88,11 +104,11 @@ const themeItem = (item: ThemeProperties) => {
       >
         <span class="block">
           Heading:
-          {item.fonts.heading}
+          {themeData.fonts.heading}
         </span>
         <span class="block">
           Body:
-          {item.fonts.body}
+          {themeData.fonts.body}
         </span>
       </div>
 
@@ -109,7 +125,7 @@ const themeItem = (item: ThemeProperties) => {
     </UButton>
   </div>
   <div class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-    <component :is="themeItem(item)" v-for="item in sharedThemes" :key="item.name" />
+    <component :is="themeItem(item)" v-for="item in themes" :key="item.id" />
   </div>
 </template>
 
