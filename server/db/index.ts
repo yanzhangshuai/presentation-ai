@@ -1,6 +1,6 @@
 import process from 'node:process'
-import { PrismaClient } from '@prisma/client'
 import { PrismaPg } from '@prisma/adapter-pg'
+import { PrismaClient } from '#shared/prisma/client'
 
 const connectionString = `${process.env.DATABASE_URL}`
 

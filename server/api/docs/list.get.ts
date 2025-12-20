@@ -1,9 +1,9 @@
-import type { BaseDocument } from '@prisma/client'
+import type { BaseDocument } from  '#shared/prisma/client'
 
 import { z } from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { DocumentType } from '@prisma/client'
+import { DocumentType } from '#shared/prisma/client'
 
 const querySchema = z.object({
   page    : z.coerce.number().int().positive().optional().default(1),

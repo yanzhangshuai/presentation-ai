@@ -1,6 +1,6 @@
 generator client {
     provider = "prisma-client"
-    output   = "./generated/prisma"
+    output   = "../shared/prisma"
 }
 
 datasource db {
@@ -178,9 +178,9 @@ model ImageLibrary {
     id        String           @id @default(cuid()) @map("id")
     url       String           @map("url")
     type      ImageLibraryType @map("type")
-    prompt    String           @map("prompt")
-    provider  String           @map("provider")
-    modelId   String           @map("model_id")
+    prompt    String?           @map("prompt")
+    provider  String?           @map("provider")
+    modelId   String?           @map("model_id")
     userId    String           @map("user_id")
     createdAt DateTime         @default(now()) @map("created_at")
     updatedAt DateTime         @default(now()) @updatedAt @map("updated_at")

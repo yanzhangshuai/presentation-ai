@@ -1,7 +1,7 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import  { DocumentType, PresentationStatus, PresentationThemeType } from '@prisma/client'
+import  { DocumentType, PresentationStatus, PresentationThemeType } from '#shared/prisma/client'
 
 const bodySchema = z.object({
   title        : z.string(),
@@ -21,7 +21,7 @@ export default defineEventHandler(async (event) => {
   const user = session!.user
 
   // 获取body参数
-  const { success, error, data } = bodySchema.safeParse(await readBody<CreatePresentationReq>(event))
+  const { success, error, data } = bodySchema.safeParse(await readBody(event))
 
   if (!success) {
     throw createError({

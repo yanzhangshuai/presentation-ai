@@ -117,6 +117,21 @@ export async function slidesGenerationStream(id: string, options?: {
   }
 }
 
+interface EditPresentationReq {
+  title?        : string
+  prompt?       : string
+  themeId?      : string
+  language?     : string
+  imageSource?  : string
+  modelProvider?: string
+  modelId?      : string
+  pageStyle?    : string
+  numSlides?    : number
+  tone?         : string
+  outline?      : string[]
+  content?      : string
+}
+
 /**
  *  编辑presentation
  * @param id
@@ -125,7 +140,7 @@ export async function slidesGenerationStream(id: string, options?: {
  */
 export function editPresentation(id: string, data: EditPresentationReq) {
   return $fetch(`/api/presentation/${id}`, {
-    method: 'POST',
+    method: 'PUT',
     body  : data,
   })
 }

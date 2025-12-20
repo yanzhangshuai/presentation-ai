@@ -12,7 +12,7 @@ const bodySchema = z.object({
 
 export default defineEventHandler(async (event) => {
   // 获取body参数
-  const { success, error, data } = bodySchema.safeParse(await readBody<GenerateOutlineReq>(event))
+  const { success, error, data } = bodySchema.safeParse(await readBody(event))
 
   if (!success) {
     throw createError({

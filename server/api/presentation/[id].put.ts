@@ -1,7 +1,7 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { PresentationStatus } from '@prisma/client'
+import { PresentationStatus } from '#shared/prisma/client'
 
 const paramSchema = z.string()
 

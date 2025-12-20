@@ -18,19 +18,14 @@ definePageMeta({
 
 const route = useRoute()
 const toast = useToast()
-const { setPresentation } = usePresentationStore()
+
+const presentationStore = usePresentationStore()
+const { presentationDoc } = storeToRefs(presentationStore)
+const { setPresentation, autoSaveDoc, addSlide, saveDoc } = presentationStore
+
 const { setTheme } = usePresentationThemeStore()
 
 const id = computed(() => route.params.id?.toString())
-
-const presentationDoc = ref<PresentationDoc>({
-  id         : '',
-  title      : '',
-  description: '',
-  slides     : [],
-  createdAt  : 0,
-  updatedAt  : 0,
-})
 
 // ------------------------------
 // 数据获取：拉取演示文稿信息
@@ -44,12 +39,7 @@ if (import.meta.client) {
 
     setTheme(data.value.theme)
     setPresentation(data.value)
-    if (data.value?.status === PresentationStatus.Content) {
-      presentationDoc.value = JSON.parse(data.value.content)
-
-      console.log('Loaded presentation document:', presentationDoc.value)
-    }
-    else {
+    if (data.value?.status !== PresentationStatus.Content) {
       // 生成
       presentationDoc.value = {
         id       : toValue(id)!,
@@ -61,13 +51,13 @@ if (import.meta.client) {
 
       slidesGenerationStream(toValue(id)!, {
         onUpdate: (slide: PresentationSlide) => {
-          presentationDoc.value.slides.push(slide)
+          addSlide(slide)
         },
         onFinish: () => {
-          editPresentation(toValue(id)!, {
-            content: JSON.stringify(presentationDoc.value),
-          })
-          //
+          saveDoc()
+            .then(() => {
+              autoSaveDoc()
+            })
             .catch((err) => {
               toast.add({
                 title: err.message || 'Failed to save generated presentation.',
@@ -79,6 +69,9 @@ if (import.meta.client) {
           console.error('Slides generation stream error:', err)
         },
       })
+    }
+    else {
+      autoSaveDoc()
     }
   })
 }
@@ -93,7 +86,7 @@ if (import.meta.client) {
   >
     <div class="presentation-slides flex max-h-full flex-1 pb-20">
       <div class="mx-auto max-w-[90%] space-y-8 pt-16">
-        <PresentationSlideEditor v-for="s in presentationDoc.slides" :key="s.id" :slide="s" class="slide-item" />
+        <PresentationSlideEditor v-for="(s, index) in presentationDoc.slides" :key="s.id" :slide-id="s.id" :slide-idx="index" class="slide-item" />
       </div>
     </div>
   </UiPage>

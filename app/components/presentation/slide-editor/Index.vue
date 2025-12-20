@@ -7,39 +7,46 @@ import RootImage from './RootImage.vue'
 // import Controls from './Controls.vue'
 
 const props = defineProps<{
-  slide    : PresentationSlide
+  slideIdx : number
+  slideId  : string
   editable?: boolean
 }>()
 
 const emit = defineEmits<{
   update: [slide: PresentationSlide]
 }>()
+const presentationStore = usePresentationStore()
+const { slides } = storeToRefs(presentationStore)
+
+const slide = computed(() => {
+  return slides.value.find(s => s.id === props.slideId)!
+})
 
 function onContentUpdate(content: SlideNode[]) {
-  emit('update', {
-    ...props.slide,
-    content,
-  })
+  // emit('update', {
+  //   ...props.slide,
+  //   content,
+  // })
 }
 
 const layoutType = computed(() => {
-  if (props.slide.layout === 'none')
+  if (slide.value.layout === 'none')
     return 'none'
-  if (props.slide.layout === 'left')
+  if (slide.value.layout === 'left')
     return 'flex-row-reverse'
-  if (props.slide.layout === 'right')
+  if (slide.value.layout === 'right')
     return 'flex-row'
-  if (props.slide.layout === 'top')
+  if (slide.value.layout === 'top')
     return 'flex-col-reverse'
-  if (props.slide.layout === 'bottom')
+  if (slide.value.layout === 'bottom')
     return 'flex-col'
-  if (props.slide.layout === 'background')
+  if (slide.value.layout === 'background')
     return 'flex-col'
   return ''
 })
 
 const MaxW = computed(() => {
-  const w = props.slide.width ?? 'M'
+  const w = slide.value.width ?? 'M'
 
   const sizeMap: Record<string, string> = {
     S: 'max-w-4xl',
@@ -51,13 +58,11 @@ const MaxW = computed(() => {
 })
 
 const style = computed(() => {
-  const slide = props.slide
-
   return {
     borderRadius   : 'var(--presentation-border-radius, 0.5rem)',
-    backgroundColor: slide.bgColor || undefined,
-    backgroundImage: slide.layout === 'background' && slide.rootImage?.url
-      ? `url(${slide.rootImage.url})`
+    backgroundColor: toValue(slide)?.bgColor || undefined,
+    backgroundImage: toValue(slide)?.layout === 'background' && toValue(slide)?.rootImage?.url
+      ? `url(${toValue(slide)?.rootImage?.url || ''})`
       : undefined,
     backgroundSize    : 'cover',
     backgroundPosition: 'center',
@@ -78,7 +83,7 @@ const style = computed(() => {
     <Controls :slide="slide">
       <div class="flex" :data-layout="slide.layout">
         <!-- 主视觉（layout image） -->
-        <RootImage class="slide-image" :root-image="slide.rootImage" :layout="slide.layout" />
+        <RootImage class="slide-image" :slide-idx="slideIdx" :slide-id="slideId" />
 
         <!-- 内容区 -->
         <ProsemirrorEditor

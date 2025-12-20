@@ -70,7 +70,7 @@ const bg = computed(() => {
       <template #left>
         <!-- logo -->
         <NuxtLinkLocale to="/" class="text-xl i-flex-center">
-          <UIcon name="i-custom-headache" />
+          <UIcon name="i-lucide-audio-waveform" class="text-primary" />
         </NuxtLinkLocale>
 
         <!-- 分隔符 -->

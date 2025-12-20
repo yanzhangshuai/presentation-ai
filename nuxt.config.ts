@@ -11,6 +11,7 @@ export default defineNuxtConfig({
     '@vueuse/nuxt',
     '@nuxtjs/i18n',
     '@nuxt/ui',
+    '@uploadthing/nuxt',
   ],
 
   routeRules: {
@@ -34,6 +35,18 @@ export default defineNuxtConfig({
     // model 相关 API Key
     openaiApiKey  : process.env.OPENAI_API_KEY,
     deepseekApiKey: process.env.DEEPSEEK_API_KEY,
+
+    //  阿里云 OSS 配置
+    aliyunOss: {
+      accessKeyId    : process.env.ALIYUN_OSS_ACCESS_KEY_ID || '',
+      accessKeySecret: process.env.ALIYUN_OSS_ACCESS_KEY_SECRET || '',
+      bucketName     : process.env.ALIYUN_OSS_BUCKET_NAME || '',
+      region         : process.env.ALIYUN_OSS_REGION || '',
+      roleArn        : process.env.ALIYUN_OSS_ROLE_ARN || '',
+    },
+
+    // UploadThing 配置
+    uploadthingSecret: process.env.UPLOADTHING_SECRET,
 
     public: {
     },
@@ -102,4 +115,8 @@ export default defineNuxtConfig({
     ],
   },
 
+  uploadthing: {
+    routerPath: '~/server/providers/uploadthing/core', // The path for your uploadthing server api route
+
+  },
 })

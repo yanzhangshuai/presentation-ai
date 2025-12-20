@@ -34,7 +34,9 @@
   "rootImage": {
     "placeholderTitle": "No image yet",
     "placeholderDesc": "Upload or generate an image",
-    "uploadBtn": "Upload Image",
-    "generateBtn": "Generate Image"
+    "uploadBtn": "Upload",
+    "generateBtn": "Generate",
+    "uploading": "Uploading... {progress}%",
+    "generating": "Generating..."
   }
 }

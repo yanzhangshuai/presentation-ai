@@ -1,4 +1,4 @@
-import type { User, UserRole } from '@prisma/client'
+import type { User, UserRole } from '#shared/prisma/client'
 
 import { NuxtAuthHandler } from '#auth'
 import { db } from '~~/server/db/index'

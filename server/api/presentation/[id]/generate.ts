@@ -10,7 +10,7 @@ import { slideNodesPromptTemplate } from '~~/server/utils/ai/prompt'
 import {
   PresentationContextSchema,
   renderPresentationContext,
-} from '~~/server/utils/presentation-context'
+} from '~~/server/utils/presentationContext'
 
 const paramSchema = z.string()
 

@@ -2,7 +2,7 @@ import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 import { streamObject, streamText } from 'ai'
-import { streamJsonlFromAIAsSSE } from '~~/server/utils/stream-jsonl-sse'
+import { streamJsonlFromAIAsSSE } from '~~/server/utils/streamJsonlSSE'
 
 const paramSchema = z.string()
 export default defineEventHandler(async (event) => {

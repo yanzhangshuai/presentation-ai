@@ -27,7 +27,7 @@ const callbackUrl = computed(() =>
     <!-- 左侧Logo -->
     <template #left>
       <NuxtLinkLocale to="/" class="text-xl i-flex-center">
-        <UIcon name="i-custom-headache" class="mr-2" />
+        <UIcon name="i-lucide-audio-waveform" class="mr-2" />
         <span class="fill-dbi tracking-wide font-[AmericanTypewriter]">
           {{ $t('common.logo') }}
         </span>
