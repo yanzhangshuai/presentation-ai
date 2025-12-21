@@ -9,6 +9,8 @@ export default eventHandler(async (event) => {
     '/api/docs',
     '/api/presentation',
     '/api/user',
+    '/api/image',
+    '/api/upload',
   ]
 
   if (!authGroups.some(path => event.path.startsWith(path))) {

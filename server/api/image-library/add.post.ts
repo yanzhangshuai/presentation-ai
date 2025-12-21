@@ -11,7 +11,7 @@ export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
   // 获取body参数
-  const { success: success2, error: error2, data: updateData  } = bodySchema.safeParse(await readBody(event))
+  const { success: success2, error: error2, data  } = bodySchema.safeParse(await readBody(event))
 
   if (!success2) {
     throw createError({
@@ -25,7 +25,7 @@ export default defineEventHandler(async (event) => {
   const presentation = await db.imageLibrary.create({
     data: {
       userId: user.id,
-      url   : updateData.url,
+      url   : data.url,
       type  : ImageLibraryType.UPLOADED,
     },
   })

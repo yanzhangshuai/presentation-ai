@@ -104,3 +104,23 @@ my-nuxt-app/
 ├─ package.json              # 项目依赖及脚本
 ├─ pnpm-lock.yaml            # pnpm 锁文件
 └─ README.md                 # 项目说明
+
+## 阿里云 OSS 配置
+1. 创建 RAM账号，并获取 AccessKeyId 和 AccessKeySecret
+2. 创建 OSS Bucket，并配置跨域规则
+3. 创建 RAM 角色，授权 OSS 访问权限，获取 RoleArn
+4. 在 .env 文件中配置
+ALIYUN_OSS_ACCESS_KEY_ID: 阿里云 RAM 账号的 AccessKeyId
+ALIYUN_OSS_ACCESS_KEY_SECRET: 阿里云 RAM 账号的 AccessKeySecret
+ALIYUN_OSS_BUCKET_NAME: OSS Bucket 名称
+ALIYUN_OSS_REGION: OSS Bucket 所在区域
+ALIYUN_OSS_ROLE_ARN: RAM 角色的 RoleArn
+## 阿里云百练
+1. 注册并登录阿里云百练平台
+2. 创建应用，获取 API Key
+3. 在 .env 文件中配置
+ALIYUN_BAILIAN_API_KEY: 阿里云百练应用的 API Key
+### 火山引擎配置
+1. 注册并登录火山引擎平台
+2. 创建访问密钥，获取 AccessKeyId 和 AccessKeySecret
+3. 在 .env 文件中配置 VOLC_ACCESS_KEY_ID 和 VOLC_ACCESS_KEY_SECRET

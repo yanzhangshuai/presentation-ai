@@ -45,6 +45,15 @@ export default defineNuxtConfig({
       roleArn        : process.env.ALIYUN_OSS_ROLE_ARN || '',
     },
 
+    // 火山引擎配置
+    volc: {
+      accessKeyId    : process.env.VOLC_ACCESS_KEY_ID || '',
+      accessKeySecret: process.env.VOLC_ACCESS_KEY_SECRET || '',
+    },
+
+    // 阿里云百练
+    aliyunBailianApiKey: process.env.ALIYUN_BAILIAN_API_KEY || '',
+
     // UploadThing 配置
     uploadthingSecret: process.env.UPLOADTHING_SECRET,
 

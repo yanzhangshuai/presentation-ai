@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import type { PresentationDoc, PresentationSlide } from '~/types/presentation'
+import type { PresentationSlide } from '~/types/presentation'
 
-import {   PresentationStatus } from '~/types/presentation'
-import { editPresentation, getPresentation, slidesGenerationStream } from '~/services/presentation'
+import { PresentationStatus } from '~/types/presentation'
+import { getPresentation, slidesGenerationStream } from '~/services/presentation'
 
 // ------------------------------
 // 页面元信息配置

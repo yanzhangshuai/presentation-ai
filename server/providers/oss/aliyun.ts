@@ -1,3 +1,5 @@
+import type { Buffer } from 'node:buffer'
+
 import OSS from 'ali-oss'
 
 // docs: https://next.api.aliyun.com/document/Sts/2015-04-01/AssumeRole?spm=api-workbench.API%20Document.0.0.6bb64755DGUqtR
@@ -16,10 +18,14 @@ export async function getOssSTS() {
       Version  : '1',
       Statement: [
         {
-          Action  : ['oss:*'],
-          Effect  : 'Allow',
+          Effect: 'Allow',
+          Action: [
+            'oss:PutObject',
+            'oss:GetObject',
+          ],
           Resource: [`acs:oss:*:*:${config.aliyunOss.bucketName}/*`],
         },
+
       ],
     }),
     900, // 15分钟
@@ -34,5 +40,26 @@ export async function getOssSTS() {
     })
 }
 
-// /mwjz-presentation-ai.oss-cn-beijing.aliyuncs.com
-// oss-cn-beijing.aliyuncs.com
+/**
+ *上传Buffer到 OSS
+ * @param buffer 文件流
+ * @param objectKey 文件路径+名称
+ * @returns
+ */
+export async function uploadBufferToOss(buffer: Buffer, objectKey: string) {
+  const config = useRuntimeConfig()
+  const client = new OSS({
+    region         : config.aliyunOss.region,
+    accessKeyId    : config.aliyunOss.accessKeyId,
+    accessKeySecret: config.aliyunOss.accessKeySecret,
+    bucket         : config.aliyunOss.bucketName,
+  })
+
+  try {
+    const result = await client.put(objectKey, buffer)
+    return result.url
+  }
+  catch (err) {
+    throw new Error(`Failed to upload to OSS: ${err}`)
+  }
+}

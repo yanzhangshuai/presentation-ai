@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LayoutType } from '~/types/presentation'
 
-import { createImage } from '~/services/image-library'
+import { addImageLibraryItem, generateAiImage } from '~/services/image'
 
 const props = defineProps<{
   slideIdx: number
@@ -17,7 +17,7 @@ const { setSlide } = presentationStore
 const slide = computed(() => {
   return slides.value.find(s => s.id === props.slideId)!
 })
-const layout = computed(() => slide.value.layout as LayoutType)
+const layout = computed<LayoutType>(() => slide.value.layout)
 const rootImage = computed(() => slide.value.rootImage!)
 
 const state = reactive<{
@@ -25,7 +25,7 @@ const state = reactive<{
   progress: number
 }>({
   loading : '',
-  progress: 0.1,
+  progress: 0,
 })
 
 const { upload } = useUploader()
@@ -53,12 +53,30 @@ const { run: onUpload } = safeAction(async () => {
     }),
   })
 
-  createImage(url)
+  addImageLibraryItem(url)
 }, {
   throttle : 300,
   onFinally: () => {
     state.loading = ''
     state.progress = 0
+  },
+})
+
+const { run: onGenerate } = safeAction(async () => {
+  state.loading = 'ai'
+
+  const { url } = await generateAiImage(rootImage.value.query, toValue(layout)!)
+
+  setSlide(props.slideIdx, {
+    ...slide.value,
+    rootImage: Object.assign(slide.value.rootImage!, {
+      url,
+    }),
+  })
+}, {
+  throttle : 300,
+  onFinally: () => {
+    state.loading = ''
   },
 })
 </script>
@@ -94,7 +112,7 @@ const { run: onUpload } = safeAction(async () => {
             <UIcon name="i-lucide-upload" class="h-4 w-4" />
             {{ $t('presentation.rootImage.uploadBtn') }}
           </UButton>
-          <UButton>
+          <UButton @click="onGenerate">
             <UIcon name="i-lucide-sparkles" class="h-4 w-4" />
             {{ $t('presentation.rootImage.generateBtn') }}
           </UButton>
