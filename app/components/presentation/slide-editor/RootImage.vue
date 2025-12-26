@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { LayoutType } from '~/types/presentation'
 
-import { addImageLibraryItem, generateAiImage } from '~/services/image'
+import { addImageLibraryItem, generateAiImage, getAiImageResult, queryStockImage } from '~/services/image'
 
 const props = defineProps<{
   slideIdx: number
@@ -11,7 +11,7 @@ const props = defineProps<{
 const { safeAction } = useSafeActions()
 
 const presentationStore = usePresentationStore()
-const { slides } = storeToRefs(presentationStore)
+const { slides, presentation } = storeToRefs(presentationStore)
 const { setSlide } = presentationStore
 
 const slide = computed(() => {
@@ -65,7 +65,36 @@ const { run: onUpload } = safeAction(async () => {
 const { run: onGenerate } = safeAction(async () => {
   state.loading = 'ai'
 
-  const { url } = await generateAiImage(rootImage.value.query, toValue(layout)!)
+  let url = ''
+  if (toValue(presentation)?.imageSource === 'ai') {
+    // AI生成图片
+    const { taskId }  = await generateAiImage({
+      prompt     : rootImage.value.query,
+      layout     : toValue(layout)!,
+      modelPicker: toValue(presentation)?.imageProvider,
+      modelId    : toValue(presentation)?.imageModelId,
+    })
+
+    const result = await poll(
+      () => getAiImageResult(taskId),
+      res => res.status === 'succeeded' || res.status === 'failed',
+      3000,
+    )
+
+    if (result.status === 'failed') {
+      throw new Error(result.message || 'AI image generation failed')
+    }
+    url = result.url || ''
+  }
+  else if (toValue(presentation)?.imageSource === 'stock') {
+    // 库存图片
+    const res = await queryStockImage({
+      prompt: rootImage.value.query,
+      layout: toValue(layout)!,
+    })
+
+    url = res.url || ''
+  }
 
   setSlide(props.slideIdx, {
     ...slide.value,
@@ -112,6 +141,7 @@ const { run: onGenerate } = safeAction(async () => {
             <UIcon name="i-lucide-upload" class="h-4 w-4" />
             {{ $t('presentation.rootImage.uploadBtn') }}
           </UButton>
+          <!-- TODO:选择 -->
           <UButton @click="onGenerate">
             <UIcon name="i-lucide-sparkles" class="h-4 w-4" />
             {{ $t('presentation.rootImage.generateBtn') }}

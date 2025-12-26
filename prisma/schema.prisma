@@ -108,6 +108,8 @@ model Presentation {
     id            String   @id @default(cuid()) @map("id")
     content       String   @map("content") // Presentation content including slides, theme, etc.
     imageSource   String   @default("ai") @map("image_source") // The image model used for generating images
+    imageProvider String?  @map("image_provider") // The image model provider
+    imageModelId  String?  @map("image_model_id") // The image model
     prompt        String?  @map("prompt") // The prompt used for generating the presentation
     modelProvider String?  @map("model_provider") // 可选
     modelId       String?  @map("model_id") // 可选
@@ -172,6 +174,7 @@ model FavoriteDocument {
 enum ImageLibraryType {
     UPLOADED // 用户上传
     AI // AI生成图片
+    UNSPLASH // 来自 Unsplash
 }
 
 model ImageLibrary {

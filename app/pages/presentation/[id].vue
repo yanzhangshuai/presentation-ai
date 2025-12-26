@@ -86,7 +86,9 @@ if (import.meta.client) {
   >
     <div class="presentation-slides flex max-h-full flex-1 pb-20">
       <div class="mx-auto max-w-[90%] space-y-8 pt-16">
-        <PresentationSlideEditor v-for="(s, index) in presentationDoc.slides" :key="s.id" :slide-id="s.id" :slide-idx="index" class="slide-item" />
+        <ClientOnly>
+          <PresentationSlideEditor v-for="(s, index) in presentationDoc.slides" :key="s.id" :slide-id="s.id" :slide-idx="index" class="slide-item" />
+        </ClientOnly>
       </div>
     </div>
   </UiPage>

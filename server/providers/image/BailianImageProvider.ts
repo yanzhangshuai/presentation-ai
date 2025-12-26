@@ -1,6 +1,9 @@
-import  { Buffer } from 'node:buffer'
+import { requestBuffer } from '~~/server/utils/http'
+import { assertConfigPresent } from '~~/server/utils/asserts'
 
-import type { ImageOptions, ImageProviderOptions } from './Index'
+import type { ImageGenerateOptions, ImageModelPicker, ImageProviderOptions, ImageTaskResult } from './types'
+
+import { taskFailed, taskRunning, taskSuccess, waitGenerate } from './utils'
 
 type AliyunModelId
   = 'wan2.6-t2i'
@@ -12,133 +15,110 @@ type AliyunModelId
     | 'wanx2.0-t2i-turbo'
 
 const DEF_BASE_URL = 'https://dashscope.aliyuncs.com/api/v1'
-export function createBailianImageProvider(options?: ImageProviderOptions) {
-  const { aliyunBailianApiKey } = useRuntimeConfig()
 
-  if (!aliyunBailianApiKey) {
-    throw new Error('Aliyun Bailian configuration is missing')
-  }
+/**
+ *  创建 Bailian 图片提供者
+ * @param options
+ * @returns
+ */
+export function createBailianImageProvider(options?: ImageProviderOptions): ImageModelPicker {
+  // 断言
+  assertConfigPresent(useRuntimeConfig(), ['aliyunBailianApiKey'])
+
+  const { aliyunBailianApiKey } = useRuntimeConfig()
 
   const baseURL = options?.baseURL || DEF_BASE_URL
 
   const modelId = options?.modelId as AliyunModelId || 'wanx2.0-t2i-turbo'
 
-  return (imageOptions: ImageOptions) => {
-    return new Promise<Buffer>((resolve, reject) => {
-      // 1. 发送任务请求
-      sendTaskRequest(imageOptions, baseURL, modelId)
-        .then((res) => {
-          const taskId =  res.output.task_id
+  /**
+   *  生成图片任务
+   * @param options
+   * @returns
+   */
+  const generate = async (options: ImageGenerateOptions) => {
+    const url = joinURL(baseURL, '/services/aigc/text2image/image-synthesis')
 
-          // 2. 轮询获取结果
-          const interval = setInterval(() => {
-            fetchTaskResult(taskId, baseURL)
-              .then((data) => {
-                if (data.output.task_status === 'SUCCEEDED') {
-                //
-
-                  clearInterval(interval)
-
-                  const imageUrl = data.output.results[0].url
-
-                  $fetch<ArrayBuffer>(imageUrl, {
-                    method      : 'GET',
-                    responseType: 'arrayBuffer',
-                  })
-                    .then((arrayBuffer) => {
-                      const buffer = Buffer.from(arrayBuffer)
-                      resolve(buffer)
-                    })
-                    .catch((err) => {
-                      reject(err)
-                    })
-                }
-                else if (['FAILED', 'UNKNOWN'].includes(data.output.task_status)) {
-                  clearInterval(interval)
-                  reject(new Error('Volc image generation failed: task failed'))
-                }
-                // else 继续轮询
-              })
-              .catch((err) => {
-                clearInterval(interval)
-                reject(err)
-              })
-          }, 3000) // 每3秒轮询一次
-        })
-        .catch((err) => {
-          reject(err)
-        })
-    })
-  }
-}
-
-/**
- *  发送任务请求
- * @param options
- * @param baseURL
- * @param modelId
- * @returns
- */
-async function sendTaskRequest(options: ImageOptions, baseURL: string, modelId: string) {
-  const { aliyunBailianApiKey } = useRuntimeConfig()
-
-  if (!aliyunBailianApiKey) {
-    throw new Error('Aliyun Bailian configuration is missing')
-  }
-
-  const url = joinURL(baseURL, '/services/aigc/text2image/image-synthesis')
-
-  const res = await $fetch<{
-    output: {
-      task_id    : string
-      task_status: 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED' | 'CANCELED' | 'UNKNOWN'
-    }
-    request_id: string
-    code?     : string
-    message?  : string
-  }>(url, {
-    method : 'POST',
-    headers: {
-      'Content-Type'     : 'application/json',
-      'Authorization'    : `Bearer ${aliyunBailianApiKey}`,
-      'X-DashScope-Async': 'enable',
-    },
-    body: {
-      model: modelId,
-      input: {
-        prompt: options.prompt,
+    const res = await $fetch<SendTaskResult>(url, {
+      method : 'POST',
+      headers: {
+        'Content-Type'     : 'application/json',
+        'Authorization'    : `Bearer ${aliyunBailianApiKey}`,
+        'X-DashScope-Async': 'enable',
       },
-      parameters: {
-        size: `${options.width || 1024}*${options.height || 1024}`,
-        n   : 1,
+      body: {
+        model: modelId,
+        input: {
+          prompt: options.prompt,
+        },
+        parameters: {
+          size: `${options.width || 1024}*${options.height || 1024}`,
+          n   : 1,
         // prompt_extend: true,
+        },
       },
-    },
-  })
-  return res
-}
-
-/**
- *  获取任务结果
- * @param taskId
- * @param baseURL
- * @returns
- */
-function fetchTaskResult(taskId: string, baseURL: string) {
-  const { aliyunBailianApiKey } = useRuntimeConfig()
-
-  if (!aliyunBailianApiKey) {
-    throw new Error('Aliyun Bailian configuration is missing')
+    })
+    return res.output.task_id
   }
 
-  const url = joinURL(baseURL, `/tasks/${taskId}`)
+  /**
+   *  获取任务结果
+   * @param taskId
+   * @returns
+   */
+  const getTaskResult = async (taskId: string) => {
+    const url = joinURL(baseURL, `/tasks/${taskId}`)
 
-  return $fetch<TaskResult>(url, {
-    method : 'GET',
-    headers: {
-      Authorization: `Bearer ${aliyunBailianApiKey}`,
-    },
-  })
+    const data = await $fetch<TaskResult>(url, {
+      method : 'GET',
+      headers: {
+        Authorization: `Bearer ${aliyunBailianApiKey}`,
+      },
+    })
+
+    if (['PENDING', 'RUNNING'].includes(data.output.task_status)) {
+      // 任务处理中
+      return taskRunning()
+    }
+
+    if (data.output.task_status === 'UNKNOWN') {
+      // 任务过期或未知
+      return taskFailed('Task expired or unknown')
+    }
+
+    if (data.output.task_status === 'FAILED') {
+      // 任务失败
+      const message = data.output.message || 'Image generation failed'
+      return taskFailed(message)
+    }
+
+    if (data.output.task_status === 'SUCCEEDED') {
+      // 任务成功
+      const imageUrl = data.output.results[0].url
+
+      const buffer = await requestBuffer(imageUrl)
+      return taskSuccess(buffer)
+    }
+
+    return taskFailed('Unknown task status')
+  }
+
+  return {
+    generate,
+    getTaskResult,
+    waitGenerate: (options, interval, timeout) =>
+      waitGenerate(generate, getTaskResult, options, interval, timeout),
+  }
+}
+
+interface SendTaskResult {
+  output: {
+    task_id    : string
+    task_status: 'PENDING' | 'RUNNING' | 'SUCCEEDED' | 'FAILED' | 'CANCELED' | 'UNKNOWN'
+  }
+  request_id: string
+  code?     : string
+  message?  : string
 }
 
 type TaskResult

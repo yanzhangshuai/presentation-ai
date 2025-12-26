@@ -122,7 +122,9 @@ interface EditPresentationReq {
   prompt?       : string
   themeId?      : string
   language?     : string
-  imageSource?  : string
+  imageSource?  : ImageSource
+  imageProvider?: string
+  imageModelId? : string
   modelProvider?: string
   modelId?      : string
   pageStyle?    : string

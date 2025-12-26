@@ -22,6 +22,7 @@ export default antfu(
     },
     typescript: {
       overrides: {
+
         'style/semi'                   : ['error', 'never'],
         'unused-imports/no-unused-vars': 'off',
         'no-console'                   : 'off',
@@ -70,6 +71,7 @@ export default antfu(
       '.vscode/',
       'i18n',
       'coverage/',
+      'shared/prisma/',
 
     ],
   },

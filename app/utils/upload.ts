@@ -45,7 +45,7 @@ export function createOssUploader(): Uploader {
         const result = await client.multipartUpload(objectKey, file, {
         // ✅ 真正可靠的进度
           progress(p) {
-            options.onProgress?.(Math.round(p * 100))
+            options.onProgress?.(p)
 
           // 你将来如果要断点续传，可以在这里保存 checkpoint
           // localStorage.setItem("oss-checkpoint", JSON.stringify(checkpoint))

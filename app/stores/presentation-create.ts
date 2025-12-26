@@ -8,7 +8,9 @@ interface PresentationCreateState {
   web          : boolean
   themeId      : string
   title        : string
-  imageSource  : string
+  imageSource  : ImageSource
+  imageProvider: string
+  imageModelId : string
   tone         : PresentationTone
 
   outline: string[]
@@ -27,7 +29,9 @@ export const usePresentationCreateStore = defineStore('presentationCreate', () =
     themeId      : '',
     title        : 'Untitled Presentation',
     outline      : [],
-    imageSource  : '',
+    imageSource  : 'stock',
+    imageProvider: 'unsplash',
+    imageModelId : 'default',
     tone         : 'professional',
   })
 
@@ -53,6 +57,10 @@ export const usePresentationCreateStore = defineStore('presentationCreate', () =
       themeId      : '',
       title        : 'Untitled Presentation',
       outline      : [],
+      imageSource  : 'stock',
+      imageProvider: 'unsplash',
+      imageModelId : 'default',
+      tone         : 'professional',
     })
   }
 

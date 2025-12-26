@@ -5,15 +5,15 @@ import OSS from 'ali-oss'
 // docs: https://next.api.aliyun.com/document/Sts/2015-04-01/AssumeRole?spm=api-workbench.API%20Document.0.0.6bb64755DGUqtR
 
 export async function getOssSTS() {
-  const config = useRuntimeConfig()
+  const { aliyunOss } = useRuntimeConfig()
 
   const sts = new OSS.STS({
-    accessKeyId    : config.aliyunOss.accessKeyId,
-    accessKeySecret: config.aliyunOss.accessKeySecret,
+    accessKeyId    : aliyunOss.accessKeyId,
+    accessKeySecret: aliyunOss.accessKeySecret,
   })
 
   return sts.assumeRole(
-    config.aliyunOss.roleArn,
+    aliyunOss.roleArn,
     JSON.stringify({
       Version  : '1',
       Statement: [
@@ -23,7 +23,7 @@ export async function getOssSTS() {
             'oss:PutObject',
             'oss:GetObject',
           ],
-          Resource: [`acs:oss:*:*:${config.aliyunOss.bucketName}/*`],
+          Resource: [`acs:oss:*:*:${aliyunOss.bucketName}/*`],
         },
 
       ],
@@ -32,9 +32,9 @@ export async function getOssSTS() {
   )
     .then((res) => {
       return {
-        region     : config.aliyunOss.region,
-        bucketName : config.aliyunOss.bucketName,
-        endpoint   : `https://${config.aliyunOss.region}.aliyuncs.com`,
+        region     : aliyunOss.region,
+        bucketName : aliyunOss.bucketName,
+        endpoint   : `https://${aliyunOss.region}.aliyuncs.com`,
         credentials: res.credentials,
       }
     })

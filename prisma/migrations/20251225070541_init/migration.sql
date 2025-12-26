@@ -11,7 +11,7 @@ CREATE TYPE "PresentationStatus" AS ENUM ('DRAFT', 'OUTLINE', 'CONTENT', 'FAILED
 CREATE TYPE "PresentationThemeType" AS ENUM ('SYSTEM', 'CUSTOM');
 
 -- CreateEnum
-CREATE TYPE "ImageLibraryType" AS ENUM ('UPLOADED', 'AI');
+CREATE TYPE "ImageLibraryType" AS ENUM ('UPLOADED', 'AI', 'UNSPLASH');
 
 -- CreateTable
 CREATE TABLE "accounts" (

@@ -1,19 +1,26 @@
 <script setup lang="ts">
 import type { SelectItem } from '@nuxt/ui'
 
-const current = defineModel<string>({
-  required: true,
+import { IMAGE_MODEL_SUPPORTS } from '~~/shared/constansts/ai'
+
+const emit = defineEmits<{
+  change: [imageSource: 'ai' | 'stock', imageProvider: ImageModelProvider]
+}>()
+
+const imageSource = defineModel<ImageSource>('imageSource', {
+  required: false,
+  default : 'ai',
 })
 
-const IMAGE_MODELS: { value: ImageModelSupport, label: string }[] = [
-  { value: 'black-forest-labs/FLUX.1-schnell-Free', label: 'FLUX Fast' },
-  { value: 'black-forest-labs/FLUX.1-dev', label: 'FLUX Developer' },
-  { value: 'black-forest-labs/FLUX1.1-pro', label: 'FLUX Premium' },
-]
+const imageProvider = defineModel<string |  null>('imageProvider', {
+  required: false,
+  default : null,
+})
 
-const IMAGE_STOCK_SOURCES: { value: ImageStockSource, label: string }[] = [
-  { value: 'unsplash', label: 'Unsplash' },
-]
+const imageModelId = defineModel<string | null>('imageModelId', {
+  required: false,
+  default : null,
+})
 
 const items = ref<SelectItem[]>([
   {
@@ -21,10 +28,14 @@ const items = ref<SelectItem[]>([
     label: $t('presentation.imageSource.ai'),
     icon : 'i-lucide-wand-sparkles',
   },
-  ...IMAGE_MODELS.map(model => ({
-    label: model.label,
-    value: `ai_${model.value}`,
-  })),
+  ...IMAGE_MODEL_SUPPORTS.map<SelectItem[]>((m) => {
+    const models =  m.models.map(model => ({
+      label: model.name ? `${m.name} - ${model.name}` : m.name,
+      value: `ai|${m.provider}|${model.modelId}`,
+      icon : 'i-lucide-bot',
+    }))
+    return models
+  }).flat(),
   {
     type: 'separator',
   },
@@ -32,20 +43,39 @@ const items = ref<SelectItem[]>([
     type : 'label',
     label: $t('presentation.imageSource.stock'),
   },
-  ...IMAGE_STOCK_SOURCES.map(source => ({
-    label: source.label,
-    value: `stock_${source.value}`,
-  })),
+  {
+    label: 'Unsplash',
+    value: 'stock|unsplash|default',
+    icon : 'i-lucide-image',
+  },
 ])
+
+const value = computed<string>({
+  get: () => {
+    return [imageSource.value, imageProvider.value, imageModelId.value]
+      .join('|')
+  },
+  set: (val: string) => {
+    const parts = val.split('|')
+    imageSource.value = parts?.[0] as ImageSource || 'ai'
+    imageProvider.value = parts?.[1] || null
+    imageModelId.value = parts[2] || null
+  },
+})
+
+const onChange = () => {
+
+}
 </script>
 
 <template>
   <USelect
-    v-model="current"
+    v-model="value"
     size="xl"
     :items="items"
     item-value="value"
     item-label="label"
     class="w-full"
+    @change="onChange"
   />
 </template>

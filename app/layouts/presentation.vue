@@ -58,9 +58,9 @@ const getBackground = (isDark: boolean, colors?: ThemeColors) => {
 // ------------------------------
 // 响应式背景
 // ------------------------------
-const bg = computed(() => {
-  return getBackground(toValue(isDark), toValue(colors))
-})
+// const bg = computed(() => {
+//   return  getBackground(isDark.value, colors.value)
+// })
 </script>
 
 <template>
@@ -90,16 +90,14 @@ const bg = computed(() => {
     <!-- 内容容器 -->
     <!-- TODO: 水合问题 -->
     <ClientOnly>
-      <div
-        class="flex-1 overflow-auto"
+      <main
+        class="flex-1 overflow-auto main"
         :style="{
-          background: bg, // 响应式背景
-          transition: themeData?.transitions?.default, // 平滑过渡
-          color: 'var(--presentation-text)', // 文字颜色
+          background: getBackground(isDark, colors), // 响应式背景
         }"
       >
         <slot />
-      </div>
+      </main>
     </ClientOnly>
   </div>
 </template>
@@ -112,4 +110,37 @@ const bg = computed(() => {
   font-weight: normal;
   font-style: normal;
 }
+
+// .main {
+//   transition: var(--presentation-transition);
+//   color: var(--presentation-text);
+
+//   background: radial-gradient(circle at 10% 10%,
+//       color-mix(in srgb, var(--presentation-primary) 15%, transparent) 0%,
+//       transparent 30%),
+//     radial-gradient(circle at 90% 20%,
+//       color-mix(in srgb, var(--presentation-accent) 15%, transparent) 0%,
+//       transparent 40%),
+//     radial-gradient(circle at 50% 80%,
+//       color-mix(in srgb, var(--presentation-secondary) 10%, transparent) 0%,
+//       transparent 50%),
+//     var(--presentation-background);
+// }
+
+// .dark {
+//   .main {
+//     background:
+//       radial-gradient(circle at 10% 10%,
+//         color-mix(in srgb, var(--presentation-primary) 20%, transparent) 0%,
+//         transparent 30%),
+//       radial-gradient(circle at 90% 20%,
+//         color-mix(in srgb, var(--presentation-accent) 20%, transparent) 0%,
+//         transparent 40%),
+//       radial-gradient(circle at 50% 80%,
+//         color-mix(in srgb, var(--presentation-secondary) 15%, transparent) 0%,
+//         transparent 50%),
+//       var(--presentation-background);
+
+//   }
+// }
 </style>

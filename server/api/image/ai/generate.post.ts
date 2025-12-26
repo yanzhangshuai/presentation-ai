@@ -1,15 +1,12 @@
 import z from 'zod'
-import { db } from '~~/server/db'
-import { getServerSession } from '#auth'
-import { ImageLibraryType } from '#shared/prisma/client'
-import { imageModelPicker } from '~~/server/providers/image/Index'
-import { uploadBufferToOss } from '~~/server/providers/oss/aliyun'
+import { imageModelPicker } from '~~/server/providers/image'
+import { nodeCacheDriverName } from '~~/server/providers/storage/nodeCacheDriver'
 
 const bodySchema = z.object({
   prompt     : z.string(),
   layout     : z.enum(['top', 'bottom', 'left', 'right', 'background']).optional().default('top'),
-  modelPicker: z.string().optional(),
-  modelId    : z.string().optional(),
+  modelPicker: z.string().optional().default('volc'),
+  modelId    : z.string().optional().default('v1'),
 })
 
 export const WU_ZHONG_LAYOUT = {
@@ -21,9 +18,6 @@ export const WU_ZHONG_LAYOUT = {
 } as const
 
 export default defineEventHandler(async (event) => {
-  const session = await getServerSession(event)
-  const user = session!.user
-  // 获取body参数
   const { success: success2, error: error2, data  } = bodySchema.safeParse(await readBody(event))
 
   if (!success2) {
@@ -43,28 +37,20 @@ export default defineEventHandler(async (event) => {
   }
 
   const size = WU_ZHONG_LAYOUT[data.layout]
-
-  const imageData = await model({
+  const taskId = await model.generate({
     prompt: data.prompt,
     width : size.width,
     height: size.height,
   })
 
-  const imageUrl = await uploadBufferToOss(imageData, `images/${Date.now()}.png`)
+  const storage = useStorage<{ [key: string]: string }>(nodeCacheDriverName)
 
-  // 保存到数据库
-  await db.imageLibrary.create({
-    data: {
-      userId  : user.id,
-      type    : ImageLibraryType.AI,
-      provider: data.modelPicker,
-      modelId : data.modelId || null,
-      url     : imageUrl,
-      prompt  : data.prompt,
-    },
+  await storage.setItem(`AI_IMAGE:${taskId}`, {
+    modelPicker: data.modelPicker,
+    modelId    : data.modelId || '',
+  }, {
+    ttl: 600,
   })
 
-  return {
-    url: imageUrl,
-  }
+  return { taskId }
 })

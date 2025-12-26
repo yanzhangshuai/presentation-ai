@@ -5,6 +5,8 @@ export interface Presentation {
   id           : string
   content      : string
   imageSource  : string
+  imageProvider: string
+  imageModelId : string
   prompt       : string | null
   modelProvider: string | null
   modelId      : string | null

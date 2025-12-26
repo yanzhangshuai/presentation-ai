@@ -13,3 +13,9 @@ export type ImageModelSupport
     | 'black-forest-labs/FLUX.1-schnell-Free'
     | 'black-forest-labs/FLUX.1-pro'
     | 'black-forest-labs/FLUX.1-dev'
+
+export type ImageSource = 'ai' | 'stock'
+
+export type ImageStockProvider = 'unsplash'
+
+export type ImageModelProvider = 'bailian' | 'volc'

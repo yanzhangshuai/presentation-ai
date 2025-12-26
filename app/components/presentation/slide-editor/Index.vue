@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { PresentationSlide, SlideNode } from '~/types/presentation'
 
-import { slideSchema } from './meta'
 import Controls from './Controls.vue'
 import RootImage from './RootImage.vue'
 // import Controls from './Controls.vue'
@@ -87,7 +86,7 @@ const style = computed(() => {
 
         <!-- 内容区 -->
         <ProsemirrorEditor
-          class="slide-content flex-1 flex-center" :content="slide.content" :schema="slideSchema" :editable="true"
+          class="slide-content flex-1 flex-center" :content="slide.content" :editable="true"
           show-toolbar @update="onContentUpdate"
         />
       </div>

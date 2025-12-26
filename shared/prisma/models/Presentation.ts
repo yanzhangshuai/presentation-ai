@@ -38,6 +38,8 @@ export type PresentationMinAggregateOutputType = {
   id: string | null
   content: string | null
   imageSource: string | null
+  imageProvider: string | null
+  imageModelId: string | null
   prompt: string | null
   modelProvider: string | null
   modelId: string | null
@@ -54,6 +56,8 @@ export type PresentationMaxAggregateOutputType = {
   id: string | null
   content: string | null
   imageSource: string | null
+  imageProvider: string | null
+  imageModelId: string | null
   prompt: string | null
   modelProvider: string | null
   modelId: string | null
@@ -70,6 +74,8 @@ export type PresentationCountAggregateOutputType = {
   id: number
   content: number
   imageSource: number
+  imageProvider: number
+  imageModelId: number
   prompt: number
   modelProvider: number
   modelId: number
@@ -98,6 +104,8 @@ export type PresentationMinAggregateInputType = {
   id?: true
   content?: true
   imageSource?: true
+  imageProvider?: true
+  imageModelId?: true
   prompt?: true
   modelProvider?: true
   modelId?: true
@@ -114,6 +122,8 @@ export type PresentationMaxAggregateInputType = {
   id?: true
   content?: true
   imageSource?: true
+  imageProvider?: true
+  imageModelId?: true
   prompt?: true
   modelProvider?: true
   modelId?: true
@@ -130,6 +140,8 @@ export type PresentationCountAggregateInputType = {
   id?: true
   content?: true
   imageSource?: true
+  imageProvider?: true
+  imageModelId?: true
   prompt?: true
   modelProvider?: true
   modelId?: true
@@ -235,6 +247,8 @@ export type PresentationGroupByOutputType = {
   id: string
   content: string
   imageSource: string
+  imageProvider: string | null
+  imageModelId: string | null
   prompt: string | null
   modelProvider: string | null
   modelId: string | null
@@ -276,6 +290,8 @@ export type PresentationWhereInput = {
   id?: Prisma.StringFilter<"Presentation"> | string
   content?: Prisma.StringFilter<"Presentation"> | string
   imageSource?: Prisma.StringFilter<"Presentation"> | string
+  imageProvider?: Prisma.StringNullableFilter<"Presentation"> | string | null
+  imageModelId?: Prisma.StringNullableFilter<"Presentation"> | string | null
   prompt?: Prisma.StringNullableFilter<"Presentation"> | string | null
   modelProvider?: Prisma.StringNullableFilter<"Presentation"> | string | null
   modelId?: Prisma.StringNullableFilter<"Presentation"> | string | null
@@ -296,6 +312,8 @@ export type PresentationOrderByWithRelationInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   imageSource?: Prisma.SortOrder
+  imageProvider?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageModelId?: Prisma.SortOrderInput | Prisma.SortOrder
   prompt?: Prisma.SortOrderInput | Prisma.SortOrder
   modelProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   modelId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -319,6 +337,8 @@ export type PresentationWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.PresentationWhereInput | Prisma.PresentationWhereInput[]
   content?: Prisma.StringFilter<"Presentation"> | string
   imageSource?: Prisma.StringFilter<"Presentation"> | string
+  imageProvider?: Prisma.StringNullableFilter<"Presentation"> | string | null
+  imageModelId?: Prisma.StringNullableFilter<"Presentation"> | string | null
   prompt?: Prisma.StringNullableFilter<"Presentation"> | string | null
   modelProvider?: Prisma.StringNullableFilter<"Presentation"> | string | null
   modelId?: Prisma.StringNullableFilter<"Presentation"> | string | null
@@ -339,6 +359,8 @@ export type PresentationOrderByWithAggregationInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   imageSource?: Prisma.SortOrder
+  imageProvider?: Prisma.SortOrderInput | Prisma.SortOrder
+  imageModelId?: Prisma.SortOrderInput | Prisma.SortOrder
   prompt?: Prisma.SortOrderInput | Prisma.SortOrder
   modelProvider?: Prisma.SortOrderInput | Prisma.SortOrder
   modelId?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -365,6 +387,8 @@ export type PresentationScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Presentation"> | string
   content?: Prisma.StringWithAggregatesFilter<"Presentation"> | string
   imageSource?: Prisma.StringWithAggregatesFilter<"Presentation"> | string
+  imageProvider?: Prisma.StringNullableWithAggregatesFilter<"Presentation"> | string | null
+  imageModelId?: Prisma.StringNullableWithAggregatesFilter<"Presentation"> | string | null
   prompt?: Prisma.StringNullableWithAggregatesFilter<"Presentation"> | string | null
   modelProvider?: Prisma.StringNullableWithAggregatesFilter<"Presentation"> | string | null
   modelId?: Prisma.StringNullableWithAggregatesFilter<"Presentation"> | string | null
@@ -382,6 +406,8 @@ export type PresentationScalarWhereWithAggregatesInput = {
 export type PresentationCreateInput = {
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -401,6 +427,8 @@ export type PresentationUncheckedCreateInput = {
   id?: string
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -418,6 +446,8 @@ export type PresentationUncheckedCreateInput = {
 export type PresentationUpdateInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -437,6 +467,8 @@ export type PresentationUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -455,6 +487,8 @@ export type PresentationCreateManyInput = {
   id?: string
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -472,6 +506,8 @@ export type PresentationCreateManyInput = {
 export type PresentationUpdateManyMutationInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -489,6 +525,8 @@ export type PresentationUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -512,6 +550,8 @@ export type PresentationCountOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   imageSource?: Prisma.SortOrder
+  imageProvider?: Prisma.SortOrder
+  imageModelId?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   modelProvider?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
@@ -534,6 +574,8 @@ export type PresentationMaxOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   imageSource?: Prisma.SortOrder
+  imageProvider?: Prisma.SortOrder
+  imageModelId?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   modelProvider?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
@@ -550,6 +592,8 @@ export type PresentationMinOrderByAggregateInput = {
   id?: Prisma.SortOrder
   content?: Prisma.SortOrder
   imageSource?: Prisma.SortOrder
+  imageProvider?: Prisma.SortOrder
+  imageModelId?: Prisma.SortOrder
   prompt?: Prisma.SortOrder
   modelProvider?: Prisma.SortOrder
   modelId?: Prisma.SortOrder
@@ -666,6 +710,8 @@ export type PresentationUncheckedUpdateManyWithoutThemeNestedInput = {
 export type PresentationCreateWithoutBaseInput = {
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -683,6 +729,8 @@ export type PresentationCreateWithoutBaseInput = {
 export type PresentationUncheckedCreateWithoutBaseInput = {
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -716,6 +764,8 @@ export type PresentationUpdateToOneWithWhereWithoutBaseInput = {
 export type PresentationUpdateWithoutBaseInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -733,6 +783,8 @@ export type PresentationUpdateWithoutBaseInput = {
 export type PresentationUncheckedUpdateWithoutBaseInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -750,6 +802,8 @@ export type PresentationUncheckedUpdateWithoutBaseInput = {
 export type PresentationCreateWithoutThemeInput = {
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -768,6 +822,8 @@ export type PresentationUncheckedCreateWithoutThemeInput = {
   id?: string
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -814,6 +870,8 @@ export type PresentationScalarWhereInput = {
   id?: Prisma.StringFilter<"Presentation"> | string
   content?: Prisma.StringFilter<"Presentation"> | string
   imageSource?: Prisma.StringFilter<"Presentation"> | string
+  imageProvider?: Prisma.StringNullableFilter<"Presentation"> | string | null
+  imageModelId?: Prisma.StringNullableFilter<"Presentation"> | string | null
   prompt?: Prisma.StringNullableFilter<"Presentation"> | string | null
   modelProvider?: Prisma.StringNullableFilter<"Presentation"> | string | null
   modelId?: Prisma.StringNullableFilter<"Presentation"> | string | null
@@ -832,6 +890,8 @@ export type PresentationCreateManyThemeInput = {
   id?: string
   content: string
   imageSource?: string
+  imageProvider?: string | null
+  imageModelId?: string | null
   prompt?: string | null
   modelProvider?: string | null
   modelId?: string | null
@@ -848,6 +908,8 @@ export type PresentationCreateManyThemeInput = {
 export type PresentationUpdateWithoutThemeInput = {
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -866,6 +928,8 @@ export type PresentationUncheckedUpdateWithoutThemeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -883,6 +947,8 @@ export type PresentationUncheckedUpdateManyWithoutThemeInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   content?: Prisma.StringFieldUpdateOperationsInput | string
   imageSource?: Prisma.StringFieldUpdateOperationsInput | string
+  imageProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  imageModelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   prompt?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelProvider?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   modelId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -902,6 +968,8 @@ export type PresentationSelect<ExtArgs extends runtime.Types.Extensions.Internal
   id?: boolean
   content?: boolean
   imageSource?: boolean
+  imageProvider?: boolean
+  imageModelId?: boolean
   prompt?: boolean
   modelProvider?: boolean
   modelId?: boolean
@@ -922,6 +990,8 @@ export type PresentationSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   content?: boolean
   imageSource?: boolean
+  imageProvider?: boolean
+  imageModelId?: boolean
   prompt?: boolean
   modelProvider?: boolean
   modelId?: boolean
@@ -942,6 +1012,8 @@ export type PresentationSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   id?: boolean
   content?: boolean
   imageSource?: boolean
+  imageProvider?: boolean
+  imageModelId?: boolean
   prompt?: boolean
   modelProvider?: boolean
   modelId?: boolean
@@ -962,6 +1034,8 @@ export type PresentationSelectScalar = {
   id?: boolean
   content?: boolean
   imageSource?: boolean
+  imageProvider?: boolean
+  imageModelId?: boolean
   prompt?: boolean
   modelProvider?: boolean
   modelId?: boolean
@@ -976,7 +1050,7 @@ export type PresentationSelectScalar = {
   status?: boolean
 }
 
-export type PresentationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "imageSource" | "prompt" | "modelProvider" | "modelId" | "pageStyle" | "numSlides" | "tone" | "language" | "outline" | "searchResults" | "templateId" | "themeId" | "status", ExtArgs["result"]["presentation"]>
+export type PresentationOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "content" | "imageSource" | "imageProvider" | "imageModelId" | "prompt" | "modelProvider" | "modelId" | "pageStyle" | "numSlides" | "tone" | "language" | "outline" | "searchResults" | "templateId" | "themeId" | "status", ExtArgs["result"]["presentation"]>
 export type PresentationInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   base?: boolean | Prisma.BaseDocumentDefaultArgs<ExtArgs>
   theme?: boolean | Prisma.Presentation$themeArgs<ExtArgs>
@@ -1000,6 +1074,8 @@ export type $PresentationPayload<ExtArgs extends runtime.Types.Extensions.Intern
     id: string
     content: string
     imageSource: string
+    imageProvider: string | null
+    imageModelId: string | null
     prompt: string | null
     modelProvider: string | null
     modelId: string | null
@@ -1440,6 +1516,8 @@ export interface PresentationFieldRefs {
   readonly id: Prisma.FieldRef<"Presentation", 'String'>
   readonly content: Prisma.FieldRef<"Presentation", 'String'>
   readonly imageSource: Prisma.FieldRef<"Presentation", 'String'>
+  readonly imageProvider: Prisma.FieldRef<"Presentation", 'String'>
+  readonly imageModelId: Prisma.FieldRef<"Presentation", 'String'>
   readonly prompt: Prisma.FieldRef<"Presentation", 'String'>
   readonly modelProvider: Prisma.FieldRef<"Presentation", 'String'>
   readonly modelId: Prisma.FieldRef<"Presentation", 'String'>

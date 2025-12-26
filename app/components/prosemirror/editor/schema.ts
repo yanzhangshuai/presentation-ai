@@ -54,7 +54,7 @@ const nodes = baseNodes.append({
   },
 })
 
-export const slideSchema = new Schema({
+export const schema = new Schema({
   nodes,
   marks: basic.spec.marks,
 })

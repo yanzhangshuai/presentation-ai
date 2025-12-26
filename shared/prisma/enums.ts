@@ -53,7 +53,8 @@ export type PresentationThemeType = (typeof PresentationThemeType)[keyof typeof 
 
 export const ImageLibraryType = {
   UPLOADED: 'UPLOADED',
-  AI: 'AI'
+  AI: 'AI',
+  UNSPLASH: 'UNSPLASH'
 } as const
 
 export type ImageLibraryType = (typeof ImageLibraryType)[keyof typeof ImageLibraryType]

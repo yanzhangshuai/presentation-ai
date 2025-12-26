@@ -45,7 +45,7 @@ export default defineNuxtConfig({
       roleArn        : process.env.ALIYUN_OSS_ROLE_ARN || '',
     },
 
-    // 火山引擎配置
+    // 火山引擎
     volc: {
       accessKeyId    : process.env.VOLC_ACCESS_KEY_ID || '',
       accessKeySecret: process.env.VOLC_ACCESS_KEY_SECRET || '',
@@ -56,6 +56,12 @@ export default defineNuxtConfig({
 
     // UploadThing 配置
     uploadthingSecret: process.env.UPLOADTHING_SECRET,
+
+    // Unsplash API 密钥
+    unsplash: {
+      accessKey: process.env.UNSPLASH_ACCESS_KEY || '',
+      secretKey: process.env.UNSPLASH_SECRET_KEY || '',
+    },
 
     public: {
     },

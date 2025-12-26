@@ -1026,6 +1026,8 @@ export const PresentationScalarFieldEnum = {
   id: 'id',
   content: 'content',
   imageSource: 'imageSource',
+  imageProvider: 'imageProvider',
+  imageModelId: 'imageModelId',
   prompt: 'prompt',
   modelProvider: 'modelProvider',
   modelId: 'modelId',

@@ -1,26 +1,23 @@
 <script setup lang="ts">
 import type { Plugin } from 'prosemirror-state'
-import type { Schema } from 'prosemirror-model'
 
 import { EditorView } from 'prosemirror-view'
 import { EditorState } from 'prosemirror-state'
-import { schema } from 'prosemirror-schema-basic'
 import { onBeforeUnmount, onMounted, shallowRef, toValue, watch } from 'vue'
 
 import type { BubbleMenuState } from '~/utils/prosemirror/plugins/bubbleMenu'
 
 import { bubbleMenuPlugin  } from '~/utils/prosemirror/plugins/bubbleMenu'
 
-import BubbleToolbar from './BubbleToolbar.vue'
+import { schema } from './schema'
+// import BubbleToolbar from './BubbleToolbar.vue'
 
 const props = withDefaults(defineProps<{
   content?    : any[]
-  schema?     : Schema
   plugins?    : Plugin[]
   editable?   : boolean | Ref<boolean>
   showToolbar?: boolean
 }>(), {
-  schema     : () => schema,
   plugins    : () => [],
   editable   : true,
   showToolbar: true,
@@ -39,8 +36,8 @@ const bubbleMenuState = shallowRef<BubbleMenuState | null>(null)
 
 function createState(content: any[]) {
   return EditorState.create({
-    schema : props.schema ?? schema,
-    doc    : (props.schema ?? schema).nodeFromJSON({ type: 'doc', content: content || [] }),
+    schema,
+    doc    : schema.nodeFromJSON({ type: 'doc', content: content || [] }),
     plugins: [
       ...(props.showToolbar
         ? [bubbleMenuPlugin(v => (bubbleMenuState.value = v))]
@@ -107,11 +104,11 @@ defineExpose({
 <template>
   <div class="content-editor">
     <div ref="editor" class="prosemirror-root" />
-    <BubbleToolbar
+    <!-- <BubbleToolbar
       v-if="showToolbar"
       :editor-view="view"
       :bubble-state="bubbleMenuState"
-    />
+    /> -->
   </div>
 </template>
 

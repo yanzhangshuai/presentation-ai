@@ -37,18 +37,20 @@ if (!toValue(state).prompt) {
   const { data } = await getPresentation(toValue(id))
 
   Object.assign(state.value, {
-    prompt       : toValue(data)?.prompt,
-    modelProvider: toValue(data)?.modelProvider,
-    modelId      : toValue(data)?.modelId,
-    numSlides    : toValue(data)?.numSlides,
-    language     : toValue(data)?.language,
-    pageStyle    : toValue(data)?.pageStyle,
+    prompt       : toValue(data)?.prompt || state.value.prompt,
+    modelProvider: toValue(data)?.modelProvider || state.value.modelProvider,
+    modelId      : toValue(data)?.modelId || state.value.modelId,
+    numSlides    : toValue(data)?.numSlides || state.value.numSlides,
+    language     : toValue(data)?.language || state.value.language,
+    pageStyle    : toValue(data)?.pageStyle || state.value.pageStyle,
     web          : !!toValue(data)?.searchResults,
-    themeId      : toValue(data)?.themeId,
-    title        : toValue(data)?.base.title,
-    outline      : toValue(data)?.outline,
-    imageSource  : toValue(data)?.imageSource,
-    tone         : toValue(data)?.tone,
+    themeId      : toValue(data)?.themeId || state.value.themeId,
+    title        : toValue(data)?.base.title || state.value.title,
+    outline      : toValue(data)?.outline || state.value.outline,
+    imageSource  : toValue(data)?.imageSource || state.value.imageSource,
+    imageProvider: toValue(data)?.imageProvider || state.value.imageProvider,
+    imageModelId : toValue(data)?.imageModelId || state.value.imageModelId,
+    tone         : toValue(data)?.tone || state.value.tone,
   })
 
   themeStore.setTheme(toValue(data)!.theme)
@@ -90,6 +92,8 @@ const { run: onGeneratePresentation, loading: isGeneratingPresentation } = safeA
     numSlides    : state.value.numSlides,
     pageStyle    : state.value.pageStyle,
     imageSource  : state.value.imageSource,
+    imageProvider: state.value.imageProvider,
+    imageModelId : state.value.imageModelId,
     tone         : state.value.tone,
     prompt       : state.value.prompt,
     outline      : state.value.outline,
@@ -168,10 +172,14 @@ watch(
       </div>
 
       <!-- image source -->
-      <!-- <div class="flex flex-col space-y-2">
-          <label>{{ $t("presentation.imageSource.title") }}</label>
-          <PresentationImageSourceSelect v-model="presentation.imageSource" />
-        </div> -->
+      <div class="flex flex-col space-y-2">
+        <label>{{ $t("presentation.imageSource.title") }}</label>
+        <PresentationImageSourceSelect
+          v-model:image-source="state.imageSource"
+          v-model:image-provider="state.imageProvider"
+          v-model:image-model-id="state.imageModelId"
+        />
+      </div>
 
       <!-- presentation tone -->
       <div class="flex flex-col space-y-2">
