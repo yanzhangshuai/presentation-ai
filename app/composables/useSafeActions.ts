@@ -1,5 +1,5 @@
 import { useToast } from '#imports'
-import throttle from 'lodash/throttle'
+import { throttle } from 'lodash-es'
 
 export interface SafeActionOptions<T> {
   throttle? : number

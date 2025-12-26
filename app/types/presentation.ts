@@ -3,7 +3,7 @@ import type { PresentationTheme } from './presentation-theme'
 
 export interface Presentation {
   id           : string
-  content      : string
+  doc          : string
   imageSource  : string
   imageProvider: string
   imageModelId : string
@@ -26,7 +26,7 @@ export interface Presentation {
 export enum PresentationStatus  {
   Draft  = 'DRAFT',
   Outline = 'OUTLINE',
-  Content = 'CONTENT',
+  Doc = 'DOC',
   Failed = 'FAILED',
 }
 
@@ -51,7 +51,7 @@ export interface PresentationSlide {
   id        : string
   layout    : LayoutType
   rootImage?: RootImage
-  content   : SlideNode[]
+  doc       : SlideDoc
   alignment?: 'start' | 'center' | 'end'
   bgColor?  : string
   width?    : 'S' | 'M' | 'L'
@@ -79,13 +79,26 @@ export type SlideNode
   = | HeadingNode
     | ParagraphNode
     | ImageNode
-    | ColumnsNode
+    | PColumnsNode
+    | PColumnNode
+    | PListNode
+    | PListItemNode
     | BulletListNode
     | OrderedListNode
+    | ListItemNode
+    | TextNode
 
 export interface TextNode {
-  type: 'text'
-  text: string
+  type  : 'text'
+  text  : string
+  marks?: Array<{
+    type  : 'bold' | 'italic' | 'underline' | 'strike' | 'code' | 'link' | 'generating'
+    attrs?: {
+      href?  : string
+      title? : string
+      target?: string
+    }
+  }>
 }
 export interface HeadingNode {
   type : 'heading'
@@ -123,30 +136,71 @@ export interface ImageNode {
 /**
  * 多列节点
  */
-export interface ColumnsNode {
-  type : 'columns'
+export interface PColumnsNode {
+  type : 'p_columns'
+  attrs: {
+    id       : string
+    count    : number
+    width?   : 'S' | 'M' | 'L'
+    direction: 'vertical' | 'horizontal'
+  }
+  content: PColumnNode[]
+}
+
+export interface PColumnNode {
+  type : 'p_column'
   attrs: {
     id   : string
-    count: number
+    index: number
   }
-  content: SlideNode[] // column 内依然是合法 node
+  content: (ParagraphNode | HeadingNode)[]
+}
+
+/**
+ * [1][2][3]节点
+ */
+export interface PListNode {
+  type : 'p_list'
+  attrs: {
+    id       : string
+    count    : number
+    width?   : 'S' | 'M' | 'L'
+    direction: 'vertical' | 'horizontal'
+  }
+  content: PListItemNode[]
+}
+
+export interface PListItemNode {
+  type : 'p_list_item'
+  attrs: {
+    id   : string
+    index: number
+  }
+  content: (ParagraphNode | HeadingNode)[]
 }
 
 /**
  * 列表节点
  */
 export interface ListItemNode {
-  type   : 'listItem'
-  content: ParagraphNode[]
+  type : 'list_item'
+  attrs  : {
+    id       : string
+    index    : number
+    styleType: 'disc' | 'decimal'
+  }
+  content: (ParagraphNode | HeadingNode)[]
 }
 
 /**
  * 无序列表节点
  */
 export interface BulletListNode {
-  type : 'bulletList'
+  type : 'bullet_list'
   attrs: {
-    id: string
+    id       : string
+    count    : number
+    direction: 'vertical' | 'horizontal'
   }
   content: ListItemNode[]
 }
@@ -155,7 +209,7 @@ export interface BulletListNode {
  * 有序列表节点
  */
 export interface OrderedListNode {
-  type : 'orderedList'
+  type : 'ordered_list'
   attrs: {
     id   : string
     order: number

@@ -30,6 +30,10 @@
   },
   "rootImage": {
     "placeholderTitle": "まだ画像はない",
-    "placeholderDesc": "画像のアップロードまたは生成"
+    "placeholderDesc": "画像のアップロードまたは生成",
+    "uploadBtn": "アップロード",
+    "generateBtn": "生成",
+    "uploading": "アップロード中 .. {progress}%",
+    "generating": "生成する.."
   }
 }

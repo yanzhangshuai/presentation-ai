@@ -182,7 +182,3 @@ const { run: onGenerate } = safeAction(async () => {
     </div>
   </div>
 </template>
-
-<style scoped lang="less">
-
-</style>

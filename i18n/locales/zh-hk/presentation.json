@@ -30,6 +30,10 @@
   },
   "rootImage": {
     "placeholderTitle": "還沒有影像",
-    "placeholderDesc": "上傳或生成影像"
+    "placeholderDesc": "上傳或生成影像",
+    "uploadBtn": "上傳",
+    "generateBtn": "生成",
+    "uploading": "正在上傳。 ..{progress}%",
+    "generating": "生成。 .."
   }
 }

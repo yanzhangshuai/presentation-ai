@@ -1,7 +1,7 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { ImageLibraryType } from '#shared/prisma/client'
+import { ImageLibraryType } from '~~/prisma/generated/client'
 
 const bodySchema = z.object({
   url: z.string(),

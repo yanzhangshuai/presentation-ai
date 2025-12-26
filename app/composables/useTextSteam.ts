@@ -3,6 +3,7 @@ import { ref } from 'vue'
 export interface TextStreamOptions {
   api      : string
   headers? : Record<string, string>
+  onUpdate?: (text: string) => void
   onFinish?: () => void
   onError? : (err: Error) => void
 }
@@ -51,7 +52,9 @@ export function useTextStream(options: TextStreamOptions) {
         if (done)
           break
 
-        text.value += decoder.decode(value, { stream: true })
+        const current = decoder.decode(value, { stream: true })
+        options.onUpdate?.(current)
+        text.value += current
       }
 
       options.onFinish?.()

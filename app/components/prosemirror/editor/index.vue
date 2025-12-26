@@ -1,8 +1,10 @@
 <script setup lang="ts">
 import type { Plugin } from 'prosemirror-state'
 
+import { keymap } from 'prosemirror-keymap'
 import { EditorView } from 'prosemirror-view'
 import { EditorState } from 'prosemirror-state'
+import { baseKeymap } from 'prosemirror-commands'
 import { onBeforeUnmount, onMounted, shallowRef, toValue, watch } from 'vue'
 
 import type { BubbleMenuState } from '~/utils/prosemirror/plugins/bubbleMenu'
@@ -10,16 +12,18 @@ import type { BubbleMenuState } from '~/utils/prosemirror/plugins/bubbleMenu'
 import { bubbleMenuPlugin  } from '~/utils/prosemirror/plugins/bubbleMenu'
 
 import { schema } from './schema'
+import Container from './container.vue'
+import { headingPlugin } from './plugins/heading'
 // import BubbleToolbar from './BubbleToolbar.vue'
 
 const props = withDefaults(defineProps<{
   content?    : any[]
-  plugins?    : Plugin[]
-  editable?   : boolean | Ref<boolean>
+  autoFocus?  : boolean
+  editable?   : boolean
   showToolbar?: boolean
 }>(), {
-  plugins    : () => [],
   editable   : true,
+  autoFocus  : false,
   showToolbar: true,
   content    : () => [],
 })
@@ -42,7 +46,9 @@ function createState(content: any[]) {
       ...(props.showToolbar
         ? [bubbleMenuPlugin(v => (bubbleMenuState.value = v))]
         : []),
-      ...(props.plugins ?? []),
+
+      keymap(baseKeymap),
+      headingPlugin,
     ],
   })
 }
@@ -102,14 +108,14 @@ defineExpose({
 </script>
 
 <template>
-  <div class="content-editor">
+  <Container :editable="editable" :focused="autoFocus" class="content-editor flex flex-col border-none bg-transparent py-12 px-16 outline-none h-full">
     <div ref="editor" class="prosemirror-root" />
     <!-- <BubbleToolbar
       v-if="showToolbar"
       :editor-view="view"
       :bubble-state="bubbleMenuState"
     /> -->
-  </div>
+  </Container>
 </template>
 
 <style scoped>

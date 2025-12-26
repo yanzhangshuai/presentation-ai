@@ -2,7 +2,7 @@
 import type { PresentationSlide } from '~/types/presentation'
 
 import { PresentationStatus } from '~/types/presentation'
-import { getPresentation, slidesGenerationStream } from '~/services/presentation'
+import { generateV2, getPresentation, slidesGenerationStream } from '~/services/presentation'
 
 // ------------------------------
 // 页面元信息配置
@@ -21,9 +21,11 @@ const toast = useToast()
 
 const presentationStore = usePresentationStore()
 const { presentationDoc } = storeToRefs(presentationStore)
-const { setPresentation, autoSaveDoc, addSlide, saveDoc } = presentationStore
+const { setPresentation, autoSaveDoc, addSlide, setSlides, saveDoc } = presentationStore
 
 const { setTheme } = usePresentationThemeStore()
+
+const slidesRef = useTemplateRef('presentationSlides')
 
 const id = computed(() => route.params.id?.toString())
 
@@ -32,14 +34,43 @@ const id = computed(() => route.params.id?.toString())
 // ------------------------------
 const { data, status, error } = getPresentation(toValue(id)!)
 
+const { generate, status: generationStatus } = useGeneration(toValue(id)!, {
+  onUpdate: (slides: PresentationSlide[]) => {
+    setSlides(slides)
+
+    requestAnimationFrame(() => {
+      // 滚动到最后一张幻灯片
+      document.querySelector('.main')?.scrollTo({
+        top     : document.querySelector('.main')!.scrollHeight,
+        behavior: 'smooth',
+      })
+    })
+  },
+  onFinish: () => {
+    saveDoc()
+      .then(() => {
+        autoSaveDoc()
+      })
+      .catch((err) => {
+        toast.add({
+          title: err.message || 'Failed to save generated presentation.',
+          color: 'error',
+        })
+      })
+  },
+  onError: (err: Error) => {
+    console.error('Slides generation error:', err)
+  },
+})
+
 if (import.meta.client) {
-  watchEffect(() => {
+  watch(data, () => {
     if (!data.value)
       return
 
     setTheme(data.value.theme)
     setPresentation(data.value)
-    if (data.value?.status !== PresentationStatus.Content) {
+    if (data.value?.status !== PresentationStatus.Doc) {
       // 生成
       presentationDoc.value = {
         id       : toValue(id)!,
@@ -49,26 +80,28 @@ if (import.meta.client) {
         updatedAt: Date.now(),
       }
 
-      slidesGenerationStream(toValue(id)!, {
-        onUpdate: (slide: PresentationSlide) => {
-          addSlide(slide)
-        },
-        onFinish: () => {
-          saveDoc()
-            .then(() => {
-              autoSaveDoc()
-            })
-            .catch((err) => {
-              toast.add({
-                title: err.message || 'Failed to save generated presentation.',
-                color: 'error',
-              })
-            })
-        },
-        onError: (err: Error) => {
-          console.error('Slides generation stream error:', err)
-        },
-      })
+      generate()
+
+      // slidesGenerationStream(toValue(id)!, {
+      //   onUpdate: (slide: PresentationSlide) => {
+      //     addSlide(slide)
+      //   },
+      //   onFinish: () => {
+      //     saveDoc()
+      //       .then(() => {
+      //         autoSaveDoc()
+      //       })
+      //       .catch((err) => {
+      //         toast.add({
+      //           title: err.message || 'Failed to save generated presentation.',
+      //           color: 'error',
+      //         })
+      //       })
+      //   },
+      //   onError: (err: Error) => {
+      //     console.error('Slides generation stream error:', err)
+      //   },
+      // })
     }
     else {
       autoSaveDoc()
@@ -87,15 +120,9 @@ if (import.meta.client) {
     <div class="presentation-slides flex max-h-full flex-1 pb-20">
       <div class="mx-auto max-w-[90%] space-y-8 pt-16">
         <ClientOnly>
-          <PresentationSlideEditor v-for="(s, index) in presentationDoc.slides" :key="s.id" :slide-id="s.id" :slide-idx="index" class="slide-item" />
+          <PresentationSlides ref="presentationSlides" :is-generating="generationStatus === 'pending'" />
         </ClientOnly>
       </div>
     </div>
   </UiPage>
 </template>
-
-<style scoped lang="less">
-.slide-item {
-  margin-bottom: 24px;
-}
-</style>

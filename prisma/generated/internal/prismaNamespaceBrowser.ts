@@ -133,7 +133,7 @@ export type BaseDocumentScalarFieldEnum = (typeof BaseDocumentScalarFieldEnum)[k
 
 export const PresentationScalarFieldEnum = {
   id: 'id',
-  content: 'content',
+  doc: 'doc',
   imageSource: 'imageSource',
   imageProvider: 'imageProvider',
   imageModelId: 'imageModelId',

@@ -71,7 +71,7 @@ export default antfu(
       '.vscode/',
       'i18n',
       'coverage/',
-      'shared/prisma/',
+      'prisma/generated/',
 
     ],
   },

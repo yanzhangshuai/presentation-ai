@@ -1,19 +1,21 @@
 <script setup lang="ts">
-import type { PresentationSlide, SlideNode } from '~/types/presentation'
+import type { Editor } from '@tiptap/vue-3'
+
+import type { PresentationSlide, SlideDoc } from '~/types/presentation'
+
+import PEditor from '~/components/editor/index.vue'
 
 import Controls from './Controls.vue'
 import RootImage from './RootImage.vue'
 // import Controls from './Controls.vue'
 
 const props = defineProps<{
-  slideIdx : number
-  slideId  : string
-  editable?: boolean
+  slideIdx     : number
+  slideId      : string
+  isGenerating?: boolean
 }>()
 
-const emit = defineEmits<{
-  update: [slide: PresentationSlide]
-}>()
+const { setEditor } = useSlideEditor()
 const presentationStore = usePresentationStore()
 const { slides } = storeToRefs(presentationStore)
 
@@ -21,11 +23,15 @@ const slide = computed(() => {
   return slides.value.find(s => s.id === props.slideId)!
 })
 
-function onContentUpdate(content: SlideNode[]) {
-  // emit('update', {
-  //   ...props.slide,
-  //   content,
-  // })
+const editable = computed(() => {
+  return !props.isGenerating
+})
+
+function onContentUpdate(content: SlideDoc) {
+  presentationStore.setSlide(props.slideIdx, {
+    ...toRaw(slide.value),
+    doc: content,
+  })
 }
 
 const layoutType = computed(() => {
@@ -68,16 +74,21 @@ const style = computed(() => {
     backgroundRepeat  : 'no-repeat',
   }
 })
+
+const onFocus = (doc: SlideDoc, editor: Editor) => {
+  setEditor(editor)
+}
 </script>
 
 <template>
   <div
     :class="cn(
       'presentation-slide w-full min-h-96 relative text-foreground overflow-hidden ',
-      'group/card-container grid focus-within:ring-2! focus-within:ring-primary! focus-within:ring-opacity-50',
+      'group/card-container w-full grid focus-within:ring-2! focus-within:ring-primary! focus-within:ring-opacity-50',
       layoutType,
       MaxW,
-    )" :style="style"
+    )"
+    :style="style"
   >
     <Controls :slide="slide">
       <div class="flex" :data-layout="slide.layout">
@@ -85,9 +96,13 @@ const style = computed(() => {
         <RootImage class="slide-image" :slide-idx="slideIdx" :slide-id="slideId" />
 
         <!-- 内容区 -->
-        <ProsemirrorEditor
-          class="slide-content flex-1 flex-center" :content="slide.content" :editable="true"
-          show-toolbar @update="onContentUpdate"
+        <PEditor
+          class="slide-content flex-1 flex-center"
+          :doc="slide.doc"
+          :editable="editable"
+          show-toolbar
+          @update="onContentUpdate"
+          @focus="onFocus"
         />
       </div>
     </Controls>
@@ -101,7 +116,7 @@ const style = computed(() => {
     flex-direction: row;
 
     .slide-image {
-      width: 45%;
+      width: 40%;
       height: 100%;
     }
 
@@ -111,7 +126,7 @@ const style = computed(() => {
     flex-direction: row-reverse;
 
     .slide-image {
-      width: 45%;
+      width: 40%;
       height: 100%;
     }
   }
@@ -131,6 +146,15 @@ const style = computed(() => {
     .slide-image {
       width: 100%;
       height: 280px;
+    }
+  }
+
+  [data-layout='background'] {
+    flex-direction: column;
+
+    .slide-image {
+
+      display: none;
     }
   }
 

@@ -14,17 +14,17 @@ export const usePresentationStore = defineStore('presentation', () => {
     updatedAt  : 0,
   })
 
-  const setPresentation = (value: Presentation) => {
+  const setPresentation = (pre: Presentation) => {
     // TODO: 默认值需要优化
-    value.tone = value.tone || 'professional'
-    presentation.value = value
-    if (value.content) {
-      presentationDoc.value = JSON.parse(value.content)
+    pre.tone = pre.tone || 'professional'
+    presentation.value = pre
+    if (pre.doc) {
+      presentationDoc.value = JSON.parse(pre.doc)
     }
     else {
       presentationDoc.value = {
-        id         : value.id,
-        title      : value.base.title,
+        id         : pre.id,
+        title      : pre.base.title,
         description: '',
         slides     : [],
         createdAt  : Date.now(),
@@ -43,6 +43,10 @@ export const usePresentationStore = defineStore('presentation', () => {
     presentationDoc.value.slides[index] = slide
   }
 
+  const setSlides = (slides: Array<PresentationSlide>) => {
+    presentationDoc.value.slides = slides
+  }
+
   const addSlide = (slide: PresentationSlide, index?: number) => {
     if (index !== undefined) {
       presentationDoc.value.slides.splice(index, 0, slide)
@@ -56,15 +60,15 @@ export const usePresentationStore = defineStore('presentation', () => {
     if (!presentation.value)
       throw new Error('No presentation to save.')
 
-    const content = JSON.stringify(presentationDoc.value)
-    return editPresentation(presentation.value.id, { content })
+    const doc = JSON.stringify(presentationDoc.value)
+    return editPresentation(presentation.value.id, { doc })
   }
 
   const autoSaveDoc = () => {
     // 自动保存，定时器，每三秒保存一次
     setInterval(() => {
       saveDoc()
-    }, 3000)
+    }, 30000)
   }
 
   return {
@@ -75,6 +79,7 @@ export const usePresentationStore = defineStore('presentation', () => {
     setPresentationDoc,
     saveDoc,
     setSlide,
+    setSlides,
     addSlide,
     autoSaveDoc,
   }

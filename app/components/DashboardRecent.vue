@@ -45,7 +45,7 @@ const { run: openDocs } = safeAction(async (id: string) => {
   const presentation = await $fetch<Presentation>(`/api/presentation/${id}`)
 
   // 有内容就直接打开，否则跳转生成页面
-  if (presentation?.content?.length)
+  if (presentation?.doc?.length)
     router.push(localRoute(`/presentation/${id}`))
   else
     router.push(localRoute(`/presentation/generate/${id}`))

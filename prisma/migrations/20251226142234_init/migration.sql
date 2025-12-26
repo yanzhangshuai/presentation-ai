@@ -5,7 +5,7 @@ CREATE TYPE "UserRole" AS ENUM ('ADMIN', 'USER');
 CREATE TYPE "DocumentType" AS ENUM ('NOTE', 'DOCUMENT', 'DRAWING', 'DESIGN', 'STICKY_NOTES', 'MIND_MAP', 'RAG', 'RESEARCH_PAPER', 'FLIPBOOK', 'PRESENTATION');
 
 -- CreateEnum
-CREATE TYPE "PresentationStatus" AS ENUM ('DRAFT', 'OUTLINE', 'CONTENT', 'FAILED');
+CREATE TYPE "PresentationStatus" AS ENUM ('DRAFT', 'OUTLINE', 'DOC', 'FAILED');
 
 -- CreateEnum
 CREATE TYPE "PresentationThemeType" AS ENUM ('SYSTEM', 'CUSTOM');
@@ -71,8 +71,10 @@ CREATE TABLE "base_documents" (
 -- CreateTable
 CREATE TABLE "presentations" (
     "id" TEXT NOT NULL,
-    "content" TEXT NOT NULL,
+    "doc" TEXT NOT NULL,
     "image_source" TEXT NOT NULL DEFAULT 'ai',
+    "image_provider" TEXT,
+    "image_model_id" TEXT,
     "prompt" TEXT,
     "model_provider" TEXT,
     "model_id" TEXT,

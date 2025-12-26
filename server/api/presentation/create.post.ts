@@ -1,7 +1,7 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import  { DocumentType, PresentationStatus, PresentationThemeType } from '#shared/prisma/client'
+import  { DocumentType, PresentationStatus, PresentationThemeType } from '~~/prisma/generated/client'
 
 const bodySchema = z.object({
   title        : z.string(),
@@ -70,7 +70,7 @@ export default defineEventHandler(async (event) => {
       userId      : user.id,
       presentation: {
         create: {
-          content: '',
+          doc    : '',
           themeId,
           language,
           tone,

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { uniqueId } from 'lodash'
+import { uniqueId } from 'lodash-es'
 import { nextTick, ref, watch } from 'vue'
 import { VueDraggableNext as Draggable } from 'vue-draggable-next'
 

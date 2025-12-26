@@ -36,7 +36,7 @@ export type DocumentType = (typeof DocumentType)[keyof typeof DocumentType]
 export const PresentationStatus = {
   DRAFT: 'DRAFT',
   OUTLINE: 'OUTLINE',
-  CONTENT: 'CONTENT',
+  DOC: 'DOC',
   FAILED: 'FAILED'
 } as const
 

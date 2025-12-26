@@ -2,7 +2,7 @@ import 'dotenv/config'
 import process from 'node:process'
 import { PrismaPg } from '@prisma/adapter-pg'
 
-import { PresentationThemeType, PrismaClient } from '../shared/prisma/client'
+import { PresentationThemeType, PrismaClient } from './generated/client'
 
 const prisma = new PrismaClient({
   adapter: new PrismaPg({ connectionString: `${process.env.DATABASE_URL}` }),

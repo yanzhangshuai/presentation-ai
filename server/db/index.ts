@@ -1,9 +1,8 @@
-import process from 'node:process'
+// import process from 'node:process'
 import { PrismaPg } from '@prisma/adapter-pg'
-import { PrismaClient } from '#shared/prisma/client'
+import { PrismaClient } from '~~/prisma/generated/client'
 
-const connectionString = `${process.env.DATABASE_URL}`
-
+const connectionString = useRuntimeConfig().databaseUrl
 if (!connectionString)
   throw new Error('DATABASE_URL is not defined!')
 

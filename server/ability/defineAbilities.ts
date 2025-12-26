@@ -1,4 +1,4 @@
-import type { User } from '#shared/prisma/client'
+import type { User } from '~~/prisma/generated/client'
 
 import { AbilityBuilder, createMongoAbility } from '@casl/ability'
 

@@ -468,5 +468,20 @@
     "zh": "还没有图像",
     "zh-hk": "還沒有影像",
     "jp": "まだ画像はない"
+  },
+  "presentation_Generate": {
+    "zh": "生成",
+    "zh-hk": "生成",
+    "jp": "生成"
+  },
+  "presentation_Upload": {
+    "zh": "上传",
+    "zh-hk": "上傳",
+    "jp": "アップロード"
+  },
+  "presentation_Uploading... __PH_0__%": {
+    "zh": "正在上传。..__PH_0__%",
+    "zh-hk": "正在上傳。 ..__PH_0__%",
+    "jp": "アップロード中 .. __PH_0__%"
   }
 }

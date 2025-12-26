@@ -461,23 +461,55 @@ Generate the full presentation now.
 Strictly follow all rules above.
 Output JSONL only.
 `
+
 export const slideNodesPromptTemplate = `
+
 {{CONTEXT}}
+
+--------------------------------
+ROLE
+
+You are an expert presentation designer and content strategist.
+You generate structured TipTap / ProseMirror JSON for EXACTLY ONE presentation slide.
 
 --------------------------------
 TASK
 
-You are generating the CONTENT of exactly ONE presentation slide.
+Generate the content of EXACTLY ONE slide.
+Output ONLY TipTap-compatible JSON.
 
-Only generate slide content.
-Do NOT generate events, IDs, or lifecycle markers.
+Do NOT generate:
+- XML
+- HTML
+- Markdown
+- IDs
+- attrs.id
+- node identifiers
+- unique keys or identifiers of any kind
+- lifecycle markers
+- events
+- explanations
 
 --------------------------------
-CURRENT SLIDE POSITION
+SLIDE POSITION
 
 Slide number: {{SLIDE_INDEX}} of {{TOTAL_SLIDES}}
+
 Narrative step:
 {{NARRATIVE_STEP}}
+
+--------------------------------
+LAYOUT CONTROL (STRICT)
+
+This slide MUST use the following layout:
+
+{{SLIDE_LAYOUT}}
+
+Rules:
+- Use EXACTLY this value for the "layout" field
+- Do NOT change it
+- Do NOT fallback to left or right
+- Valid values are: left, right, top, bottom, none
 
 --------------------------------
 SLIDE TOPIC
@@ -485,122 +517,186 @@ SLIDE TOPIC
 {{SLIDE_TOPIC}}
 
 --------------------------------
-SOURCE BULLET POINTS
+SOURCE BULLET POINTS (REFERENCE ONLY)
 
 {{SLIDE_BULLETS}}
 
---------------------------------
-CONTENT GENERATION INSTRUCTION
-
-- Treat each bullet point as a key idea to be EXPANDED, not repeated.
-- Expand bullets into clear, self-contained explanations.
-- It is allowed and encouraged to add logical connective text.
-- Do NOT introduce concepts unrelated to the slide topic.
-- Do NOT simply restate the bullet text verbatim.
+Do NOT copy these verbatim.
+Each point must be EXPANDED with:
+- context
+- examples
+- light industry data or trends
+- connective explanations
 
 --------------------------------
 OUTPUT FORMAT (STRICT)
 
 Output ONLY valid JSON.
-Do NOT use Markdown.
-Do NOT wrap the output in code blocks.
-Do NOT include comments or explanations.
+Do NOT wrap in code blocks.
+Do NOT include extra text.
 
 The JSON structure MUST be:
 
 {
-  "layout": "left | right | top | bottom | none",
-  "rootImageQuery": "optional English visual image description",
-  "nodes": [ ... ]
+  "layout": "{{SLIDE_LAYOUT}}",
+  "rootImageQuery": "optional detailed English image description (10+ words)",
+  "nodes": [ ...TipTap block nodes... ]
 }
 
 --------------------------------
-NODE RULES (STRICT)
+ALLOWED NODE TYPES (STRICT)
 
-Allowed node types ONLY:
 - heading
 - paragraph
 - bullet_list
 - ordered_list
+- list_item
 - columns
 - column
-- image (secondary visuals only)
+- image
 
 --------------------------------
-NODE STRUCTURES
+NODE STRUCTURES (AUTHORITATIVE)
 
-heading:
+====================
+H1 TITLE RULE (MANDATORY)
+====================
+
+EVERY slide MUST include EXACTLY ONE heading node
+with level = 1.
+
+- This heading is the slide title (H1)
+- It MUST appear as the FIRST node in "nodes"
+- It MUST be semantically equivalent to {{SLIDE_TOPIC}}
+- Only minimal wording adjustments are allowed
+- NO other heading nodes are allowed anywhere in the slide
+
+--------------------------------
+heading (H1 — REQUIRED, EXACTLY ONE):
+
 {
   "type": "heading",
-  "content": [{ "type": "text", "text": "Title" }]
+  "attrs": { "level": 1 },
+  "content": [{ "type": "text", "text": "Slide title" }]
 }
 
+--------------------------------
 paragraph:
+
 {
   "type": "paragraph",
   "content": [{ "type": "text", "text": "Text" }]
 }
 
+--------------------------------
+LIST STRUCTURES (H3 SEMANTIC — MANDATORY)
+
 bullet_list / ordered_list:
+
 {
-  "type": "bullet_list",
+  "type": "bullet_list or ordered_list",
   "content": [
     {
       "type": "list_item",
       "content": [
         {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [{ "type": "text", "text": "Item title:" }]
+        },
+        {
           "type": "paragraph",
-          "content": [{ "type": "text", "text": "Item" }]
+          "content": [{ "type": "text", "text": "Item description expanding the title with explanation or examples." }]
         }
       ]
     }
   ]
 }
 
+RULES FOR list_item (STRICT):
+- Each list_item MUST contain EXACTLY TWO block-level nodes
+- First node: heading level 3 (2–6 words, ends with ":")
+- Second node: paragraph description ONLY
+- Do NOT merge title and description
+- Do NOT create incomplete list_item
+
+--------------------------------
+COLUMNS STRUCTURE (H3 SEMANTIC — MANDATORY)
+
 columns:
+
 {
   "type": "columns",
   "content": [
     {
       "type": "column",
-      "content": [ <block nodes only> ]
+      "content": [
+        {
+          "type": "heading",
+          "attrs": { "level": 3 },
+          "content": [{ "type": "text", "text": "Item title:" }]
+        },
+        {
+          "type": "paragraph",
+          "content": [{ "type": "text", "text": "Item description explaining the title." }]
+        }
+      ]
     }
   ]
 }
 
-column:
-{
-  "type": "column",
-  "content": [ <block nodes only> ]
-}
+RULES FOR columns:
+- column.content MUST contain block-level nodes only
+- Each column item MUST use EXACTLY TWO nodes
+- First node: H3 semantic title (ends with ":")
+- Second node: paragraph description
+- Do NOT merge nodes
 
-image (secondary only):
-{
-  "type": "image",
-  "query": "English visual description"
-}
+--------------------------------
+LIST SELECTION RULES
+
+- Use bullet_list for unordered key ideas
+- Use ordered_list for processes, workflows, timelines, or sequences
+
+--------------------------------
+LAYOUT INTENT (GUIDANCE)
+
+- Comparison / Pros vs Cons → columns
+- Before vs After → columns
+- Process / Workflow → ordered_list
+- Key Takeaways → bullet_list
+- Explanation / Concept → paragraph
 
 --------------------------------
 STYLE RULES
 
-- Exactly ONE heading node
-- Prefer paragraphs or lists (2–5 bullet items per list)
+- EXACTLY ONE H1 heading per slide
+- Lists MUST contain 2–5 list_item nodes
 - Do NOT nest lists
-- One slide should be concise and focused
-- Prefer clarity and consistency over verbosity
+- Be concise and slide-focused
+
+--------------------------------
+IMAGE RULES
+
+- Include rootImageQuery when visual support is appropriate
+- Image queries must be concrete and descriptive
+- Avoid generic terms like "team", "technology", "business"
 
 --------------------------------
 STRUCTURAL SAFETY RULES (STRICT)
 
-- "content" must always be an array of node objects.
-- Every object inside "content" MUST have a valid "type" field.
-- Do NOT nest arrays inside "content".
-- Do NOT use numeric keys (0, 1, 2...) as object properties.
-- column nodes may contain only block-level nodes.
+- "content" must always be an array
+- Every node MUST have a valid "type"
+- Do NOT nest arrays inside "content"
+- Do NOT use numeric keys as object properties
+- Do NOT include "id" in any node, attrs object, or nested field
+- attrs may only contain fields explicitly defined in this prompt
 
 --------------------------------
 FINAL INSTRUCTION
 
 ONLY output valid JSON.
-Do NOT output explanations or text outside JSON.
+No explanations.
+No additional text.
+Any output containing any form of "id" is INVALID.
 `

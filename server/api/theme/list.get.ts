@@ -1,9 +1,9 @@
-import type { Prisma } from '#shared/prisma/client'
+import type { Prisma } from '~~/prisma/generated/client'
 
 import { z } from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { PresentationThemeType } from '#shared/prisma/client'
+import { PresentationThemeType } from '~~/prisma/generated/client'
 
 const querySchema = z.object({
   type    : z.enum(PresentationThemeType).optional(),

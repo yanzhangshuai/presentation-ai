@@ -1,6 +1,5 @@
 import process from 'node:process'
 import tailwindcss from '@tailwindcss/vite'
-// import { visualizer } from 'rollup-plugin-visualizer'
 
 export default defineNuxtConfig({
   compatibilityDate: '2025-11-20',
@@ -23,6 +22,9 @@ export default defineNuxtConfig({
   },
 
   runtimeConfig: {
+
+    databaseUrl: process.env.DATABASE_URL,
+
     // auth 相关配置
     authSecret: process.env.AUTH_SECRET,
 
@@ -79,13 +81,6 @@ export default defineNuxtConfig({
     plugins: [
       tailwindcss(),
     ],
-    build: {
-      rollupOptions: {
-        plugins: [
-          // visualizer({ filename: 'stats.html', open: true }),
-        ],
-      },
-    },
   },
   css: [
     '~/assets/css/tailwind.css',

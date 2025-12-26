@@ -80,7 +80,7 @@ export async function slidesGenerationStream(id: string, options?: {
           id       : data.slideId,
           layout   : data.layout || 'none',
           rootImage: { query: data.rootImageQuery || '' },
-          content  : [],
+          doc      : { type: 'doc', content: [] },
         }
 
         // slides.value.push(slide)
@@ -95,7 +95,7 @@ export async function slidesGenerationStream(id: string, options?: {
           return
 
         // slide.content = slide.content.concat(data.node)
-        slide.content = slide.content.concat(data.node)
+        slide.doc.content = slide.doc.content.concat(data.node)
         break
       }
 
@@ -131,7 +131,7 @@ interface EditPresentationReq {
   numSlides?    : number
   tone?         : string
   outline?      : string[]
-  content?      : string
+  doc?          : string
 }
 
 /**
@@ -153,5 +153,66 @@ export function editPresentation(id: string, data: EditPresentationReq) {
  * @returns
  */
 export function getPresentation(id: string) {
-  return useFetch<Presentation, string>(`/api/presentation/${id}`,    { method: 'GET' })
+  return useFetch<Presentation, string>(`/api/presentation/${id}`, { method: 'GET' })
+}
+
+export async function generateV2(id: string, options?: {
+  onUpdate?: (slide: string) => void
+  onFinish?: () => void
+  onError? : (error: Error) => void
+}) {
+  const abortCtrl = new AbortController()
+
+  try {
+    const res = await fetch(`/api/v2/presentation/${id}/generate`, {
+      headers: {
+        Accept: 'text/event-stream',
+      },
+      signal: abortCtrl.signal,
+    })
+
+    if (!res.ok || !res.body)
+      throw new Error(`HTTP ${res.status}`)
+
+    const reader = res.body.getReader()
+    const decoder = new TextDecoder('utf-8')
+    let buffer = ''
+    while (true) {
+      const { value, done } = await reader.read()
+      if (done)
+        break
+
+      buffer += decoder.decode(value, { stream: true })
+
+      // 按 SSE 协议，用空行分割
+      const chunks = buffer.split('\n\n')
+      buffer = chunks.pop() || ''
+
+      for (const chunk of chunks) {
+        if (!chunk.startsWith('data:'))
+          continue
+
+        const json = chunk.replace(/^data:\s*/, '').trim()
+        if (!json)
+          continue
+
+        try {
+          const evt = JSON.parse(json)
+          const { event, data } = evt
+
+          options?.onUpdate?.(data)
+        }
+        catch {
+          // ignore malformed JSON
+        }
+      }
+    }
+    options?.onFinish?.()
+  }
+  catch (err: any) {
+    if (err.name === 'AbortError')
+      return
+
+    options?.onError?.(err instanceof Error ? err : new Error(String(err)))
+  }
 }

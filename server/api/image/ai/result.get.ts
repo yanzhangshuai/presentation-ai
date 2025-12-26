@@ -1,8 +1,8 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { ImageLibraryType } from '~~/shared/prisma/enums'
 import { imageModelPicker } from '~~/server/providers/image'
+import { ImageLibraryType } from '~~/prisma/generated/client'
 import { uploadBufferToOss } from '~~/server/providers/oss/Aliyun'
 import { nodeCacheDriverName } from '~~/server/providers/storage/nodeCacheDriver'
 

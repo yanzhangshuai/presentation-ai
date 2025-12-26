@@ -1,7 +1,7 @@
 import z from 'zod'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { PresentationStatus } from '#shared/prisma/client'
+import { PresentationStatus } from '~~/prisma/generated/client'
 
 const paramSchema = z.string()
 
@@ -19,7 +19,7 @@ const bodySchema = z.object({
   tone         : z.string().optional(),
   prompt       : z.string().optional(),
   outline      : z.array(z.string()).optional(),
-  content      : z.string().optional(),
+  doc          : z.string().optional(),
 }).transform(obj =>
   Object.fromEntries(
     Object.entries(obj).filter(([_, v]) => v !== undefined && v !== null),
@@ -62,9 +62,9 @@ export default defineEventHandler(async (event) => {
     updateData.status = PresentationStatus.OUTLINE
   }
 
-  if (updateData.content) {
+  if (updateData.doc) {
     // 如果更新了内容，自动更新状态
-    updateData.status = PresentationStatus.CONTENT
+    updateData.status = PresentationStatus.DOC
   }
 
   if (updateData.themeId) {

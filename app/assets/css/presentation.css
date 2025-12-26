@@ -132,6 +132,7 @@
   caret-color: var(--presentation-primary);
 }
 
+p[data-role="item-title"],
 .presentation-heading {
   background: linear-gradient(
     135deg,
@@ -147,14 +148,12 @@
   caret-color: var(--presentation-primary);
 }
 
-.presentation-text {
-  color: var(--presentation-text);
-  font-family: var(--presentation-body-font);
-  caret-color: var(--presentation-primary);
+.presentation-paragraph{
+  
 }
 
 /* Image styles */
-.presentation-image-container {
+/* .presentation-image-container {
   margin: 1rem 0;
   text-align: center;
 }
@@ -174,7 +173,7 @@
   margin-top: 0.5rem;
   color: var(--presentation-muted);
   font-size: 0.875rem;
-}
+} */
 
 /* Heading styles */
 h1.presentation-heading {
@@ -187,6 +186,8 @@ h2.presentation-heading {
   margin-bottom: 0.875rem;
 }
 
+
+p[data-role="item-title"],
 h3.presentation-heading {
   font-size: 1.75em;
   margin-bottom: 0.75rem;
@@ -212,6 +213,8 @@ h6.presentation-heading {
   margin-bottom: 1rem;
   line-height: 1.6;
   font-family: var(--presentation-body-font);
+  color: var(--presentation-text);
+  caret-color: var(--presentation-primary);
 }
 
 /* Styling for presentation slides to stand out from background */
@@ -252,3 +255,9 @@ h6.presentation-heading {
 .presentation-slide[style*="background"] {
   background-color: var(--presentation-background) !important;
 }
+
+/* .presentation-element {
+  &:hover {
+    outline: 1px solid var(--presentation-accent);
+  }
+} */
