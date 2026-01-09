@@ -5,8 +5,6 @@ import { keymap } from 'prosemirror-keymap' // 导入 ProseMirror 的键盘快�
 import { baseKeymap } from 'prosemirror-commands'
 import { splitListItem } from 'prosemirror-schema-list' // 导入列表拆分命令，用于处理 Enter 键时拆分列表项
 
-import MarkdownEditor from '~/components/prosemirror/MarkdownEditor.vue'
-
 import { outlineParser, outlineSchema, outlineSerializer } from './meta'
 
 const props = withDefaults(
@@ -73,8 +71,9 @@ const plugins: Plugin[] = [
     <span class="text-indigo-400">{{ index + 1 }}</span>
 
     <!-- editor -->
-    <MarkdownEditor
+    <LazyMarkdownEditor
       v-model:value="content"
+      hydrate-on-idle
       class="flex-1"
       :show-toolbar="false"
       :editable="editable"

@@ -111,18 +111,16 @@ if (import.meta.client) {
 </script>
 
 <template>
-  <UiPage
-    :status="status"
-    :error="error"
-    :loading-title="$t('presentation.loading')"
+  <UIPage
+    :status="status" :error="error" :loading-title="$t('presentation.loading')"
     :loading-text="$t('presentation.loadingWait')"
   >
     <div class="presentation-slides flex max-h-full flex-1 pb-20">
       <div class="mx-auto max-w-[90%] space-y-8 pt-16">
         <ClientOnly>
-          <PresentationSlides ref="presentationSlides" :is-generating="generationStatus === 'pending'" />
+          <LazyPresentationSlides ref="presentationSlides" :is-generating="generationStatus === 'pending'" />
         </ClientOnly>
       </div>
     </div>
-  </UiPage>
+  </UIPage>
 </template>

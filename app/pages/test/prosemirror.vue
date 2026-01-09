@@ -1,14 +1,9 @@
 <script setup lang="ts">
-import type { NodeView } from 'prosemirror-view'
 import type { Node, Schema } from 'prosemirror-model'
 
 import { keymap } from 'prosemirror-keymap'
-import applyDevTools from 'prosemirror-dev-tools'
-import { schema } from 'prosemirror-schema-basic'
-import { DOMParser, Slice } from 'prosemirror-model'
 import { history, redo, undo } from 'prosemirror-history'
 import { baseKeymap, toggleMark } from 'prosemirror-commands'
-import { ReplaceStep, Transform } from 'prosemirror-transform'
 import { EditorState, Plugin, PluginKey } from 'prosemirror-state'
 import { Decoration, DecorationSet, EditorView } from 'prosemirror-view'
 
@@ -287,7 +282,7 @@ onMounted(() => {
     editorView.value = view
     editor = view
 
-    applyDevTools(view)
+    // applyDevTools(view)
 
     // watch(
     //   doc,

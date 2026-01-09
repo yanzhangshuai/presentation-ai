@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import type { Editor } from '@tiptap/vue-3'
 
-import type { PresentationSlide, SlideDoc } from '~/types/presentation'
-
-import PEditor from '~/components/editor/index.vue'
+import type { SlideDoc } from '~/types/presentation'
 
 import Controls from './Controls.vue'
 import RootImage from './RootImage.vue'
@@ -96,15 +94,15 @@ const onFocus = (doc: SlideDoc, editor: Editor) => {
         <RootImage class="slide-image" :slide-idx="slideIdx" :slide-id="slideId" />
 
         <!-- 内容区 -->
-        <PEditor
+        <LazyPptEditor
           class="slide-content flex-1 flex-center"
           :doc="slide.doc"
-          :editable="editable"
           show-toolbar
           @update="onContentUpdate"
           @focus="onFocus"
         />
       </div>
+      <div v-if="!editable" class="absolute top-0 left-0 w-full h-full" />
     </Controls>
   </div>
 </template>

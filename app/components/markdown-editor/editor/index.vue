@@ -7,9 +7,9 @@ import { EditorState } from 'prosemirror-state'
 import { baseKeymap } from 'prosemirror-commands'
 import { onBeforeUnmount, onMounted, shallowRef, toValue, watch } from 'vue'
 
-import type { BubbleMenuState } from '~/utils/prosemirror/plugins/bubbleMenu'
+import type { BubbleMenuState } from '~/components/markdown-editor/plugins/bubbleMenu'
 
-import { bubbleMenuPlugin  } from '~/utils/prosemirror/plugins/bubbleMenu'
+import { bubbleMenuPlugin  } from '~/components/markdown-editor/plugins/bubbleMenu'
 
 import { schema } from './schema'
 import Container from './container.vue'

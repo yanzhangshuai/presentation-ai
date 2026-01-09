@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import type { Schema } from 'prosemirror-model'
-import type { Plugin, Transaction } from 'prosemirror-state'
+import type { Plugin } from 'prosemirror-state'
 import type { MarkdownParser, MarkdownSerializer } from 'prosemirror-markdown'
 
 import { EditorView } from 'prosemirror-view'
@@ -8,11 +8,9 @@ import { EditorState } from 'prosemirror-state'
 import { onBeforeUnmount, shallowRef, toValue } from 'vue'
 import { defaultMarkdownParser, defaultMarkdownSerializer, schema } from 'prosemirror-markdown'
 
-import type { BubbleMenuState } from '~/utils/prosemirror/plugins/bubbleMenu'
+import type { BubbleMenuState } from '~/components/markdown-editor/plugins/bubbleMenu'
 
-import { bubbleMenuPlugin  } from '~/utils/prosemirror/plugins/bubbleMenu'
-
-import BubbleToolbar from './BubbleToolbar.vue'
+import { bubbleMenuPlugin  } from '~/components/markdown-editor/plugins/bubbleMenu'
 
 const props = withDefaults(defineProps<{
   schema?     : Schema
@@ -168,11 +166,6 @@ defineExpose({
 <template>
   <div class="relative">
     <div ref="editor" class="prose max-w-none dark:prose-invert focus:outline-none focus:ring-0 mb-0" />
-    <BubbleToolbar
-      v-if="props.showToolbar"
-      :editor-view="view"
-      :bubble-state="bubbleMenuState"
-    />
   </div>
 </template>
 

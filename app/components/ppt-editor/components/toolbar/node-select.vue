@@ -53,11 +53,11 @@ const items:Array<SelectItem> = [
     label: 'Bulleted List',
     value: 'bulleted_list',
   },
-  {
-    icon : 'i-lucide-list-numbers',
-    label: 'Numbered List',
-    value: 'ordered_list',
-  },
+  // {
+  //   icon : 'i-lucide-list-numbers',
+  //   label: 'Numbered List',
+  //   value: 'ordered_list',
+  // },
 ]
 
 const current = computed<string | null>(() => {
@@ -111,8 +111,8 @@ const onChange = (evt: Event) => {
     case 'heading-6':
       props.editor.chain().focus().toggleHeading({ level: 6 }).run()
       break
-    case 'bulleted_list':
-      props.editor.chain().focus().toggleBulletList().run()
+      // case 'bulleted_list':
+      //   props.editor.chain().focus().toggleBulletList().run()
       break
     case 'ordered_list':
       props.editor.chain().focus().toggleOrderedList().run()

@@ -1,4 +1,3 @@
-import OSS from 'ali-oss'
 /**
  *  创建阿里云 OSS 上传器
  * @returns
@@ -8,6 +7,7 @@ import OSS from 'ali-oss'
 export function createOssUploader(): Uploader {
   return {
     async upload(file: File, options: UploadOptions = {}) {
+      const OSS = (await import('ali-oss')).default
       try {
         // 1️⃣ 获取 STS
         const cfg = await $fetch<{

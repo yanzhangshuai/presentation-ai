@@ -23,7 +23,7 @@ const callbackUrl = computed(() =>
 </script>
 
 <template>
-  <UHeader mode="slideover">
+  <UHeader mode="slideover" :toggle="false">
     <!-- 左侧Logo -->
     <template #left>
       <NuxtLinkLocale to="/" class="text-xl i-flex-center">
@@ -32,12 +32,6 @@ const callbackUrl = computed(() =>
           {{ $t('common.logo') }}
         </span>
       </NuxtLinkLocale>
-    </template>
-
-    <!-- 导航 -->
-    <UNavigationMenu :items="items" />
-    <template #body>
-      <UNavigationMenu :items="items" orientation="vertical" class="-mx-2.5" />
     </template>
 
     <!-- 右侧 -->
@@ -65,7 +59,13 @@ const callbackUrl = computed(() =>
       <!-- 已登录 -->
       <UserAvatar v-else />
     </template>
+
+    <!-- 导航 -->
+    <UNavigationMenu :items="items" />
+    <template #body>
+      <UNavigationMenu :items="items" orientation="vertical" class="-mx-2.5" />
+    </template>
   </UHeader>
 
-  <slot />
+  <main><slot /></main>
 </template>

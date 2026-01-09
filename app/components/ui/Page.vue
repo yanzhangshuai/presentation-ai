@@ -17,7 +17,7 @@ const containerClass = 'flex h-[calc(100vh-8rem)] flex-col items-center justify-
 <template>
   <!-- Pending -->
   <div v-if="isPending" :class="containerClass">
-    <UiSpinner class="h-10 w-10 text-primary" />
+    <UISpinner class="h-10 w-10 text-primary" />
     <div class="space-y-2 text-center mt-4">
       <h2 class="text-2xl font-bold">{{ props.loadingTitle }}</h2>
       <p v-if="props.loadingText" class="text-muted-foreground">{{ props.loadingText }}</p>

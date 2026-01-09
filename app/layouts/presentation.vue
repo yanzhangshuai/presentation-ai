@@ -64,42 +64,42 @@ const getBackground = (isDark: boolean, colors?: ThemeColors) => {
 </script>
 
 <template>
-  <div class="h-screen flex flex-col overflow-hidden border-b border-white/10 bg-black/80 backdrop-blur-sm  translate-y-0 transition-all duration-300">
-    <!-- 顶部导航 -->
-    <UHeader mode="slideover" class="flex-none">
-      <template #left>
-        <!-- logo -->
-        <NuxtLinkLocale to="/" class="text-xl i-flex-center">
-          <UIcon name="i-lucide-audio-waveform" class="text-primary" />
-        </NuxtLinkLocale>
+  <!-- 顶部导航 -->
+  <UHeader mode="slideover" :toggle="false">
+    <template #left>
+      <!-- logo -->
+      <NuxtLinkLocale to="/" class="text-xl i-flex-center">
+        <UIcon name="i-lucide-audio-waveform" class="text-primary" />
+      </NuxtLinkLocale>
 
-        <!-- 分隔符 -->
-        <UIcon name="i-lucide-chevron-right" />
+      <!-- 分隔符 -->
+      <UIcon name="i-lucide-chevron-right" />
 
-        <!-- 演示文稿标题 -->
-        <span class="fill-dbi tracking-wide font-[AmericanTypewriter]">
-          {{ title }}
-        </span>
-      </template>
+      <!-- 演示文稿标题 -->
+      <span class="fill-dbi tracking-wide font-[AmericanTypewriter]">
+        {{ title }}
+      </span>
+    </template>
 
-      <template #right>
-        <UserAvatar />
-      </template>
-    </UHeader>
+    <template #right>
+      <UserAvatar />
+    </template>
 
-    <!-- 内容容器 -->
-    <!-- TODO: 水合问题 -->
-    <ClientOnly>
-      <main
-        class="flex-1 overflow-auto main"
-        :style="{
-          background: getBackground(isDark, colors), // 响应式背景
-        }"
-      >
-        <slot />
-      </main>
-    </ClientOnly>
-  </div>
+    <div />
+  </UHeader>
+
+  <!-- 内容容器 -->
+  <!-- TODO: 水合问题 -->
+  <ClientOnly>
+    <main
+      class="main min-h"
+      :style="{
+        background: getBackground(isDark, colors), // 响应式背景
+      }"
+    >
+      <slot />
+    </main>
+  </ClientOnly>
 </template>
 
 <style lang="less" scoped>
