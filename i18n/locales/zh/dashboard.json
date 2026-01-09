@@ -21,6 +21,9 @@
     "title": "最近的演示文稿",
     "viewAll": "查看全部",
     "deleteConfirmTitle": "你确定吗？",
-    "deleteConfirmContent": "此操作无法撤消。这将永久删除您的演示文稿。"
+    "deleteConfirmContent": "此操作无法撤消。这将永久删除您的演示文稿。",
+    "renameTitle": "重命名演示文稿",
+    "renameLabel": "新演示文稿名称",
+    "deleteButton": "删除演示文稿"
   }
 }

@@ -1,5 +1,7 @@
-<script setup lang="ts">
+<script setup lang="tsx">
 import type { DropdownMenuItem } from '@nuxt/ui'
+
+import { BaseFormModal, ConfirmModal, UFormField, UInput } from '#components'
 
 import type { Presentation } from '~/types/presentation'
 
@@ -7,6 +9,9 @@ import { DocumentType } from '~/types/base-document'
 
 /* ------------------ 全局引用 ------------------ */
 const toast = useToast()
+
+const overlay = useOverlay()
+
 const router = useRouter()
 const localRoute = useLocaleRoute()
 const { safeAction } = useSafeActions()
@@ -15,8 +20,12 @@ const { safeAction } = useSafeActions()
 const { data, error, refresh } = useFetch('/api/docs/list', { method: 'GET' })
 
 /* ------------------ 状态 ------------------ */
-// 当前正在操作的文档 ID，用于展示 loading 状态
+// 当前正在操作的文档 ID
 const navigatingId = ref('')
+
+// 创建通用的 Modal 引用
+const editTitleModal = overlay.create(BaseFormModal)
+const delConfirm = overlay.create(ConfirmModal)
 
 /* ------------------ 工具函数 ------------------ */
 // 根据 ID 查找文档
@@ -57,27 +66,53 @@ const { run: renameDocs } = safeAction(async (id: string) => {
   if (!item)
     return
 
-  // eslint-disable-next-line no-alert
-  const title = prompt('', item.title)
-  if (!title)
-    return
+  const instance = editTitleModal.open({
+    title        : $t('dashboard.recent.renameTitle'),
+    initialValues: { title: item.title || $t('presentation.untitled') },
 
-  await $fetch(`/api/docs/${id}/title`, {
-    method: 'PUT',
-    body  : { title },
+    bodyComponent: (props: { modelValue: { title: string } }) => (
+      <div class="space-y-2">
+        <UFormField label={$t('dashboard.recent.renameLabel')}>
+          <UInput
+            class="w-full"
+            modelValue={props.modelValue.title}
+            onUpdate:modelValue={val => (props.modelValue.title = val)}
+            placeholder={item.title || $t('presentation.untitled')}
+            autofocus
+          />
+        </UFormField>
+      </div>
+    ),
   })
 
-  toast.add({
-    title   : $t('common.updateSuccess'),
-    duration: 1000,
-  })
-  refresh()
+  // 等待用户操作结果
+  const updatedData = await instance.result
+  if (updatedData) {
+    await $fetch(`/api/docs/${id}/title`, {
+      method: 'PUT',
+      body  : { title: updatedData.title },
+    })
+
+    toast.add({
+      title   : $t('common.updateSuccess'),
+      duration: 3000,
+    })
+    refresh()
+  }
 }, defaultSafeActionOptions)
 
 /** 删除文档 */
 const { run: delDocs } = safeAction(async (id: string) => {
-  // eslint-disable-next-line no-alert
-  if (!confirm($t('dashboard.recent.deleteConfirmTitle')))
+  const instance = delConfirm.open({
+    title       : $t('dashboard.recent.deleteConfirmTitle'),
+    description : $t('dashboard.recent.deleteConfirmContent'),
+    color       : 'error',
+    confirmLabel: $t('dashboard.recent.deleteButton'),
+    icon        : 'i-lucide-trash-2',
+  })
+
+  const isConfirmed = await instance.result
+  if (!isConfirmed)
     return
 
   await $fetch(`/api/docs/${id}`, { method: 'DELETE' })
@@ -148,7 +183,7 @@ const dropdownItems: DropdownMenuItem[] = [
             @click.stop=""
           />
           <template #item="{ item }">
-            <div class="w-full text-start" @click.stop="item.onClick?.(doc.id)">
+            <div class="w-full text-start" @click="item.onClick?.(doc.id)">
               <UIcon :name="item.icon" class="mr-1" />
               <span>{{ item.label }}</span>
             </div>

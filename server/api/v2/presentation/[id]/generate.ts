@@ -1,6 +1,6 @@
 import type { LanguageSupport } from '~~/shared/types/presentation'
 
-import z from 'zod'
+import * as v from 'valibot'
 import { streamText } from 'ai'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
@@ -325,12 +325,12 @@ For each outline point:
 Now create a complete XML presentation with {TOTAL_SLIDES} slides that significantly expands on the outline.
 `
 
-const paramSchema = z.string()
+const paramSchema = v.string('Invalid ID')
 
 export default defineEventHandler(async (event) => {
   await getServerSession(event)
 
-  const { success, data: id } = paramSchema.safeParse(getRouterParam(event, 'id'))
+  const { success, output: id } = v.safeParse(paramSchema, getRouterParam(event, 'id'))
   if (!success)
     throw createError({ statusCode: 400 })
 
@@ -385,7 +385,7 @@ export default defineEventHandler(async (event) => {
     day    : 'numeric',
   })
 
-  const title  = presentation.base.title
+  const title = presentation.base.title
   const prompt = presentation.prompt
   const language
     = languageSupports[presentation.language as LanguageSupport] || 'English'

@@ -2,6 +2,9 @@
 /** biome-ignore-all lint/complexity/noImportantStyles: It is necessary for the presentation to work */
 
 /* CSS Variables for theming */
+/* @plugin "@tailwindcss/typography"; */
+/* @plugin "tailwindcss-animate"; */
+
 :root {
   /* Colors */
   --presentation-primary: #3b82f6;

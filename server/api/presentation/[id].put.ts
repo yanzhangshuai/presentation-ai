@@ -1,84 +1,91 @@
-import z from 'zod'
+import * as v from 'valibot'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 import { PresentationStatus } from '~~/prisma/generated/client'
 
-const paramSchema = z.string()
+// 1. 定义 Schema
+const paramSchema = v.string('Invalid ID')
 
-const bodySchema = z.object({
-  title        : z.string().optional(),
-  themeId      : z.string().optional(),
-  language     : z.string().optional(),
-  imageSource  : z.enum(['ai', 'stock']).optional(),
-  imageProvider: z.string().optional(),
-  imageModelId : z.string().optional(),
-  modelProvider: z.string().optional(),
-  modelId      : z.string().optional(),
-  pageStyle    : z.string().optional(),
-  numSlides    : z.number().optional(),
-  tone         : z.string().optional(),
-  prompt       : z.string().optional(),
-  outline      : z.array(z.string()).optional(),
-  doc          : z.string().optional(),
-}).transform(obj =>
-  Object.fromEntries(
-    Object.entries(obj).filter(([_, v]) => v !== undefined && v !== null),
-  ),
+const bodySchema = v.pipe(
+  v.object({
+    title        : v.optional(v.string()),
+    themeId      : v.optional(v.string()),
+    language     : v.optional(v.string()),
+    imageSource  : v.optional(v.enum({ ai: 'ai', stock: 'stock' })),
+    imageProvider: v.optional(v.string()),
+    imageModelId : v.optional(v.string()),
+    modelProvider: v.optional(v.string()),
+    modelId      : v.optional(v.string()),
+    pageStyle    : v.optional(v.string()),
+    numSlides    : v.optional(v.number()),
+    tone         : v.optional(v.string()),
+    prompt       : v.optional(v.string()),
+    outline      : v.optional(v.array(v.string())),
+    doc          : v.optional(v.string()),
+  }),
+  // 模拟 .transform(): 过滤掉 undefined 和 null 的键值对
+  v.transform((input) => {
+    return Object.fromEntries(
+      Object.entries(input).filter(([_, val]) => val !== undefined && val !== null),
+    )
+  }),
 )
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
-  const user = session!.user
+  if (!session?.user) {
+    throw createError({ statusCode: 401, statusMessage: 'Unauthorized' })
+  }
+  const user = session.user
 
-  // Parse URL parameter
-  const { success: success1, error: error1, data: id } = paramSchema.safeParse(getRouterParam(event, 'id'))
-  if (!success1) {
+  // 2. 解析 URL 参数
+  const paramResult = v.safeParse(paramSchema, getRouterParam(event, 'id'))
+
+  if (!paramResult.success) {
     throw createError({
       statusCode   : 400,
-      statusMessage: z.prettifyError(error1),
-      data         : error1,
+      statusMessage: 'Invalid ID parameter',
+      data         : v.flatten(paramResult.issues),
+    })
+  }
+  const id = paramResult.output
+
+  // 3. 获取并解析 Body 参数
+  const body = await readBody(event)
+  const bodyResult = v.safeParse(bodySchema, body)
+
+  if (!bodyResult.success) {
+    throw createError({
+      statusCode   : 400,
+      statusMessage: 'Validation Failed',
+      data         : v.flatten(bodyResult.issues),
     })
   }
 
-  // 获取body参数
-  const { success: success2, error: error2, data: updateData  } = bodySchema.safeParse(await readBody(event))
+  // Valibot 的转换结果存放在 output 中
+  // 这里需要手动处理类型断言，因为 transform 会改变对象结构
+  const updateData = bodyResult.output as any
 
-  if (!success2) {
-    throw createError({
-      statusCode   : 400,
-      statusMessage: z.prettifyError(error2),
-      data         : error2,
-    })
-  }
-
+  // 4. 业务逻辑处理 (保留原逻辑)
   if (updateData.title) {
-    // @ts-expect-error 特殊处理
     updateData.base = { update: { title: updateData.title } }
     delete updateData.title
   }
 
-  // @ts-expect-error 类型，待处理
   if (updateData.outline?.length) {
     updateData.status = PresentationStatus.OUTLINE
   }
 
   if (updateData.doc) {
-    // 如果更新了内容，自动更新状态
     updateData.status = PresentationStatus.DOC
   }
 
   if (updateData.themeId) {
-    // @ts-expect-error 特殊处理
     updateData.theme = { connect: { id: updateData.themeId } }
     delete updateData.themeId
   }
 
-  // TODO: 权限检查
-  // if (!defineAbilitiesFor(user).can('update', subject('Presentation', { id }))) {
-  //   throw createError({ statusCode: 403, statusMessage: 'Forbidden' })
-  // }
-
-  // 更新传入的字段
+  // 5. 执行数据库更新
   const presentation = await db.presentation.update({
     where: {
       id,

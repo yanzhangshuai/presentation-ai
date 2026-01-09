@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import SignIn from '~/components/SignIn.vue'
-
 definePageMeta({
   layout: false,
 })
@@ -20,6 +18,6 @@ const callbackUrl = computed(() => {
       dark:bg-linear-to-br dark:from-neutral-900 dark:via-neutral-800 dark:to-neutral-600
     "
   >
-    <SignIn mode="normal" :open="true" :callback-url="callbackUrl" />
+    <LazySignIn mode="normal" :open="true" :callback-url="callbackUrl" />
   </div>
 </template>

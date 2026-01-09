@@ -1,4 +1,4 @@
-import { z } from 'zod'
+import * as v from 'valibot'
 
 /**
  * PresentationContext（演示文稿上下文）
@@ -13,7 +13,7 @@ import { z } from 'zod'
  * 2. 完全确定性（不由模型生成，而是程序生成）
  * 3. 所有 slide 共享（每一页复用同一份 context）
  */
-export const PresentationContextSchema = z.object({
+export const PresentationContextSchema = v.object({
   /**
    * 演示文稿总标题
    *
@@ -24,7 +24,7 @@ export const PresentationContextSchema = z.object({
    * - 锚定整体主题，防止后续 slide 偏题
    * - 用于模型理解“这是一场什么主题的演示”
    */
-  title: z.string(),
+  title: v.string(),
 
   /**
    * 用户的原始意图 / 输入提示词
@@ -40,7 +40,7 @@ export const PresentationContextSchema = z.object({
    * - 应该是用户原始输入
    * - 不要经过 AI 改写或总结
    */
-  userIntent: z.string(),
+  userIntent: v.string(),
 
   /**
    * 演示对象（目标受众）
@@ -53,8 +53,9 @@ export const PresentationContextSchema = z.object({
    * - "Students"（学生）
    * - "Business professionals"（商务人群）
    */
-  audience: z.string().default('General audience'),
-
+  audience: v.pipe(
+    v.optional(v.string(), 'General audience'),
+  ),
   /**
    * 输出语言
    *
@@ -66,7 +67,7 @@ export const PresentationContextSchema = z.object({
    * - "Chinese"
    * - "Bilingual (English / Chinese)"
    */
-  language: z.string().default('English'),
+  language: v.optional(v.string(), 'English'),
 
   /**
    * 演示的整体语气 / 风格
@@ -79,7 +80,7 @@ export const PresentationContextSchema = z.object({
    * - "Educational"（教学）
    * - "Persuasive"（说服型）
    */
-  tone: z.string().default('Professional'),
+  tone: v.optional(v.string(), 'Professional'),
 
   /**
    * 关键术语列表（用于全篇统一用词）
@@ -95,8 +96,13 @@ export const PresentationContextSchema = z.object({
    * 示例：
    * - ["Climate change", "Biodiversity", "Ecosystems"]
    */
-  terminology: z.array(z.string()).max(8).default([]),
-
+  terminology: v.optional(
+    v.pipe(
+      v.array(v.string('术语必须是字符串')),
+      v.maxLength(8, '关键术语数量不能超过 8 个'), // 实现了注释中的 <=8 约束
+    ),
+    [], // Valibot 1.0 的 v.optional 第二个参数即为默认值
+  ),
   /**
    * 整个演示的「叙事级大纲」
    *
@@ -123,7 +129,10 @@ export const PresentationContextSchema = z.object({
    *   "应对与解决方案"
    * ]
    */
-  narrativeOutline: z.array(z.string()).min(1),
+  narrativeOutline: v.pipe(
+    v.array(v.string('每个叙事步骤必须是字符串')),
+    v.minLength(1, '叙事大纲至少需要包含 1 个步骤'),
+  ),
 
   /**
    * 总页数
@@ -135,10 +144,14 @@ export const PresentationContextSchema = z.object({
    * 注意：
    * - 应与 narrativeOutline.length 保持一致
    */
-  totalSlides: z.number().min(1),
+  totalSlides: v.pipe(
+    v.number('总页数必须是数字'),
+    v.integer('总页数必须是整数'),
+    v.minValue(1, '总页数至少为 1'),
+  ),
 })
 
-export type PresentationContext = z.infer<
+export type PresentationContext = v.InferOutput<
   typeof PresentationContextSchema
 >
 

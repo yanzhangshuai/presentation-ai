@@ -1,23 +1,32 @@
-import z from 'zod'
+import * as v from 'valibot'
 import { getServerSession } from '#auth'
 
-const querySchema = z.object({
-  prompt  : z.string(),
-  layout  : z.enum(['top', 'bottom', 'left', 'right', 'background']).optional().default('top'),
-  provider: z.string().optional(),
+enum LayoutEnum {
+  top        = 'top',
+  bottom     = 'bottom',
+  left       = 'left',
+  right      = 'right',
+  background = 'background',
+}
+
+const querySchema = v.object({
+  prompt  : v.string('Prompt 不能为空'),
+  layout  : v.optional(v.enum(LayoutEnum, '无效的布局类型'), LayoutEnum.left),
+  provider: v.optional(v.string()),
 })
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
+
   // 获取body参数
-  const { success, error, data } = querySchema.safeParse(getQuery(event))
+  const { success, issues, output: query } = v.safeParse(querySchema, getQuery(event))
 
   if (!success) {
     throw createError({
       statusCode   : 400,
-      statusMessage: z.prettifyError(error),
-      data         : error,
+      statusMessage: 'Validation Failed',
+      data         : v.flatten(issues),
     })
   }
 
@@ -30,13 +39,13 @@ export default defineEventHandler(async (event) => {
   }
 
   const orientationQuery
-    = data.layout === 'top' || data.layout === 'bottom'
+    = query.layout === 'top' || query.layout === 'bottom'
       ? '&orientation=landscape'
-      : data.layout === 'left' || data.layout === 'right'
+      : query.layout === 'left' || query.layout === 'right'
         ? '&orientation=portrait'
         : '&orientation=landscape'
 
-  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(data.prompt)}&page=1&per_page=1${orientationQuery}`
+  const url = `https://api.unsplash.com/search/photos?query=${encodeURIComponent(query.prompt)}&page=1&per_page=1${orientationQuery}`
   const res = await $fetch<UnsplashSearchResponse>(url, {
     method : 'GET',
     headers: {

@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { uniqueId } from 'lodash-es'
 import { nextTick, ref, watch } from 'vue'
-import { VueDraggableNext as Draggable } from 'vue-draggable-next'
+import { VueDraggable } from 'vue-draggable-plus'
 
 import OutlineItem from './outline-item/Index.vue'
 /* ---------------- props ---------------- */
 
-const { isGenerating = false, totalSlides = 5 } =  defineProps<{
+const { isGenerating = false, totalSlides = 5 } = defineProps<{
   isGenerating?: boolean
   totalSlides? : number
 }>()
@@ -108,7 +108,7 @@ const onDragEnd = () => {
   </div>
 
   <!-- 拖拽列表 -->
-  <Draggable
+  <VueDraggable
     v-model="items"
     item-key="id"
     :disabled="isGenerating"
@@ -140,7 +140,7 @@ const onDragEnd = () => {
       :is-generating="isGenerating"
       @delete="id => items = items.filter(i => i.id !== id)"
     />
-  </Draggable>
+  </VueDraggable>
 
   <!-- skeleton -->
   <USkeleton

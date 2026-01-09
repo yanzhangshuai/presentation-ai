@@ -1,4 +1,4 @@
-import z from 'zod'
+import * as v from 'valibot'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 import { imageModelPicker } from '~~/server/providers/image'
@@ -6,21 +6,21 @@ import { ImageLibraryType } from '~~/prisma/generated/client'
 import { uploadBufferToOss } from '~~/server/providers/oss/Aliyun'
 import { nodeCacheDriverName } from '~~/server/providers/storage/nodeCacheDriver'
 
-const querySchema = z.object({
-  taskId: z.string(),
+const querySchema = v.object({
+  taskId: v.string(),
 })
 
 export default defineEventHandler<Promise<ImageTaskRes>>(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
 
-  const { success, error, data: query } = querySchema.safeParse(getQuery(event))
+  const { success, output: query, issues } = v.safeParse(querySchema, getQuery(event))
 
   if (!success) {
     throw createError({
       statusCode   : 400,
-      statusMessage: z.prettifyError(error),
-      data         : error,
+      statusMessage: 'Validation Failed',
+      data         : v.flatten(issues),
     })
   }
 

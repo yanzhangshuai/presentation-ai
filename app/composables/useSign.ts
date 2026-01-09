@@ -1,4 +1,4 @@
-import SignIn from '~/components/SignIn.vue'
+import { LazySignIn } from '#components'
 
 interface SignInOptions {
   mode?       : 'modal' | 'normal'
@@ -8,9 +8,10 @@ interface SignInOptions {
 
 export function useSign() {
   const overlay = useOverlay()
-  const modal = overlay.create(SignIn)
 
   const signIn = (options: SignInOptions = {}) => {
+    const modal = overlay.create(LazySignIn)
+
     const { mode = 'modal', callbackUrl, onClose } = options
 
     modal.open({

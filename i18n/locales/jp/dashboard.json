@@ -21,6 +21,9 @@
     "title": "最近のプレゼンテーション",
     "viewAll": "すべてを見る",
     "deleteConfirmTitle": "確かなの？",
-    "deleteConfirmContent": "この行動は取り消すことはできません。これにより、プレゼンテーションは永久的に削除されます。"
+    "deleteConfirmContent": "この行動は取り消すことはできません。これにより、プレゼンテーションは永久的に削除されます。",
+    "renameTitle": "プレゼンテーションの名前を変更",
+    "renameLabel": "新しいプレゼンテーション名",
+    "deleteButton": "プレゼンテーションを削除"
   }
 }

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import type { FormSubmitEvent } from '@nuxt/ui'
 
-import z from 'zod'
+import * as v from 'valibot'
 
 /* ------------------ Props ------------------ */
 // mode: 区分是弹窗登录还是普通页面登录
@@ -20,12 +20,12 @@ const emit = defineEmits<{
 }>()
 
 /* ------------------ 表单校验 Schema ------------------ */
-// 使用 zod 定义表单校验规则
-const schema = z.object({
-  email   : z.email($t('auth.emailError')), // 邮箱格式校验
-  password: z.string().min(8, $t('auth.passwordError', { len: 8 })), // 密码最少 8 位
+// 使用 valibot 定义表单校验规则
+const schema = v.object({
+  email   : v.pipe(v.string(), v.email()),
+  password: v.pipe(v.string(), v.minLength(8)),
 })
-type Schema = z.infer<typeof schema>
+type Schema = v.InferOutput<typeof schema>
 
 /* ------------------ Auth & SafeAction ------------------ */
 const { signIn } = useAuth() // 调用 auth 模块的 signIn 方法

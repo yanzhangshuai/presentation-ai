@@ -16,7 +16,3 @@ const props = defineProps<{
     <button class="btn btn-sm btn-accent">更改样式</button> -->
   </div>
 </template>
-
-<style scoped lang="less">
-
-</style>

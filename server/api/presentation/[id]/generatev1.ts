@@ -1,20 +1,20 @@
-import z from 'zod'
+import * as v from 'valibot'
+import { streamText } from 'ai'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
-import { streamObject, streamText } from 'ai'
 import { streamJsonlFromAIAsSSE } from '~~/server/utils/streamJsonlSSE'
 
-const paramSchema = z.string()
+const paramSchema = v.string()
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   // const user = session!.user
 
-  const { success, error, data: id } = paramSchema.safeParse(getRouterParam(event, 'id'))
+  const { success, issues, output: id } = v.safeParse(paramSchema, getRouterParam(event, 'id'))
   if (!success) {
     throw createError({
       statusCode   : 400,
-      statusMessage: z.prettifyError(error),
-      data         : error,
+      statusMessage: 'Validation Failed',
+      data         : v.flatten(issues),
     })
   }
 

@@ -1,6 +1,6 @@
 import type { LanguageSupport } from '~~/shared/types/presentation'
 
-import z from 'zod'
+import * as v from 'valibot'
 import pLimit from 'p-limit'
 import { streamText } from 'ai'
 import { db } from '~~/server/db'
@@ -12,13 +12,13 @@ import {
   renderPresentationContext,
 } from '~~/server/utils/presentationContext'
 
-const paramSchema = z.string()
+const paramSchema = v.string()
 const limit = pLimit(5)
 
 export default defineEventHandler(async (event) => {
   await getServerSession(event)
 
-  const { success, data: id } = paramSchema.safeParse(getRouterParam(event, 'id'))
+  const { success, output: id } = v.safeParse(paramSchema, getRouterParam(event, 'id'))
   if (!success)
     throw createError({ statusCode: 400 })
 
@@ -42,7 +42,7 @@ export default defineEventHandler(async (event) => {
     presentation.modelId || 'deepseek-chat',
   )
 
-  const context = PresentationContextSchema.parse({
+  const context = v.parse(PresentationContextSchema, {
     title           : presentation.base.title,
     userIntent      : presentation.prompt || '',
     audience        : 'General audience',

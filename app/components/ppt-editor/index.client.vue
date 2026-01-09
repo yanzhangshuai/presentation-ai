@@ -72,7 +72,7 @@ onMounted(() => {
       emit('update', editor.getJSON() as any as SlideDoc)
     },
     onFocus: () => {
-      emit('focus', editor.value?.getJSON() as any as SlideDoc, editor.value!)
+      // emit('focus', editor.value?.getJSON() as any as SlideDoc, editor.value!)
     },
   })
 })
@@ -81,14 +81,15 @@ onBeforeUnmount(() => {
   editor.value?.destroy()
 })
 
-watch(
-  () => props.doc,
-  (val) => {
-    if (val && editor.value)
-      updateContent(val)
-  },
-  { immediate: true, deep: true },
-)
+// TODO: handle doc update from outside
+// watch(
+//   () => props.doc,
+//   (val) => {
+//     if (val && editor.value)
+//       updateContent(val)
+//   },
+//   { immediate: true, deep: true },
+// )
 
 defineExpose({
   updateContent,
@@ -103,7 +104,7 @@ defineExpose({
     class="relative flex flex-col border-none bg-transparent py-12 px-16 outline-none h-full"
   >
     <Draggable v-if="editor" :editor="editor" />
-    <ToolbarMenu v-if="showToolbar && editor" :editor="editor" />
+    <!-- <ToolbarMenu v-if="showToolbar && editor" :editor="editor" /> -->
     <EditorContent class="editor" :editor="editor" />
   </Container>
 </template>

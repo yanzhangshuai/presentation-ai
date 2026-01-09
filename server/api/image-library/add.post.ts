@@ -1,23 +1,23 @@
-import z from 'zod'
+import * as v from 'valibot'
 import { db } from '~~/server/db'
 import { getServerSession } from '#auth'
 import { ImageLibraryType } from '~~/prisma/generated/client'
 
-const bodySchema = z.object({
-  url: z.string(),
+const bodySchema = v.object({
+  url: v.string(),
 })
 
 export default defineEventHandler(async (event) => {
   const session = await getServerSession(event)
   const user = session!.user
   // 获取body参数
-  const { success: success2, error: error2, data  } = bodySchema.safeParse(await readBody(event))
+  const { success, issues, output: data  } = v.safeParse(bodySchema, await readBody(event))
 
-  if (!success2) {
+  if (!success) {
     throw createError({
       statusCode   : 400,
-      statusMessage: z.prettifyError(error2),
-      data         : error2,
+      statusMessage: 'Validation Failed',
+      data         : v.flatten(issues),
     })
   }
 

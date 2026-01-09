@@ -2,7 +2,6 @@ import crypto from 'node:crypto'
 import fs from 'node:fs'
 import path from 'node:path'
 import process from 'node:process'
-import axios from 'axios'
 import 'dotenv/config'
 
 // ===== 配置 =====
@@ -55,9 +54,8 @@ function getTargetLangs() {
 const TARGET_LANGS = getTargetLangs()
 console.log('目标语言:', TARGET_LANGS.join(', '))
 
-// ======= 占位符保护器（超级版） =======
-const PLACEHOLDER_REGEX
-  = /\{[^}]+\}|\$\{[^}]+\}|%(\d+\$)?[sd]|<[^>]+>/g
+// ======= 占位符保护器 =======
+const PLACEHOLDER_REGEX = /\{[^}]+\}|\$\{[^}]+\}|%(\d+\$)?[sd]|<[^>]+>/g
 
 function protectPlaceholders(text) {
   const placeholders = []
@@ -84,19 +82,33 @@ async function baiduTranslate(q, to, file) {
   if (cache[cacheKey]?.[to])
     return cache[cacheKey][to]
 
-  const salt = Date.now()
+  const salt = Date.now().toString()
   const sign = crypto.createHash('md5').update(APP_ID + q + salt + APP_KEY).digest('hex')
 
-  try {
-    const res = await axios.get('https://fanyi-api.baidu.com/api/trans/vip/translate', {
-      params: { q, from: SOURCE_LANG, to: LANG_MAP[to] || 'en', salt, sign, appid: APP_ID },
-    })
+  // 构建 URL 参数
+  const params = new URLSearchParams({
+    q,
+    from: SOURCE_LANG,
+    to: LANG_MAP[to] || 'en',
+    salt,
+    sign,
+    appid: APP_ID
+  })
 
-    if (res.data.error_code) {
-      throw new Error(`API错误 ${res.data.error_code}: ${res.data.error_msg}`)
+  try {
+    const response = await fetch(`https://fanyi-api.baidu.com/api/trans/vip/translate?${params.toString()}`)
+    
+    if (!response.ok) {
+      throw new Error(`网络响应错误: ${response.status} ${response.statusText}`)
     }
 
-    const translated = res.data.trans_result?.[0]?.dst || q
+    const data = await response.json()
+
+    if (data.error_code) {
+      throw new Error(`API错误 ${data.error_code}: ${data.error_msg}`)
+    }
+
+    const translated = data.trans_result?.[0]?.dst || q
 
     if (!cache[cacheKey])
       cache[cacheKey] = {}
@@ -110,24 +122,19 @@ async function baiduTranslate(q, to, file) {
   }
 }
 
-// ===== 批量翻译（含占位符保护） =====
+// ===== 批量翻译 =====
 async function translateBatch(strings, to, file) {
   const results = []
-
   for (let i = 0; i < strings.length; i += BATCH_SIZE) {
     const batch = strings.slice(i, i + BATCH_SIZE)
-
-    // 翻译前：保护占位符
     const protectedBatch = batch.map(s => protectPlaceholders(s))
 
-    // 翻译
     const translatedBatch = await Promise.all(
       protectedBatch.map(({ protectedText }) =>
         baiduTranslate(protectedText, to, file),
       ),
     )
 
-    // 翻译后：恢复占位符
     const restoredBatch = translatedBatch.map((t, idx) =>
       restorePlaceholders(t, protectedBatch[idx].placeholders),
     )
@@ -135,11 +142,10 @@ async function translateBatch(strings, to, file) {
     results.push(...restoredBatch)
     await new Promise(r => setTimeout(r, THROTTLE_MS))
   }
-
   return results
 }
 
-// ===== 展平 JSON =====
+// ===== 辅助函数：展平 JSON =====
 function flattenStrings(obj, prefix = '') {
   const entries = []
   for (const key in obj) {
@@ -153,7 +159,7 @@ function flattenStrings(obj, prefix = '') {
   return entries
 }
 
-// ===== 重建 JSON =====
+// ===== 辅助函数：重建 JSON =====
 function rebuildObject(entries) {
   const obj = {}
   for (const { key, value } of entries) {
@@ -199,10 +205,8 @@ export async function syncLocales() {
       if (fs.existsSync(targetFile))
         targetJson = JSON.parse(fs.readFileSync(targetFile, 'utf8'))
 
-      console.log('file', file)
       const flatTarget = flattenStrings(targetJson)
 
-      // 找出新增或被修改的 key
       const toTranslateEntries = flatSrc.filter((f) => {
         const existing = flatTarget.find(t => t.key === f.key)
         return !existing || existing.value !== f.value
@@ -216,10 +220,14 @@ export async function syncLocales() {
       const texts = toTranslateEntries.map(f => f.value)
       const translatedTexts = await translateBatch(texts, lang, file)
 
-      // 合并
       const mergedEntries = flatTarget.map(f => ({ ...f }))
       toTranslateEntries.forEach((f, idx) => {
-        mergedEntries.push({ key: f.key, value: translatedTexts[idx] })
+        const index = mergedEntries.findIndex(m => m.key === f.key)
+        if (index > -1) {
+          mergedEntries[index].value = translatedTexts[idx]
+        } else {
+          mergedEntries.push({ key: f.key, value: translatedTexts[idx] })
+        }
       })
 
       const rebuilt = rebuildObject(mergedEntries)
@@ -230,5 +238,3 @@ export async function syncLocales() {
 
   console.log('\n🎉 语言包增量翻译完成！')
 }
-
-// syncLocales()

@@ -1,5 +1,5 @@
 import type { NodeViewProps } from '@tiptap/vue-3'
-import type { ResolvedPos } from 'prosemirror-model'
+import type { ResolvedPos } from '@tiptap/pm/model'
 
 import { computed } from 'vue'
 

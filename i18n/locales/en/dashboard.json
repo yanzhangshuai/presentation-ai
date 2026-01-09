@@ -20,7 +20,10 @@
   "recent": {
     "title": "Recent Presentations",
     "viewAll": "View All",
+    "renameTitle": "Rename Presentation",
+    "renameLabel": "New Presentation Name",
     "deleteConfirmTitle": "Are you sure?",
-    "deleteConfirmContent": "This action cannot be undone. This will permanently delete your presentation."
+    "deleteConfirmContent": "This action cannot be undone. This will permanently delete your presentation.",
+    "deleteButton": "Delete Presentation"
   }
 }

@@ -139,7 +139,7 @@ watch(
       <div class="flex-y-center gap-4">
         <span class="text-sm text-foreground">{{ $t('presentation.prompt') }}</span>
 
-        <PresentationGenerateControls
+        <LazyPresentationGenerateControls
           v-model:language="state.language"
           v-model:num-slides="state.numSlides"
           :model-id="state.modelId"
@@ -151,7 +151,7 @@ watch(
       </div>
 
       <!-- 输入框 -->
-      <PresentationGenerateInput
+      <LazyPresentationGenerateInput
         v-model="state.prompt"
         class="w-full"
         :disabled="isLoading"
@@ -159,7 +159,7 @@ watch(
       />
 
       <!-- 渲染大纲列表 -->
-      <PresentationOutlineList
+      <LazyPresentationOutlineList
         v-model:outline="state.outline"
         :is-generating="isLoading"
         :total-slides="state.numSlides"
@@ -174,7 +174,7 @@ watch(
       <!-- image source -->
       <div class="flex flex-col space-y-2">
         <label>{{ $t("presentation.imageSource.title") }}</label>
-        <PresentationImageSourceSelect
+        <LazyPresentationImageSourceSelect
           v-model:image-source="state.imageSource"
           v-model:image-provider="state.imageProvider"
           v-model:image-model-id="state.imageModelId"

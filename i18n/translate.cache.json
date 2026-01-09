@@ -483,5 +483,20 @@
     "zh": "正在上传。..__PH_0__%",
     "zh-hk": "正在上傳。 ..__PH_0__%",
     "jp": "アップロード中 .. __PH_0__%"
+  },
+  "dashboard_New Presentation Name": {
+    "zh": "新演示文稿名称",
+    "zh-hk": "新演示文稿名稱",
+    "jp": "新しいプレゼンテーション名"
+  },
+  "dashboard_Rename Presentation": {
+    "zh": "重命名演示文稿",
+    "zh-hk": "重命名演示文稿",
+    "jp": "プレゼンテーションの名前を変更"
+  },
+  "dashboard_Delete Presentation": {
+    "zh": "删除演示文稿",
+    "zh-hk": "删除演示文稿",
+    "jp": "プレゼンテーションを削除"
   }
 }

@@ -1,7 +1,7 @@
 import type { Editor } from '@tiptap/vue-3'
 
 import { Node } from '@tiptap/core'
-import { Plugin } from 'prosemirror-state'
+import { Plugin } from '@tiptap/pm/state'
 import { VueNodeViewRenderer } from '@tiptap/vue-3'
 
 import BulletListView from './ListView.vue'
