@@ -6,6 +6,21 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
 
+  experimental: {
+    /**
+     * 启用 Early Hints 支持，提升首屏加载速度
+     */
+    writeEarlyHints         : true,
+    /**
+     * 启用有效负载提取，减少初始 HTML 大小
+     */
+    payloadExtraction       : true,
+    /**
+     * 启用异步数据提取处理器，提升 SSR 性能
+     */
+    extractAsyncDataHandlers: true,
+  },
+
   modules: [
     '@pinia/nuxt',
     '@sidebase/nuxt-auth',
@@ -37,10 +52,7 @@ export default defineNuxtConfig({
   },
 
   nitro: {
-    compressPublicAssets: {
-      gzip  : true,
-      brotli: true,
-    },
+    compressPublicAssets: true,
   },
 
   runtimeConfig: {
@@ -205,9 +217,6 @@ export default defineNuxtConfig({
     },
   },
 
-  experimental: {
-    extractAsyncDataHandlers: true,
-  },
   css: [
     '~/assets/css/tailwind.css',
     '~/assets/less/main.less',
