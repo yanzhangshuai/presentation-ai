@@ -25,7 +25,7 @@ const { setPresentation, autoSaveDoc, addSlide, setSlides, saveDoc } = presentat
 
 const { setTheme } = usePresentationThemeStore()
 
-const slidesRef = useTemplateRef('presentationSlides')
+// const slidesRef = useTemplateRef('presentationSlides')
 
 const id = computed(() => route.params.id?.toString())
 
@@ -38,13 +38,15 @@ const { generate, status: generationStatus } = useGeneration(toValue(id)!, {
   onUpdate: (slides: PresentationSlide[]) => {
     setSlides(slides)
 
-    requestAnimationFrame(() => {
-      // 滚动到最后一张幻灯片
-      document.querySelector('.main')?.scrollTo({
-        top     : document.querySelector('.main')!.scrollHeight,
-        behavior: 'smooth',
+    if (import.meta.client) {
+      requestAnimationFrame(() => {
+        // html 元素滚动到最低部
+        window.scrollTo({
+          top     : document.body.scrollHeight,
+          behavior: 'smooth',
+        })
       })
-    })
+    }
   },
   onFinish: () => {
     saveDoc()
@@ -63,51 +65,49 @@ const { generate, status: generationStatus } = useGeneration(toValue(id)!, {
   },
 })
 
-if (import.meta.client) {
-  watch(data, () => {
-    if (!data.value)
-      return
+watch(data, () => {
+  if (!data.value)
+    return
 
-    setTheme(data.value.theme)
-    setPresentation(data.value)
-    if (data.value?.status !== PresentationStatus.Doc) {
-      // 生成
-      presentationDoc.value = {
-        id       : toValue(id)!,
-        title    : data.value!.base?.title || 'Untitled Presentation',
-        slides   : [],
-        createdAt: Date.now(),
-        updatedAt: Date.now(),
-      }
-
-      generate()
-
-      // slidesGenerationStream(toValue(id)!, {
-      //   onUpdate: (slide: PresentationSlide) => {
-      //     addSlide(slide)
-      //   },
-      //   onFinish: () => {
-      //     saveDoc()
-      //       .then(() => {
-      //         autoSaveDoc()
-      //       })
-      //       .catch((err) => {
-      //         toast.add({
-      //           title: err.message || 'Failed to save generated presentation.',
-      //           color: 'error',
-      //         })
-      //       })
-      //   },
-      //   onError: (err: Error) => {
-      //     console.error('Slides generation stream error:', err)
-      //   },
-      // })
+  setTheme(data.value.theme)
+  setPresentation(data.value)
+  if (data.value?.status !== PresentationStatus.Doc) {
+    // 生成
+    presentationDoc.value = {
+      id       : toValue(id)!,
+      title    : data.value!.base?.title || 'Untitled Presentation',
+      slides   : [],
+      createdAt: Date.now(),
+      updatedAt: Date.now(),
     }
-    else {
-      autoSaveDoc()
-    }
-  })
-}
+
+    generate()
+
+    // slidesGenerationStream(toValue(id)!, {
+    //   onUpdate: (slide: PresentationSlide) => {
+    //     addSlide(slide)
+    //   },
+    //   onFinish: () => {
+    //     saveDoc()
+    //       .then(() => {
+    //         autoSaveDoc()
+    //       })
+    //       .catch((err) => {
+    //         toast.add({
+    //           title: err.message || 'Failed to save generated presentation.',
+    //           color: 'error',
+    //         })
+    //       })
+    //   },
+    //   onError: (err: Error) => {
+    //     console.error('Slides generation stream error:', err)
+    //   },
+    // })
+  }
+  else {
+    autoSaveDoc()
+  }
+}, { immediate: true })
 </script>
 
 <template>
@@ -118,7 +118,7 @@ if (import.meta.client) {
     <div class="presentation-slides flex max-h-full flex-1 pb-20">
       <div class="mx-auto max-w-[90%] space-y-8 pt-16">
         <ClientOnly>
-          <LazyPresentationSlides ref="presentationSlides" :is-generating="generationStatus === 'pending'" />
+          <LazyPresentationSlides :is-generating="generationStatus === 'pending'" />
         </ClientOnly>
       </div>
     </div>

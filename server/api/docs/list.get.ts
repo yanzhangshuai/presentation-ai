@@ -53,6 +53,9 @@ export default defineEventHandler(async (event) => {
       orderBy: {
         updatedAt: 'desc',
       },
+      include: {
+        presentation: true,
+      },
       skip: (page - 1) * pageSize,
       take: pageSize,
     }),
@@ -70,5 +73,5 @@ export default defineEventHandler(async (event) => {
     pageSize,
     total,
     items,
-  } as PaginationRes<BaseDocument>
+  }
 })

@@ -3,7 +3,7 @@ import { uniqueId } from 'lodash-es'
 import { nextTick, ref, watch } from 'vue'
 import { VueDraggable } from 'vue-draggable-plus'
 
-import OutlineItem from './outline-item/Index.vue'
+import OutlineItem from './OutlineItem.vue'
 /* ---------------- props ---------------- */
 
 const { isGenerating = false, totalSlides = 5 } = defineProps<{
